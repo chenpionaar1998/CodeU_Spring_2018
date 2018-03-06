@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <codeu2018team21>YOUR_PROJECT_ID</codeu2018team21>
+    <codeu2018team21>CodeU2018Team21</codeu2018team21>
     <version>1</version>
     <threadsafe>false</threadsafe>
     <sessions-enabled>true</sessions-enabled>
