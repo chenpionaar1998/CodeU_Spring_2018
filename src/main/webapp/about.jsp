@@ -66,5 +66,25 @@
       </p>
     </div>
   </div>
+  
+<div id="container">
+	<div
+       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+       
+       <h1>Team 21 Info</h1>
+       
+       <ul>
+         <li><strong>(This is just a git operation test XD )</strong>
+         </li>
+         <li><strong>Sherry Yang</strong> I am a sophomore studying at University of Washington,
+         	Seattle (yes, I crave for sunlight). So far I have been gaining backend skills and I
+         	do hope for getting involved in the "frontend community." One interesting fact about 
+         	myself:I have been (too) into the kpop band BTS since college, it is sometimes unhealthy
+         	to watch countless youtube vidoes about them ^o^.  
+         </li>
+       </ul>
+     </div>
+   </div>
+   
 </body>
 </html>
