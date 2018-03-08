@@ -34,7 +34,20 @@
 
   <div id="container">
     <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px; font-size: 15px;">
+
+      <h1>About Team 21 </h1>
+      <p>
+      Team 21 is a team of 3 university students from North America with the
+       same passion of learning new skills and creating interesting apps. Here
+       is a list of the team members:
+     </p>
+      <ul>
+        <li><strong>Naomi McCracken :</strong>  </li>
+        <li><strong>Dean Chiu :</strong>  </li>
+        <li><strong>Sherry Yang :</strong>  </li>
+      </ul>
+
 
       <h1>About the CodeU Chat App</h1>
       <p>
@@ -64,6 +77,8 @@
         This page should also be used to describe the features and improvements
         you've added.
       </p>
+
+
     </div>
   </div>
 </body>
