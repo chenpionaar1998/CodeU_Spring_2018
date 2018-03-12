@@ -56,10 +56,10 @@
 
       <ul>
         <li><strong>Algorithms and data structures:</strong> We've made the app
-            and the code as simple as possible. You will have to extend the
-            existing data structures to support your enhancements to the app,
-            and also make changes for performance and scalability as your app
-            increases in complexity.</li>
+          and the code as simple as possible. You will have to extend the
+          existing data structures to support your enhancements to the app,
+          and also make changes for performance and scalability as your app
+          increases in complexity.</li>
         <li><strong>Look and feel:</strong> The focus of CodeU is on the Java
           side of things, but if you're particularly interested you might use
           HTML, CSS, and JavaScript to make the chat app prettier.</li>
@@ -78,5 +78,30 @@
       </p>
     </div>
   </div>
+<div id="container">
+    <div
+      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+
+      <h1>About the Team</h1>
+
+      <ul>
+        <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA). 
+        </li>
+        <li><strong>Sherry Yang</strong> </li>
+        <li><strong>Dean Chiu</strong> </li>
+        <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
+          and Computer Science (undergraduate) student at University of 
+          California San Diego. Naomi is especially interested in working in 
+          backend development, and she especially enjoys learning about about 
+          algorithms and data structures. Her favorite sorting algorithm is 
+          <a href="https://en.wikipedia.org/wiki/Bogosort">Bogosort<\a>, 
+          particularly the version that produces permutations of input until 
+          the sorted version is produced. Naomi is excited to be a part of 
+          the CodeU program and learn a lot alongside her teammates.
+        </li>
+      </ul>
+    </div>
+  </div>
+
 </body>
 </html>
