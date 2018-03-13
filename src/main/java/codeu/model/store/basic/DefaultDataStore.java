@@ -96,9 +96,11 @@ public class DefaultDataStore {
 
     List<String> randomUsernames = getRandomUsernames();
     Collections.shuffle(randomUsernames);
+    List<String> randomPasswords = getRandomPasswords();
+    Collections.shuffle(randomPasswords);
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      User user = new User(UUID.randomUUID(), randomUsernames.get(i), Instant.now());
+      User user = new User(UUID.randomUUID(), randomUsernames.get(i), randomPasswords.get(i), Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
@@ -166,6 +168,42 @@ public class DefaultDataStore {
     randomUsernames.add("Mary");
     randomUsernames.add("Karen");
     return randomUsernames;
+  }
+
+  /* The same function as getRandomUsernames() but making passwords instead */
+  private List<String> getRandomPasswords(){
+    List<String> randomPasswords = new ArrayList<>();
+    randomPasswords.add("aaaabbbb");
+    randomPasswords.add("ccccdddd");
+    randomPasswords.add("eeeeffff");
+    randomPasswords.add("gggghhhh");
+    randomPasswords.add("iiiijjjj");
+    randomPasswords.add("kkkkllll");
+    randomPasswords.add("mmmmnnnn");
+    randomPasswords.add("oooopppp");
+    randomPasswords.add("qqqqrrrr");
+    randomPasswords.add("sssstttt");
+    randomPasswords.add("uuuuvvvv");
+    randomPasswords.add("wwwwxxxx");
+    randomPasswords.add("yyyyzzzz");
+    randomPasswords.add("abababab");
+    randomPasswords.add("cdcdcdcd");
+    randomPasswords.add("efefefef");
+    randomPasswords.add("ghghghgh");
+    randomPasswords.add("ijijijij");
+    randomPasswords.add("klklklkl");
+    randomPasswords.add("mnmnmnmn");
+    randomPasswords.add("opopopop");
+    randomPasswords.add("qrqrqrqr");
+    randomPasswords.add("stststst");
+    randomPasswords.add("uvuvuvuv");
+    randomPasswords.add("wxwxwxwx");
+    randomPasswords.add("yzyzyzyz");
+    randomPasswords.add("abcdefgh");
+    randomPasswords.add("ijklmnop");
+    randomPasswords.add("qrstuvwx");
+    randomPasswords.add("yzabcdef");
+    return randomPasswords;
   }
 
   private String getRandomMessageContent() {
