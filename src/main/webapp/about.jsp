@@ -75,14 +75,14 @@
       <ul>
         <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA). 
         </li>
-        <li><strong>Sherry Yang</strong> </li>
-        <li><strong>Dean Chiu</strong> </li>
+        <li><strong>Sherry Yang</strong></li>
+        <li><strong>Dean Chiu</strong></li>
         <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
           and Computer Science (undergraduate) student at University of 
           California San Diego. Naomi is especially interested in working in 
           backend development, and she especially enjoys learning about about 
           algorithms and data structures. Her favorite sorting algorithm is 
-          <a href="https://en.wikipedia.org/wiki/Bogosort">Bogosort<\a>, 
+          <a href="https://en.wikipedia.org/wiki/Bogosort">Bogosort</a>, 
           particularly the version that produces permutations of input until 
           the sorted version is produced. Naomi is excited to be a part of 
           the CodeU program and learn a lot alongside her teammates.
