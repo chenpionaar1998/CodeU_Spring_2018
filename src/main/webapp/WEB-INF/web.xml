@@ -72,7 +72,7 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>RegisterServletregister</servlet-name>
+    <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
 
