@@ -43,6 +43,7 @@
         is a list of the team members:
       </p>
       <ul>
+        <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA).</li>
         <li><strong>Dean Chiu</strong></li>
         <li><strong>Sherry Yang</strong></li>
         <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
