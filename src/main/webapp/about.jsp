@@ -36,6 +36,18 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
+      <h1>About Team 21</h1>
+      <p>
+        Team 21 is a team of 3 university students from North America with the
+        same passion of learning new skills and creating interesting apps. Here
+        is a list of the team members:
+      </p>
+      <ul>
+        <li><strong>Naomi McCracken</strong></li>
+        <li><strong>Dean Chiu</strong></li>
+        <li><strong>Sherry Yang</strong></li>
+      </ul>
+      
       <h1>About the CodeU Chat App</h1>
       <p>
         This is an example chat application designed to be a starting point
@@ -44,10 +56,10 @@
 
       <ul>
         <li><strong>Algorithms and data structures:</strong> We've made the app
-            and the code as simple as possible. You will have to extend the
-            existing data structures to support your enhancements to the app,
-            and also make changes for performance and scalability as your app
-            increases in complexity.</li>
+          and the code as simple as possible. You will have to extend the
+          existing data structures to support your enhancements to the app,
+          and also make changes for performance and scalability as your app
+          increases in complexity.</li>
         <li><strong>Look and feel:</strong> The focus of CodeU is on the Java
           side of things, but if you're particularly interested you might use
           HTML, CSS, and JavaScript to make the chat app prettier.</li>
@@ -66,25 +78,31 @@
       </p>
     </div>
   </div>
-  
+
 <div id="container">
-	<div
-       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
-       
-       <h1>Team 21 Info</h1>
-       
-       <ul>
-         <li><strong>(This is just a git operation test XD )</strong>
-         </li>
-         <li><strong>Sherry Yang</strong> I am a sophomore studying at University of Washington,
-         	Seattle (yes, I crave for sunlight). So far I have been gaining backend skills and I
-         	do hope for getting involved in the "frontend community." One interesting fact about 
-         	myself:I have been (too) into the kpop band BTS since college, it is sometimes unhealthy
-         	to watch countless youtube vidoes about them ^o^.  
-         </li>
-       </ul>
-     </div>
-   </div>
-   
+    <div
+      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+
+      <h1>About the Team</h1>
+
+      <ul>
+        <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA). 
+        </li>
+        <li><strong>Sherry Yang</strong> </li>
+        <li><strong>Dean Chiu</strong> </li>
+        <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
+          and Computer Science (undergraduate) student at University of 
+          California San Diego. Naomi is especially interested in working in 
+          backend development, and she especially enjoys learning about about 
+          algorithms and data structures. Her favorite sorting algorithm is 
+          <a href="https://en.wikipedia.org/wiki/Bogosort">Bogosort<\a>, 
+          particularly the version that produces permutations of input until 
+          the sorted version is produced. Naomi is excited to be a part of 
+          the CodeU program and learn a lot alongside her teammates.
+        </li>
+      </ul>
+    </div>
+  </div>
+
 </body>
 </html>
