@@ -19,11 +19,16 @@
       <a>Hello <%=request.getSession().getAttribute("user") %> !</a>
     <% }else{ %>
       <a href="login">Login</a>
+      <a href="/register">Register</a>
     <% } %>
   </nav>
 
   <div id="container">
     <h1>Register</h1>
+
+    <% if(request.getAttribute("error") != null){ %>
+       <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+    <% } %>
 
     <form action="/register" method="POST">
       <label for="username">Username: </label>
