@@ -52,7 +52,8 @@ public class RegisterServletTest {
   @Test
   public void testDoPost_NewUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
-
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+    
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
@@ -66,14 +67,17 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
-
-//    Mockito.verify(mockSession).setAttribute("user", "test username");
-//    Mockito.verify(mockResponse).sendRedirect("/conversations");
+    Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "test password");
+    
+    Mockito.verify(mockSession, Mockito.never()).setAttribute("user", "test username");
+    Mockito.verify(mockResponse).sendRedirect("/login");
   }
+  
   @Test
   public void testDoPost_ExistingUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
-
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+    
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     registerServlet.setUserStore(mockUserStore);
@@ -85,7 +89,7 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
 
-//    Mockito.verify(mockSession).setAttribute("user", "test username");
-//    Mockito.verify(mockResponse).sendRedirect("/conversations");
+    Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 }
