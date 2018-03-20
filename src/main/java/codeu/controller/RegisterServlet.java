@@ -36,21 +36,21 @@ public class RegisterServlet extends HttpServlet{
     String password = request.getParameter("password");
     
     if (!username.matches("[\\w*\\s*]*")) {
-        request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
-        request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
-        return;
+	  request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
+	  request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+	  return;
     }
     
     if (userStore.isUserRegistered(username)) {
-        request.setAttribute("error", "That username is already taken.");
-        request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
-        return;
-      }
+      request.setAttribute("error", "That username is already taken.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
 
-      User user = new User(UUID.randomUUID(), username, password, Instant.now());
-      userStore.addUser(user);
+    User user = new User(UUID.randomUUID(), username, password, Instant.now());
+    userStore.addUser(user);
 
-      response.sendRedirect("/login");
+    response.sendRedirect("/login");
   }
   
   /**
