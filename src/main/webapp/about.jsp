@@ -28,6 +28,7 @@
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
+      <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
@@ -78,6 +79,7 @@
       </p>
     </div>
   </div>
+
 <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
@@ -85,9 +87,15 @@
       <h1>About the Team</h1>
 
       <ul>
-        <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA). 
+        <li><strong>Heng Sun (PA)</strong> Our supreme and righteous leader(PA). 
         </li>
-        <li><strong>Sherry Yang</strong> </li>
+        <li><strong>Sherry Yang</strong> Sherry is a sophomore studying at 
+          University of Washington,Seattle (Yes, she craves for the sunlight). 
+          So far, she has been gaining backend skills and is hoping for getting 
+          involved in the "frontend community." One interesting fact about her 
+          is that she has been (too) into the Kpop band BTS since college, it is 
+          sometimes unhealthy to watch countless Youtube vidoes about them ^o^.
+        </li>
         <li><strong>Dean Chiu</strong> </li>
         <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
           and Computer Science (undergraduate) student at University of 
