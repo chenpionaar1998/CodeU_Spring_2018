@@ -94,6 +94,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactd>
+      <version>0.4</version>
+    </dependency>
+
   </dependencies>
 
   <build>
