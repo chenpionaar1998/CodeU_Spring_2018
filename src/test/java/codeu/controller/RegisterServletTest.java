@@ -16,6 +16,8 @@ import org.mockito.Mockito;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class RegisterServletTest {
 
   private RegisterServlet registerServlet;
@@ -67,7 +69,7 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
-    Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "test password");
+    Assert.assertTrue(BCrypt.checkpw("test password", userArgumentCaptor.getValue().getPassword()));
     
     Mockito.verify(mockSession, Mockito.never()).setAttribute("user", "test username");
     Mockito.verify(mockResponse).sendRedirect("/login");
