@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Test class for PersistentDataStore. The PersistentDataStore class relies on DatastoreService,
