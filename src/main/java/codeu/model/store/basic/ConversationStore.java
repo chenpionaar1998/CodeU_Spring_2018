@@ -58,6 +58,9 @@ public class ConversationStore {
   /** The in-memory list of Conversations. */
   private List<Conversation> conversations;
 
+  /** The in-memory count for conversations. */
+  private int conversationCount;
+
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ConversationStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
@@ -74,6 +77,7 @@ public class ConversationStore {
     try {
       conversations.addAll(DefaultDataStore.getInstance().getAllConversations());
       loaded = true;
+      conversationCount += DefaultDataStore.getInstance().getConversationCount();
     } catch (Exception e) {
       loaded = false;
       System.err.println("ERROR: Unable to establish initial store (conversations).");
@@ -90,6 +94,7 @@ public class ConversationStore {
   public void addConversation(Conversation conversation) {
     conversations.add(conversation);
     persistentStorageAgent.writeThrough(conversation);
+    conversationCount++;
   }
 
   /** Check whether a Conversation title is already known to the application. */
@@ -116,5 +121,13 @@ public class ConversationStore {
   /** Sets the List of Conversations stored by this ConversationStore. */
   public void setConversations(List<Conversation> conversations) {
     this.conversations = conversations;
+    conversationCount = persistentStorageAgent.getConversationCount();
+  }
+
+  /**
+    * Returns the number of conversations currently recorded
+    */
+  public int getConversationCount() {
+    return conversationCount;
   }
 }

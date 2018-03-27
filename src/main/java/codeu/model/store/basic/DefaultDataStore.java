@@ -92,6 +92,18 @@ public class DefaultDataStore {
     return messages;
   }
 
+  public int getUserCount(){
+    return DEFAULT_USER_COUNT;
+  }
+
+  public int getMessageCount(){
+    return DEFAULT_MESSAGE_COUNT;
+  }
+
+  public int getConversationCount(){
+    return DEFAULT_CONVERSATION_COUNT;
+  }
+
   private void addRandomUsers() {
 
     List<String> randomUsernames = getRandomUsernames();

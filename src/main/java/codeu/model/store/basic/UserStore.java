@@ -58,6 +58,9 @@ public class UserStore {
   /** The in-memory list of Users. */
   private List<User> users;
 
+  /** The in-memory count for Users. */
+  private int userCount;
+
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private UserStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
@@ -67,6 +70,7 @@ public class UserStore {
   /** Load a set of randomly-generated Message objects. */
   public void loadTestData() {
     users.addAll(DefaultDataStore.getInstance().getAllUsers());
+    userCount += DefaultDataStore.getInstance().getUserCount();
   }
 
   /**
@@ -102,6 +106,7 @@ public class UserStore {
   public void addUser(User user) {
     users.add(user);
     persistentStorageAgent.writeThrough(user);
+    userCount++;
   }
 
   /** Return true if the given username is known to the application. */
@@ -120,5 +125,13 @@ public class UserStore {
    */
   public void setUsers(List<User> users) {
     this.users = users;
+    userCount = persistentStorageAgent.getUserCount();
+  }
+
+  /**
+    * Returns the number of users currently recorded
+    */
+  public int getUsersCount() {
+    return userCount;
   }
 }
