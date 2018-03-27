@@ -57,6 +57,9 @@ public class PersistentDataStoreTest {
     // load
     List<User> resultUsers = persistentDataStore.loadUsers();
 
+    //get userCount to check if userCount incremented correctly in load.
+    int userCount = persistentDataStore.getUserCount();
+
     // confirm that what we saved matches what we loaded
     User resultUserOne = resultUsers.get(0);
     Assert.assertEquals(idOne, resultUserOne.getId());
@@ -69,6 +72,9 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(passwordTwo, resultUserTwo.getPassword());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
+
+    //confirm that the usercount is incremented properly
+    Assert.assertEquals(userCount, 2);
   }
 
   @Test
@@ -92,6 +98,9 @@ public class PersistentDataStoreTest {
     // load
     List<Conversation> resultConversations = persistentDataStore.loadConversations();
 
+    //get ConversationCount to check if ConversationCount incremented correctly in load.
+    int conversationCount = persistentDataStore.getConversationCount();
+
     // confirm that what we saved matches what we loaded
     Conversation resultConversationOne = resultConversations.get(0);
     Assert.assertEquals(idOne, resultConversationOne.getId());
@@ -104,6 +113,9 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(ownerTwo, resultConversationTwo.getOwnerId());
     Assert.assertEquals(titleTwo, resultConversationTwo.getTitle());
     Assert.assertEquals(creationTwo, resultConversationTwo.getCreationTime());
+
+    //confirm that the conversationCount is incremented properly
+    Assert.assertEquals(conversationCount, 2);
   }
 
   @Test
