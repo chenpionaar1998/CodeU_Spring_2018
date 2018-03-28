@@ -131,7 +131,7 @@ public class UserStore {
   /**
     * Returns the number of users currently recorded
     */
-  public int getUsersCount() {
+  public int getUserCount() {
     return userCount;
   }
 }

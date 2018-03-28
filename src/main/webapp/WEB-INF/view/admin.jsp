@@ -34,7 +34,7 @@
   </nav>
 
   <%
-    int userCount = UserStore.getInstance().getUsersCount();
+    int userCount = UserStore.getInstance().getUserCount();
     int messageCount = MessageStore.getInstance().getMessageCount();
     int conversationCount = ConversationStore.getInstance().getConversationCount();
   %>
