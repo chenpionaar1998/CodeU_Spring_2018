@@ -79,6 +79,31 @@ public class MessageStoreTest {
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMessage);
   }
 
+  // add message and get messageCount to see if the calculation is correct
+  @Test
+  public void testGetMessageCount(){
+    int messageCount = messageStore.getMessageCount();
+
+    // test before message added, expected result = 0
+    Assert.assertEquals(0, messageCount);
+
+    // add a mock message
+    UUID inputConversationId = UUID.randomUUID();
+    Message inputMessage =
+        new Message(
+            UUID.randomUUID(),
+            inputConversationId,
+            UUID.randomUUID(),
+            "test message",
+            Instant.now());
+
+    messageStore.addMessage(inputMessage);
+
+    //get messageCount again to check if it is calcutlated correctly, expected result = 1
+    messageCount = messageStore.getMessageCount();
+    Assert.assertEquals(1, messageCount);
+  }
+
   private void assertEquals(Message expectedMessage, Message actualMessage) {
     Assert.assertEquals(expectedMessage.getId(), actualMessage.getId());
     Assert.assertEquals(expectedMessage.getConversationId(), actualMessage.getConversationId());
