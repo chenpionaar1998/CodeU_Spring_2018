@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * This class makes it easy to add dummy data to your chat app instance. To use fake data, set
@@ -65,6 +66,7 @@ public class DefaultDataStore {
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
+    System.err.println("\nUSING DEFAULT DATASTORE\n");
     users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
@@ -100,7 +102,8 @@ public class DefaultDataStore {
     Collections.shuffle(randomPasswords);
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      User user = new User(UUID.randomUUID(), randomUsernames.get(i), randomPasswords.get(i), Instant.now());
+      String encryptedPassword = BCrypt.hashpw(randomPasswords.get(i), BCrypt.gensalt());  
+      User user = new User(UUID.randomUUID(), randomUsernames.get(i), encryptedPassword, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
