@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -65,7 +66,13 @@ public class ProfileServlet extends HttpServlet{
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
     String profileName = requestUrl.substring(requestUrl.lastIndexOf("/") + 1);
+    String username = (String) request.getSession().getAttribute("user");
     
+    User profileUser = userStore.getUser(username);
+    Queue<Message> messages = profileUser.getMessages();
+    
+    request.setAttribute("ProfilePage", profileName);
+    request.setAttribute("messages", messages);
     request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
   }
   
@@ -93,7 +100,9 @@ public class ProfileServlet extends HttpServlet{
     }
     String requestUrl = request.getRequestURI();
     String profileName = requestUrl.substring(requestUrl.lastIndexOf("/") + 1);
-    
+    User profileUser = userStore.getUser(username);
+    Queue<Message> messages = profileUser.getMessages();
+    // to be implemented more on post.
     response.sendRedirect(profileName);
     
   }
