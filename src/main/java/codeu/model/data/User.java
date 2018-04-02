@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.UUID;
 
 /** Class representing a registered user. */
@@ -23,7 +25,8 @@ public class User {
   private final String name;
   private final String password;
   private final Instant creation;
-
+  private static final int NUMBER_OF_MESSAGES = 15;
+  private final Queue<Message> messages;
   /**
    * Constructs a new User.
    *
@@ -37,6 +40,18 @@ public class User {
     this.name = name;
     this.password = password;
     this.creation = creation;
+    this.messages = new LinkedList<Message>();
+  }
+  
+  public void addMessage(Message newMessage) {
+	  if (messages.size() == NUMBER_OF_MESSAGES) {
+		  messages.remove();
+	  }
+	  messages.add(newMessage);
+  }
+  
+  public Queue<Message> getMessages() {
+	  return messages;
   }
 
   /** Returns the ID of this User. */
