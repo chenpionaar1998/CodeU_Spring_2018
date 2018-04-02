@@ -84,6 +84,24 @@ public class UserStoreTest {
     Assert.assertFalse(userStore.isUserRegistered("fake username"));
   }
 
+  // add users and get userCount to see if the calculation is correct
+  @Test
+  public void testGetUserCount(){
+    int userCount = userStore.getUserCount();
+
+    // test before user added, expected result = 0
+    Assert.assertEquals(0, userCount);
+
+    // add a mock user
+    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
+    userStore.addUser(inputUser);
+
+    //get userCount again to check if it is calcutlated correctly, expected result = 1
+    userCount = userStore.getUserCount();
+    Assert.assertEquals(1, userCount);
+  }
+
+
   private void assertEquals(User expectedUser, User actualUser) {
     Assert.assertEquals(expectedUser.getId(), actualUser.getId());
     Assert.assertEquals(expectedUser.getName(), actualUser.getName());
