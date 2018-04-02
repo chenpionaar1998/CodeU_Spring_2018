@@ -25,9 +25,9 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginServletTest {
 
@@ -81,7 +81,6 @@ public class LoginServletTest {
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     User mockUser = Mockito.mock(User.class);
 
-    //set mock user username/password, pw is encrypted as would be in stored user
     Mockito.when(mockUser.getName()).thenReturn("test username");
     String encryptedpw = BCrypt.hashpw("test password", BCrypt.gensalt());
     Mockito.when(mockUser.getPassword()).thenReturn(encryptedpw);
