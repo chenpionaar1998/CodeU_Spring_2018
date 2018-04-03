@@ -5,12 +5,12 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-// import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 
-// import org.junit.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-// import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 public class AdminServletTest {
@@ -19,20 +19,41 @@ public class AdminServletTest {
   private HttpServletRequest mockRequest;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
+  private HttpSession mockSession;
+
 
   @Before
   public void setup() throws IOException {
     adminServlet = new AdminServlet();
     mockRequest = Mockito.mock(HttpServletRequest.class);
+    mockSession = Mockito.mock(HttpSession.class);
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/admin.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
   }
 
   @Test
-  public void testDoGet() throws IOException, ServletException {
+  public void testDoGetAdmin() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/admin.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("adminTest");
     adminServlet.doGet(mockRequest,mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
   }
 
+  @Test
+  public void testDoGetNotLoggedIn() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/login.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
+    adminServlet.doGet(mockRequest,mockResponse);
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
+  }
+
+  @Test
+  public void testDoGetNoPermission() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestDispatcher("/index.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("randomUser");
+    adminServlet.doGet(mockRequest,mockResponse);
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
+    Mockito.verify(mockRequest).setAttribute("error", "This user does not have permission.");
+  }
 }
