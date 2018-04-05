@@ -68,21 +68,4 @@ public class PersistentStorageAgentTest {
     Mockito.verify(mockPersistentDataStore).writeThrough(message);
   }
 
-  @Test
-  public void testGetUserCount() {
-    persistentStorageAgent.getUserCount();
-    Mockito.verify(mockPersistentDataStore).getUserCount();
-  }
-
-  @Test
-  public void testGetMessageCount() {
-    persistentStorageAgent.getMessageCount();
-    Mockito.verify(mockPersistentDataStore).getMessageCount();
-  }
-
-  @Test
-  public void testGetConversationCount() {
-    persistentStorageAgent.getConversationCount();
-    Mockito.verify(mockPersistentDataStore).getConversationCount();
-  }
 }

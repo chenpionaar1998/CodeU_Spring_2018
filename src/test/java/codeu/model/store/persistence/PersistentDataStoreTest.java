@@ -50,12 +50,6 @@ public class PersistentDataStoreTest {
     Instant creationTwo = Instant.ofEpochMilli(2000);
     User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo);
 
-    //initialize usercount
-    int userCount = persistentDataStore.getUserCount();
-
-    // confirm that the userCount before load() is new and not equal to any number otehr than 0
-    Assert.assertEquals(0, userCount);
-
     // save
     persistentDataStore.writeThrough(inputUserOne);
     persistentDataStore.writeThrough(inputUserTwo);
@@ -63,11 +57,6 @@ public class PersistentDataStoreTest {
     // load
     List<User> resultUsers = persistentDataStore.loadUsers();
 
-    //get userCount to check if userCount incremented correctly in load.
-    userCount = persistentDataStore.getUserCount();
-
-    //confirm that the usercount is incremented properly
-    Assert.assertEquals(2, userCount);
 
     // confirm that what we saved matches what we loaded
     User resultUserOne = resultUsers.get(0);
@@ -98,24 +87,12 @@ public class PersistentDataStoreTest {
     Instant creationTwo = Instant.ofEpochMilli(2000);
     Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo);
 
-    //initialize conversationCount
-    int conversationCount = persistentDataStore.getConversationCount();
-
-    // confirm that the conversationCount before load() is new and not equal to any number otehr than 0
-    Assert.assertEquals(0, conversationCount);
-
     // save
     persistentDataStore.writeThrough(inputConversationOne);
     persistentDataStore.writeThrough(inputConversationTwo);
 
     // load
     List<Conversation> resultConversations = persistentDataStore.loadConversations();
-
-    //get ConversationCount to check if ConversationCount incremented correctly in load.
-    conversationCount = persistentDataStore.getConversationCount();
-
-    //confirm that the conversationCount is incremented properly
-    Assert.assertEquals(2, conversationCount);
 
     // confirm that what we saved matches what we loaded
     Conversation resultConversationOne = resultConversations.get(0);
@@ -150,24 +127,12 @@ public class PersistentDataStoreTest {
     Message inputMessageTwo =
         new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
 
-    // initialize messageCount
-    int messageCount = persistentDataStore.getMessageCount();
-
-    // confirm that the messageCount before load() is new and not equal to any number otehr than 0
-    Assert.assertEquals(0, messageCount);
-
     // save
     persistentDataStore.writeThrough(inputMessageOne);
     persistentDataStore.writeThrough(inputMessageTwo);
 
     // load
     List<Message> resultMessages = persistentDataStore.loadMessages();
-
-    // retreive messageCount after the load function which should give us the correct count
-    messageCount = persistentDataStore.getMessageCount();
-
-    // confirm that the messageCount is incremented correctly
-    Assert.assertEquals(2, messageCount);
 
     // confirm that what we saved matches what we loaded
     Message resultMessageOne = resultMessages.get(0);
