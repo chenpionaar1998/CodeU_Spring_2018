@@ -104,18 +104,4 @@ public class PersistentStorageAgent {
     persistentDataStore.writeThrough(message);
   }
 
-  /** Return a int count from persistentDataStore. */
-  public int getUserCount(){
-    return persistentDataStore.getUserCount();
-  }
-
-  /** Return a int count from persistentDataStore. */
-  public int getMessageCount(){
-    return persistentDataStore.getMessageCount();
-  }
-
-  /** Return a int count from persistentDataStore. */
-  public int getConversationCount(){
-    return persistentDataStore.getConversationCount();
-  }
 }

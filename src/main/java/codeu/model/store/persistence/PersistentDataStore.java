@@ -46,11 +46,6 @@ public class PersistentDataStore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  //Private variables for counts to be calculated when load and returned in get function.
-  private int userCount = 0;
-  private int messageCount = 0;
-  private int conversationCount = 0;
-
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
@@ -73,7 +68,6 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         User user = new User(uuid, userName, password, creationTime);
         users.add(user);
-        userCount++;
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -107,7 +101,6 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
         conversations.add(conversation);
-        conversationCount++;
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -142,7 +135,6 @@ public class PersistentDataStore {
         String content = (String) entity.getProperty("content");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
-        messageCount++;
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -185,15 +177,4 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-  public int getUserCount(){
-    return userCount;
-  }
-
-  public int getMessageCount(){
-    return messageCount;
-  }
-
-  public int getConversationCount(){
-    return conversationCount;
-  }
 }
