@@ -77,8 +77,8 @@ public class ConversationStoreTest {
   public void testGetConversationCount(){
     int conversation = conversationStore.getConversationCount();
 
-    // test before conversation added, expected result = 0
-    Assert.assertEquals(0, conversation);
+    // test before conversation added, expected result = 1 (1 added from setup)
+    Assert.assertEquals(1, conversation);
 
     // add a mock conversation
     Conversation inputConversation =
@@ -88,7 +88,7 @@ public class ConversationStoreTest {
 
     //get conversationCount again to check if it is calcutlated correctly, expected result = 1
     conversation = conversationStore.getConversationCount();
-    Assert.assertEquals(1, conversation);
+    Assert.assertEquals(2, conversation);
   }
 
   private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {

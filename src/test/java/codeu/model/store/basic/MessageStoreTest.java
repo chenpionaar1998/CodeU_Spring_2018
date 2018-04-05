@@ -16,6 +16,7 @@ public class MessageStoreTest {
 
   private MessageStore messageStore;
   private PersistentStorageAgent mockPersistentStorageAgent;
+  private List<Message> messages =  new ArrayList<>();
 
   private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   private final Message MESSAGE_ONE =
@@ -84,8 +85,8 @@ public class MessageStoreTest {
   public void testGetMessageCount(){
     int messageCount = messageStore.getMessageCount();
 
-    // test before message added, expected result = 0
-    Assert.assertEquals(0, messageCount);
+    // test before message added, expected result = 3 (3 added from setup)
+    Assert.assertEquals(3, messageCount);
 
     // add a mock message
     UUID inputConversationId = UUID.randomUUID();
@@ -99,9 +100,9 @@ public class MessageStoreTest {
 
     messageStore.addMessage(inputMessage);
 
-    //get messageCount again to check if it is calcutlated correctly, expected result = 1
+    //get messageCount again to check if it is calcutlated correctly, expected result = 4
     messageCount = messageStore.getMessageCount();
-    Assert.assertEquals(1, messageCount);
+    Assert.assertEquals(4, messageCount);
   }
 
   private void assertEquals(Message expectedMessage, Message actualMessage) {

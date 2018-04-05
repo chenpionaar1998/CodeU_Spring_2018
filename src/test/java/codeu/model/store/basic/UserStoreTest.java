@@ -89,16 +89,16 @@ public class UserStoreTest {
   public void testGetUserCount(){
     int userCount = userStore.getUserCount();
 
-    // test before user added, expected result = 0
-    Assert.assertEquals(0, userCount);
+    // test before user added, expected result = 3 (3 added from setup)
+    Assert.assertEquals(3, userCount);
 
     // add a mock user
     User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
     userStore.addUser(inputUser);
 
-    //get userCount again to check if it is calcutlated correctly, expected result = 1
+    //get userCount again to check if it is calcutlated correctly, expected result = 4
     userCount = userStore.getUserCount();
-    Assert.assertEquals(1, userCount);
+    Assert.assertEquals(4, userCount);
   }
 
 
