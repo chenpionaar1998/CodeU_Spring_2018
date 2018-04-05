@@ -59,9 +59,6 @@ public class MessageStore {
   /** The in-memory list of Messages. */
   private List<Message> messages;
 
-  /** The in-memory count for Messages. */
-  private int messageCount;
-
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private MessageStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
@@ -78,7 +75,6 @@ public class MessageStore {
     try {
       messages.addAll(DefaultDataStore.getInstance().getAllMessages());
       loaded = true;
-      messageCount += DefaultDataStore.getInstance().getMessageCount();
     } catch (Exception e) {
       loaded = false;
       System.out.println("ERROR: Unable to establish initial store (messages).");
@@ -90,7 +86,6 @@ public class MessageStore {
   public void addMessage(Message message) {
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
-    messageCount++;
   }
 
   /** Access the current set of Messages within the given Conversation. */
@@ -110,13 +105,12 @@ public class MessageStore {
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
-    messageCount = persistentStorageAgent.getMessageCount();
   }
 
   /**
     * Returns the number of messages currently recorded
     */
   public int getMessageCount() {
-    return messageCount;
+    return messages.size();
   }
 }
