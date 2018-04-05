@@ -46,6 +46,7 @@ public class AdminServletTest {
     Mockito.when(mockSession.getAttribute("user")).thenReturn(null);
     adminServlet.doGet(mockRequest,mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
+    Mockito.verify(mockRequest).setAttribute("error", "Please login first!");
   }
 
   @Test
