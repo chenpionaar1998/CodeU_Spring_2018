@@ -15,7 +15,9 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.NewConversationActivity;
 import codeu.model.data.User;
+import codeu.model.store.basic.ActivityStore;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
@@ -116,6 +118,7 @@ public class ConversationServlet extends HttpServlet {
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 
+    ActivityStore.getInstance().addActivity(new NewConversationActivity(conversation));
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);
   }

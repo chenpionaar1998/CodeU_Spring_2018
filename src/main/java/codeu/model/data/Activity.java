@@ -2,8 +2,9 @@
 // Created by Naomi
 //
 // An Activity represents an event such as the creation of a new chat, a new
-// user, a message in a chat. Subclasses should override the toString method
-// in order to return the String that would be displayed for the activity.
+// user, a message in a chat. The minimum necessary information for these 
+// activities are the time they happened and who is the actor. The activity feed
+// knows how to display them based on the type of the activity.
 
 package codeu.model.data;
 
