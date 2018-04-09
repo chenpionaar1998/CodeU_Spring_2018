@@ -23,9 +23,6 @@ import org.jsoup.safety.Whitelist;
 
 public class ProfileServlet extends HttpServlet{
 
-  /** Store class that gives access to Conversations. */
-  private ConversationStore conversationStore;
-
   /** Store class that gives access to Messages. */
   private MessageStore messageStore;
 
@@ -57,22 +54,29 @@ public class ProfileServlet extends HttpServlet{
   }
 
   /**
-   * This function fires when a user navigates to the profile page through the link from the 
-   * conversation page. It gets the user’s name from the URL, finds the corresponding data about 
-   * the user (About Me, sent messages) It then forwards to profile.jsp for rendering.
+   * This function fires when a user navigates to the profile URL. It gets the user’s name from the 
+   * URL, finds the corresponding data about the user (About Me, sent messages) It then forwards to 
+   * profile.jsp for rendering.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
-    String profileName = requestUrl.substring(requestUrl.lastIndexOf("/") + 1);
-    String username = (String) request.getSession().getAttribute("user");
+    String profilePage = requestUrl.substring("/profile/".length());
+    if (profilePage== null) {
+      // couldn't find user, redirect to conversation page
+      System.out.println("user not found : " + profilePage);
+      response.sendRedirect("/conversations");
+      return;
+    }
     
-    User profileUser = userStore.getUser(username);
-    Queue<Message> messages = profileUser.getMessages();
+    User profileUser = userStore.getUser(profilePage);
+    Queue<Message> profileMessages = profileUser.getMessages();
+    String aboutUser = profileUser.getAbout();
     
-    request.setAttribute("ProfilePage", profileName);
-    request.setAttribute("messages", messages);
+    request.setAttribute("profilePage", profilePage);
+    request.setAttribute("aboutUser", aboutUser);
+    request.setAttribute("profileMessages", profileMessages);
     request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
   }
   
@@ -85,25 +89,31 @@ public class ProfileServlet extends HttpServlet{
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String username = (String) request.getSession().getAttribute("user");
-    if (username == null) {
-      // user is not logged in, don't let them add a message
-      response.sendRedirect("/login");
+    String currentUser = (String) request.getSession().getAttribute("user");
+    if (currentUser == null) {
+      // user is not logged in, don't let view the profile page
+      response.sendRedirect("/profile");
       return;
     }
 
-    User user = userStore.getUser(username);
-    if (user == null) {
-      // user was not found, don't let them add a message
+    if (userStore.getUser(currentUser) == null) {
+      // user was not found, don't let them view the profile page
       response.sendRedirect("/login");
       return;
     }
+    
     String requestUrl = request.getRequestURI();
-    String profileName = requestUrl.substring(requestUrl.lastIndexOf("/") + 1);
-    User profileUser = userStore.getUser(username);
-    Queue<Message> messages = profileUser.getMessages();
-    // to be implemented more on post.
-    response.sendRedirect(profileName);
+    String profilePage = requestUrl.substring("/profile/".length());
+    User profileUser = userStore.getUser(profilePage);
+    String aboutUser = request.getParameter("aboutUser");
+    
+    if (currentUser.equals(profilePage)) {
+       // the user viewing the page is the owner of the profile, allows edition
+      String cleanedAbout = Jsoup.clean(aboutUser, Whitelist.none());
+      profileUser.setAbout(cleanedAbout);
+    }
+
+    response.sendRedirect("/profile/" + profilePage);
     
   }
 }
