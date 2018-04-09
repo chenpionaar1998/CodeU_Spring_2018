@@ -15,8 +15,10 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.ConversationActivity;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.store.basic.ActivityStore;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -152,6 +154,7 @@ public class ChatServlet extends HttpServlet {
             Instant.now());
 
     messageStore.addMessage(message);
+    ActivityStore.getInstance().addActivity(new ConversationActivity(message, conversationTitle));
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
