@@ -1,5 +1,5 @@
 // Copyright 2017 Google Inc.
-//
+
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,6 +27,7 @@ public class User {
   private final Instant creation;
   private static final int NUMBER_OF_MESSAGES = 15;
   private final Queue<Message> messages;
+  private String aboutUser;
   /**
    * Constructs a new User.
    *
@@ -41,6 +42,17 @@ public class User {
     this.password = password;
     this.creation = creation;
     this.messages = new LinkedList<Message>();
+    aboutUser = "";
+  }
+  
+  // adds about me information for the user 
+  public void setAbout(String about) {
+	  this.aboutUser = about;
+  }
+  
+  // returns the current about me information
+  public String getAbout() {
+	  return aboutUser;
   }
   
   public void addMessage(Message newMessage) {
