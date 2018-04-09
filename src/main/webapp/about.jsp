@@ -46,7 +46,12 @@
       <ul>
         <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA).</li>
         <li><strong>Dean Chiu</strong></li>
-        <li><strong>Sherry Yang</strong></li>
+        <li><strong>Sherry Yang</strong> Sherry is a sophomore studying at 
+          University of Washington,Seattle (Yes, she craves for the sunlight). 
+          So far, she has been gaining backend skills and is hoping for getting 
+          involved in the "frontend community." One interesting fact about her 
+          is that she has been (too) into the Kpop band BTS since college, it is 
+          sometimes unhealthy to watch countless Youtube vidoes about them ^o^.</li>
         <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
           and Computer Science (undergraduate) student at University of 
           California San Diego. Naomi is especially interested in working in 
