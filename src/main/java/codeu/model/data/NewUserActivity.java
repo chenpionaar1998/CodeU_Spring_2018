@@ -10,6 +10,6 @@ public class NewUserActivity extends Activity {
   // Only information about activity needed is the user, and user's creation
   // time is the activity's time
   public NewUserActivity(User newUser) {
-    super(newUser.getId, newUser.getCreationTime());
+    super(newUser.getId(), newUser.getCreationTime());
   }
 }
