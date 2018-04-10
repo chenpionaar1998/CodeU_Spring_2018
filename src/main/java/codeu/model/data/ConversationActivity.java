@@ -14,7 +14,7 @@ public class ConversationActivity extends Activity {
   private String conversationTitle;
   private String messageContent;
 
-  private final int messageMaxLen = 20;   //max length for message preview
+  private final int messageMaxLen = 30;   //max length for message preview
 
   // initialize activity based on message and conversation title
   public ConversationActivity(Message newMessage, String conversationTitle) {

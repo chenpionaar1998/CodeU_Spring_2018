@@ -27,7 +27,7 @@ public class ActivityStore {
 
   // In memory-queue or recent activities
   private LinkedList<Activity> activities;
-  private final static int maxNumActivities = 5;  //FIXME to 100
+  private final static int maxNumActivities = 100;  
 
   private ActivityStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
@@ -35,8 +35,9 @@ public class ActivityStore {
   }
 
   public void addActivity(Activity newActivity) {
-    if(activities.size() > maxNumActivities) {
+    if(activities.size() >= maxNumActivities) {
       activities.removeFirst();  //full queue, remove oldest
+      System.err.println("THERE SHOULD BE ONE LEST ACTCITIY NOW, is " + activities.size());
     }
     activities.addLast(newActivity);
   }
