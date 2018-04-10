@@ -76,20 +76,18 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <div id="chat">
       <ul>
     <%
-      List<Activity> activities = (List<Activity>) ActivityStore.getInstance().getActivities();//request.getAttribute("activities");
+      List<Activity> activities = (List<Activity>) ActivityStore.getInstance().getActivities();
       DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime
           (FormatStyle.MEDIUM, FormatStyle.SHORT).withZone(ZoneId.systemDefault());
       for (Activity activity : activities) {
-        String actor = UserStore.getInstance()
-          .getUser(activity.getActorId()).getName();
-        //String activityTime = formatter.format(activity.getCreationTime());
+        String actor = UserStore.getInstance().getUser(activity.getActorId()).getName();
     %>
       <li><strong><%= formatter.format(activity.getCreationTime()) %></strong> 
         <% if(activity instanceof ConversationActivity) { %>
-          <%= actor %> sent 
+          <%= actor %> sent a message to 
           <a href="/chat/<%= ((ConversationActivity) activity).getConversationTitle() %>"> 
-            <%= ((ConversationActivity)activity).getConversationTitle() %></a>
-            : <%= ((ConversationActivity)activity).getMessagePreview() %>
+            <%= ((ConversationActivity)activity).getConversationTitle() %></a>: 
+            <%= ((ConversationActivity)activity).getMessagePreview() %>
         <% } %>
         <% if(activity instanceof NewConversationActivity) { %>
           <%= actor %> created a new conversation 
@@ -110,18 +108,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <hr/>
 
-<%--    <% if (request.getSession().getAttribute("user") != null) { %>
-    <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <input type="text" name="message">
-        <br/>
-        <button type="submit">Send</button>
-    </form>
-    <% } else { %>
-      <p><a href="/login">Login</a> to send a message.</p>
-    <% } %>
-
-    <hr/>
---%>
   </div>
 
 </body>
