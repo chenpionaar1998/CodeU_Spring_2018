@@ -63,18 +63,19 @@ public class ProfileServlet extends HttpServlet{
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
     String profilePage = requestUrl.substring("/profile/".length());
-    if (profilePage== null) {
+    User profileUser = userStore.getUser(profilePage);
+    
+    if (profileUser== null) {
       // couldn't find user, redirect to conversation page
       System.out.println("user not found : " + profilePage);
       response.sendRedirect("/conversations");
       return;
     }
     
-    User profileUser = userStore.getUser(profilePage);
     Queue<Message> profileMessages = profileUser.getMessages();
     String aboutUser = profileUser.getAbout();
     
-    request.setAttribute("profilePage", profilePage);
+    request.setAttribute(profileUser.getName(), profileUser);
     request.setAttribute("aboutUser", aboutUser);
     request.setAttribute("profileMessages", profileMessages);
     request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
@@ -91,15 +92,17 @@ public class ProfileServlet extends HttpServlet{
       throws IOException, ServletException {
     String currentUser = (String) request.getSession().getAttribute("user");
     if (currentUser == null) {
-      // user is not logged in, don't let view the profile page
-      response.sendRedirect("/profile");
-      return;
+      // user is not logged in, let them log in first to view any profile page
+	  request.setAttribute("error", "Please login first.");
+	  request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+	  return;
     }
 
     if (userStore.getUser(currentUser) == null) {
       // user was not found, don't let them view the profile page
-      response.sendRedirect("/login");
-      return;
+      request.setAttribute("error", "User not found");
+  	  request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+  	  return;
     }
     
     String requestUrl = request.getRequestURI();
@@ -113,7 +116,7 @@ public class ProfileServlet extends HttpServlet{
       profileUser.setAbout(cleanedAbout);
     }
 
-    response.sendRedirect("/profile/" + profilePage);
+    response.sendRedirect(requestUrl);
     
   }
 }
