@@ -1,12 +1,13 @@
 <%
 String aboutUser = (String) request.getAttribute("aboutUser");
-String profilePage = (String) request.getAttribute("profilePage");
+String profileUser = (String) request.getAttribute("profileUser");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= profilePage %>'s Profile Page</title>	// correct format of user's profile
+  <title><%= profileUser %>'s Profile Page</title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
+  <hr/>
 </head>
 <body>
   <nav>
@@ -27,9 +28,10 @@ String profilePage = (String) request.getAttribute("profilePage");
     <h1>About <%= profilePage %></h1>
     <p><%= aboutUser %></p>
       
-	<% if(request.getSession().getAttribute("currentUser") == profilePage){ %>
-	  <h1>Edit Your About Me (only you can see this)</h1>
-	  // TODO: This edit box might not be big enough
+	<% if(request.getSession().getAttribute("currentUser") == profileUser){ %>
+	  <h1>Edit Your About Me (only you can see this)
+	  	<a href="" style="float: right">&#8635;</a></h1>
+	  	
 	  <form action="/profile" method="POST">
 	      <input type="text" name="conversationTitle">
 	      <button type="submit">Submit</button>
@@ -38,19 +40,18 @@ String profilePage = (String) request.getAttribute("profilePage");
 	  <hr/>
 	<% } %>
 	
-	<h1><%= profilePage %>'s Sent Messages</h1>
+	<h1><%= profileUser %>'s Sent Messages</h1>
 
     <%
     Queue<Message> profileMessages = 
       (Queue<Message>) request.getAttribute("profileMessages");
     if(profileMessages == null || profileMessages.isEmpty()){
     %>
-      <p><%= profilePage %> has not sent any messages</p>
+      <p><%= profileUser %> has not sent any messages</p>
     <%
     }
     else{
     %>
-      // TODO: this might not be correct
       <ul class="mdl-list">
     <%
       for(Message message: profileMessages){
@@ -63,8 +64,8 @@ String profilePage = (String) request.getAttribute("profilePage");
     <%
     }
     %>
-
-	// TODO: add scroll botton to messages
+	<hr/>
+	
   </div>
 </body>
 </html>
