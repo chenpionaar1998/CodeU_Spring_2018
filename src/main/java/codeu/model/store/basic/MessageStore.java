@@ -87,9 +87,7 @@ public class MessageStore {
   public void addMessage(Message message) {
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
-    UUID id = message.getAuthorId();
-    User user = UserStore.getInstance().getUser(id);
-    user.addMessage(message);
+    addMessageToUser(message);
   }
 
   /** Access the current set of Messages within the given Conversation. */
@@ -110,12 +108,12 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
     for (Message indMess: messages) {
-    	addMessageTouser(indMess);
+    	addMessageToUser(indMess);
     }
   }
   
   /** Adds one message to the corresponding user. */
-  private void addMessageTouser(Message message) {
+  private void addMessageToUser(Message message) {
     UUID username = message.getAuthorId();
     User user = UserStore.getInstance().getUser(username);
     user.addMessage(message);
