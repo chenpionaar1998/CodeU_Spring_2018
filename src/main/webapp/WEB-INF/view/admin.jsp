@@ -11,7 +11,7 @@
 <html>
 <head>
   <title>Administration</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/wordCloud.css">
     <style>
       label {
         display: inline-block;
@@ -25,7 +25,7 @@
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversation</a>
-    <a href="/about.jsp">About</a
+    <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
     <a>Hello <%=request.getSession().getAttribute("user")%> !</a>
   </nav>
@@ -34,6 +34,8 @@
     int userCount = UserStore.getInstance().getUserCount();
     int messageCount = MessageStore.getInstance().getMessageCount();
     int conversationCount = ConversationStore.getInstance().getConversationCount();
+    String topUser = UserStore.getInstance().getTopUser();
+    UserStore.getInstance().writeJSON();
   %>
 
   <div id="container">
@@ -43,14 +45,19 @@
       <li id="userCount">Users: <%= userCount %> </li>
       <li id="conversationCount">Conversations: <%= conversationCount %> </li>
       <li id="messageCount">Messages: <%= messageCount %></li>
+      <li id="topUser">Top User: <%= topUser %> </li>
     </ul>
 
     <form action="/admin" method="GET">
       <button type="submit">Refresh data</button>
     </form>
-
   </div>
+  <div id="wordCloud"></div>
 
+  <%-- use d3 library for the word cloud, treat d3.layout.cloud.js as a blackbox, implementations for the actual word cloud is in wordCLoud.js--%>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="/js/d3.layout.cloud.js"></script>
+  <script type="text/javascript" src="/js/wordCloud.js"></script>
 </body>
 
 
