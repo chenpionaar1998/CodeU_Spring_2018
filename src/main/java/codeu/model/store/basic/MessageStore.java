@@ -113,4 +113,11 @@ public class MessageStore {
   public int getMessageCount() {
     return messages.size();
   }
+
+  /**
+    * Returns the messages array
+    */
+  public List<Message> getAllMessages(){
+    return messages;
+  }
 }
