@@ -14,11 +14,18 @@
 
 package codeu.model.store.basic;
 
+import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 import codeu.model.data.User;
+import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import org.json.simple.JSONObject;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -134,5 +141,90 @@ public class UserStore {
     */
   public List<User> getAllUsers(){
     return users;
+  }
+
+  /**
+    * Returns the user with the most messages sent
+    */
+  public String getTopUser(){
+    getMessageCountForUser();
+    sortUserList();
+    return users.get(0).getName();
+  }
+
+  /**
+    * Iterate through all messages and get the count for the owner of ther messages
+    */
+  public void getMessageCountForUser(){
+    List<Message> messages = MessageStore.getInstance().getAllMessages();
+
+    for (Message message : messages) {
+      UUID id = message.getAuthorId();
+      User msgAuthor = getUser(id);
+      if (msgAuthor != null) {
+        for (User user : users) {
+          if (user == msgAuthor) {
+            user.messageCountIncrement();
+          }
+        }
+      }
+    }
+  }
+
+  /**
+    * Sort the users list by using sort in the library
+    */
+  public void sortUserList(){
+    Collections.sort(users, new Comparator<User>(){
+      public int compare(User a, User b){
+        return b.getMessageCount() - a.getMessageCount();
+      }
+    });
+  }
+
+  /**
+    * make a JSON file that consists JSON objects {user, messageCount}
+    * sample JSONFile :
+    * [
+    *   {messageCount : 20, name : userOne},
+    *   {messageCount : 10, name : userTwo}
+    * ]
+    */
+  public void writeJSON(){
+    // get the users array sorted with the corresponding messageCount setup
+    getMessageCountForUser();
+    sortUserList();
+
+    try {
+      // check if the directory exists, if not, create it
+      File path = new File("./api/stats");
+      if (!path.isDirectory()){
+        path.mkdirs();
+      }
+      // make the JSON file in the directory ./api/stats
+      File file = new File("./api/stats/", "userData.json");
+      FileWriter fileWriter = new FileWriter(file);
+      int i = 1;  // fix for no counter in forEach loop, need to know when the loop ends to make it proper JSON file
+      fileWriter.write("[");
+      fileWriter.write("\n");
+      for (User user : users) {
+        JSONObject userObj = new JSONObject();
+        userObj.put("messageCount", user.getMessageCount());
+        userObj.put("name", user.getName());
+        fileWriter.write(userObj.toJSONString());
+        // adding "," between objects, don't add for the last object
+        if (i < users.size()){
+          fileWriter.write(",");
+        }
+        i++;
+        fileWriter.write("\n");
+      }
+      fileWriter.write("]");
+      fileWriter.flush();
+      fileWriter.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
   }
 }
