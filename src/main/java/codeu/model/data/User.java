@@ -23,6 +23,7 @@ public class User {
   private final String name;
   private final String password;
   private final Instant creation;
+  private int messageCount;
 
   /**
    * Constructs a new User.
@@ -31,12 +32,14 @@ public class User {
    * @param name the username of this User
    * @param password the password of this User
    * @param creation the creation time of this User
+   * @param messageCount the number of messages sent by the User
    */
-  public User(UUID id, String name, String password, Instant creation) {
+  public User(UUID id, String name, String password, Instant creation, int messageCount) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.creation = creation;
+    this.messageCount = messageCount;
   }
 
   /** Returns the ID of this User. */
@@ -57,5 +60,15 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns the number of messages sent by the User. */
+  public int getMessageCount() {
+    return messageCount;
+  }
+
+  /** Increment messageCount for the particularUser*/
+  public void messageCountIncrement(){
+    this.messageCount++;
   }
 }
