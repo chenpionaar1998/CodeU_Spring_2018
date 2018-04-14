@@ -1,10 +1,13 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.User;
+import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,17 +20,16 @@ public class UserStoreTest {
   private PersistentStorageAgent mockPersistentStorageAgent;
 
   private final User USER_ONE =
-      new User(UUID.randomUUID(), "test_username_one", "password one", Instant.ofEpochMilli(1000));
+      new User(UUID.randomUUID(), "test_username_one", "password one", Instant.ofEpochMilli(1000), 0);
   private final User USER_TWO =
-      new User(UUID.randomUUID(), "test_username_two", "password two", Instant.ofEpochMilli(2000));
+      new User(UUID.randomUUID(), "test_username_two", "password two", Instant.ofEpochMilli(2000), 1);
   private final User USER_THREE =
-      new User(UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000));
+      new User(UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000), 2);
 
   @Before
   public void setup() {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     userStore = UserStore.getTestInstance(mockPersistentStorageAgent);
-
     final List<User> userList = new ArrayList<>();
     userList.add(USER_ONE);
     userList.add(USER_TWO);
@@ -65,7 +67,7 @@ public class UserStoreTest {
 
   @Test
   public void testAddUser() {
-    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
+    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), 0);
 
     userStore.addUser(inputUser);
     User resultUser = userStore.getUser("test_username");
@@ -93,12 +95,23 @@ public class UserStoreTest {
     Assert.assertEquals(3, userCount);
 
     // add a mock user
-    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
+    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), 0);
     userStore.addUser(inputUser);
 
     //get userCount again to check if it is calcutlated correctly, expected result = 4
     userCount = userStore.getUserCount();
     Assert.assertEquals(4, userCount);
+  }
+
+
+  @Test
+  public void testSortUserList(){
+    // in setup USER_ONE is inserted in pos 0
+    List<User> users = userStore.getAllUsers();
+    Assert.assertEquals(users.get(0), USER_ONE);
+    userStore.sortUserList();
+    // after sorting pos 0 should be USER_THREE with messageCount = 2;
+    Assert.assertEquals(users.get(0), USER_THREE);
   }
 
 
