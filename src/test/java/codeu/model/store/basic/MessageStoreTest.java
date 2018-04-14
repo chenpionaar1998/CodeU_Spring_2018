@@ -16,7 +16,7 @@ public class MessageStoreTest {
 
   private MessageStore messageStore;
   private PersistentStorageAgent mockPersistentStorageAgent;
-  private List<Message> messages =  new ArrayList<>();
+  private List<Message> messageList =  new ArrayList<>();
 
   private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   private final Message MESSAGE_ONE =
@@ -46,7 +46,6 @@ public class MessageStoreTest {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
 
-    final List<Message> messageList = new ArrayList<>();
     messageList.add(MESSAGE_ONE);
     messageList.add(MESSAGE_TWO);
     messageList.add(MESSAGE_THREE);
@@ -80,29 +79,11 @@ public class MessageStoreTest {
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMessage);
   }
 
-  // add message and get messageCount to see if the calculation is correct
+
+
   @Test
-  public void testGetMessageCount(){
-    int messageCount = messageStore.getMessageCount();
-
-    // test before message added, expected result = 3 (3 added from setup)
-    Assert.assertEquals(3, messageCount);
-
-    // add a mock message
-    UUID inputConversationId = UUID.randomUUID();
-    Message inputMessage =
-        new Message(
-            UUID.randomUUID(),
-            inputConversationId,
-            UUID.randomUUID(),
-            "test message",
-            Instant.now());
-
-    messageStore.addMessage(inputMessage);
-
-    //get messageCount again to check if it is calcutlated correctly, expected result = 4
-    messageCount = messageStore.getMessageCount();
-    Assert.assertEquals(4, messageCount);
+  public void testGetAllMessages(){
+    Assert.assertEquals(messageList, messageStore.getAllMessages());
   }
 
   private void assertEquals(Message expectedMessage, Message actualMessage) {
