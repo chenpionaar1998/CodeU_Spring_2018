@@ -27,12 +27,18 @@ public class UserTest {
     String name = "test_username";
     Instant creation = Instant.now();
     String password = "password";
+    int messageCount = 10;
 
-    User user = new User(id, name, password, creation);
+    User user = new User(id, name, password, creation, messageCount);
 
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());
     Assert.assertEquals(password, user.getPassword());
     Assert.assertEquals(creation, user.getCreationTime());
+    Assert.assertEquals(messageCount, user.getMessageCount());
+
+    user.messageCountIncrement();
+
+    Assert.assertEquals(messageCount+1, user.getMessageCount());
   }
 }
