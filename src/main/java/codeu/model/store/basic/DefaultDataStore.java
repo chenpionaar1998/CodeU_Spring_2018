@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.Random;
 
 /**
  * This class makes it easy to add dummy data to your chat app instance. To use fake data, set
@@ -112,7 +113,7 @@ public class DefaultDataStore {
     Collections.shuffle(randomPasswords);
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      User user = new User(UUID.randomUUID(), randomUsernames.get(i), randomPasswords.get(i), Instant.now());
+      User user = new User(UUID.randomUUID(), randomUsernames.get(i), randomPasswords.get(i), Instant.now(), (int) (Math.random()*50));
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
