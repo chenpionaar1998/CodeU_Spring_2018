@@ -74,8 +74,7 @@ public class ProfileServlet extends HttpServlet{
     
     Queue<Message> profileMessages = profileUser.getMessages();
     String aboutUser = profileUser.getAbout();
-    
-    request.setAttribute(profileUser.getName(), profileUser);
+    request.setAttribute("profileUser", profileUser);
     request.setAttribute("aboutUser", aboutUser);
     request.setAttribute("profileMessages", profileMessages);
     request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
