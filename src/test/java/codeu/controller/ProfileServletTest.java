@@ -74,7 +74,7 @@ public class ProfileServletTest {
     
     profileServlet.doGet(mockRequest, mockResponse);
     
-    Mockito.verify(mockRequest).setAttribute("profileUser", mockUser.getName());
+    Mockito.verify(mockRequest).setAttribute("profileUser", "test_profileUser");
     Mockito.verify(mockRequest).setAttribute("aboutUser", testAbout);
     Mockito.verify(mockRequest).setAttribute("profileMessages", testMessages);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -86,4 +86,57 @@ public class ProfileServletTest {
 	        					"test message " + i, Instant.now()));
 	    }
   }
+  
+  @Test
+  public void testDoPost_SameUser() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/profile/test_profileUser");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_profileUser");
+
+    User testUser = new User(UUID.randomUUID(), "test_profileUser", "password", Instant.now());
+    Mockito.when(mockUserStore.getUser("test_profileUser")).thenReturn(testUser);
+    
+    String aboutUser = "This is just a sample About Me";
+    Mockito.when(mockRequest.getParameter("aboutUser")).thenReturn(aboutUser);
+    
+    for (int i = 0; i < 16; i++) {
+        testUser.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
+        					"test message " + i, Instant.now()));
+    }
+
+    profileServlet.doPost(mockRequest, mockResponse);
+    
+    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test_profileUser");
+    Assert.assertEquals(userArgumentCaptor.getValue().getAbout(), "This is just a sample About Me");
+    // TODO: verify there appears an edit box for About Me
+    
+    Mockito.verify(mockResponse).sendRedirect("/profile/test_profileUser");
+  }
+  
+  @Test
+  public void testDoPost_DifferentUSser() throws IOException, ServletException {
+	Mockito.when(mockRequest.getRequestURI()).thenReturn("/profile/test_profileUser");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_otherUser");
+
+    User testUser = new User(UUID.randomUUID(), "test_otherUser", "password", Instant.now());
+    Mockito.when(mockUserStore.getUser("test_otherUser")).thenReturn(testUser);
+    
+    String aboutUser = "This is just a sample About Me";
+    Mockito.when(mockRequest.getParameter("aboutUser")).thenReturn(aboutUser);
+    
+    for (int i = 0; i < 16; i++) {
+        testUser.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
+        					"test message " + i, Instant.now()));
+    }
+
+    profileServlet.doPost(mockRequest, mockResponse);
+    
+    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test_profileUser");
+    Assert.assertEquals(userArgumentCaptor.getValue().getAbout(), "This is just a sample About Me");
+    // TODO: verify the no empty edit box if present for About Me
+
+    Mockito.verify(mockResponse).sendRedirect("/profile/test_profileUser");
+  }
 }
+
