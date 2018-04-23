@@ -37,10 +37,10 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About Team 21</h1>
+      <h1>About Team 21CodeMiners</h1>
       <p>
-        Team 21 is a team of 3 university students from North America with the
-        same passion of learning new skills and creating interesting apps. Here
+        Team 21CodeMiners is a team of 3 university students from North America with
+        the same passion of learning new skills and creating interesting apps. Here
         is a list of the team members:
       </p>
       <ul>
