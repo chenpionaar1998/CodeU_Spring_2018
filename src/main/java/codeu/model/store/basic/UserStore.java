@@ -154,6 +154,7 @@ public class UserStore {
 
   /**
     * Iterate through all messages and get the count for the owner of ther messages
+    * Should only be called in PersistentDataStore when the messageCount attr does not exist
     */
   public void getMessageCountForUser(){
     List<Message> messages = MessageStore.getInstance().getAllMessages();
@@ -192,7 +193,6 @@ public class UserStore {
     */
   public void writeJSON(){
     // get the users array sorted with the corresponding messageCount setup
-    getMessageCountForUser();
     sortUserList();
 
     try {
