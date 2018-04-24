@@ -1,7 +1,9 @@
 package codeu.model.store.basic;
 
+import codeu.model.data.User;
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import codeu.model.store.basic.UserStore;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class MessageStoreTest {
   public void setup() {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
-
+    
     messageList.add(MESSAGE_ONE);
     messageList.add(MESSAGE_TWO);
     messageList.add(MESSAGE_THREE);
