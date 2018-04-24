@@ -17,6 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -69,6 +70,8 @@ public class PersistentDataStore {
         int messageCount = 0;
         if (entity.hasProperty("messageCount")){
           messageCount = (int) (long) entity.getProperty("messageCount");
+        }else {
+          UserStore.getInstance().getMessageCountForUser();
         }
         User user = new User(uuid, userName, password, creationTime, messageCount);
         users.add(user);
