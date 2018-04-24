@@ -46,7 +46,7 @@
       </p>
       <ul>
         <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA).</li>
-        <li><strong>Dean Chiu</strong></li>
+        <li><strong>Dean Chiu</strong> Dean is a sophmore studying at Simon Fraser University, Canada. As of now, he has been doing mostly backend coding and would really like to learn more about the frontend side of computer science. Also, he has created a simple text based game in first year that can be found <a href="https://github.com/chenpionaar1998/Roids">here</a> if anyone is interested &#x1F601.</li>
         <li><strong>Sherry Yang</strong></li>
         <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics
           and Computer Science (undergraduate) student at University of
