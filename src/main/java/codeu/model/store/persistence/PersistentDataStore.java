@@ -71,7 +71,7 @@ public class PersistentDataStore {
         if (entity.hasProperty("messageCount")){
           messageCount = (int) (long) entity.getProperty("messageCount");
         }else {
-          UserStore.getInstance().getMessageCountForUser();
+          messageCount = UserStore.getInstance().getMessageCountForUser(uuid);
         }
         User user = new User(uuid, userName, password, creationTime, messageCount);
         users.add(user);

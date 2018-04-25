@@ -58,7 +58,7 @@ public class UserStoreTest {
   public void setup() {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     userStore = UserStore.getTestInstance(mockPersistentStorageAgent);
-    
+
     userList.add(USER_ONE);
     userList.add(USER_TWO);
     userList.add(USER_THREE);
@@ -140,19 +140,17 @@ public class UserStoreTest {
   /** Do the same thing as getMessageCount and check if the messageCount attribute is incremented correctly */
   @Test
   public void testGetMessageCountForUser(){
+    UUID idONE = USER_THREE.getId();
+    int messageCount = 0;
     for (Message message : messageList) {
       UUID id = message.getAuthorId();
-      User msgAuthor = userStore.getUser(id);
-      if (msgAuthor != null) {
-        for (User user : userList) {
-          if (user == msgAuthor) {
-            user.messageCountIncrement();
-          }
-        }
+      if (idONE == id) {
+        messageCount++;
       }
     }
-    // after distributing the message count, USER_THREE.getMessageCount() should be 3 as the 3 messages created all have id = USER_THREE
-    Assert.assertEquals(3, USER_THREE.getMessageCount());
+
+    // after distributing the message count, messageCount should be 3 as the 3 messages created all have id = USER_THREE
+    Assert.assertEquals(3, messageCount);
   }
 
   @Test

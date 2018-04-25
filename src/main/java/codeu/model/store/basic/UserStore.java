@@ -145,9 +145,9 @@ public class UserStore {
 
   /**
     * Returns the user with the most messages sent
+    * Pre : the the users list should already have the messageCount calculated
     */
   public String getTopUser(){
-    getMessageCountForUser();
     sortUserList();
     return users.get(0).getName();
   }
@@ -156,20 +156,18 @@ public class UserStore {
     * Iterate through all messages and get the count for the owner of ther messages
     * Should only be called in PersistentDataStore when the messageCount attr does not exist
     */
-  public void getMessageCountForUser(){
+  public int getMessageCountForUser(UUID uuid){
     List<Message> messages = MessageStore.getInstance().getAllMessages();
-
+    int messageCount = 0;
     for (Message message : messages) {
       UUID id = message.getAuthorId();
-      User msgAuthor = getUser(id);
-      if (msgAuthor != null) {
-        for (User user : users) {
-          if (user == msgAuthor) {
-            user.messageCountIncrement();
-          }
+      if (id != null) {
+        if (uuid == id) {
+          messageCount++;
         }
       }
     }
+    return messageCount;
   }
 
   /**
