@@ -139,17 +139,23 @@ public class UserStore {
   /**
     * Returns the users array
     */
-  public List<User> getAllUsers(){
+  public List<User> getUsers(){
     return users;
   }
 
   /**
-    * Returns the user with the most messages sent
-    * Pre : the the users list should already have the messageCount calculated
+    * Returns the user with the most messages sent, search method: linear search
     */
   public String getTopUser(){
-    sortUserList();
-    return users.get(0).getName();
+    int maxMessageCount = 0;
+    String userName = "";
+    for(User user : users){
+      if (user.getMessageCount() >= maxMessageCount){
+        maxMessageCount = user.getMessageCount();
+        userName = user.getName();
+      }
+    }
+    return userName;
   }
 
   /**
@@ -157,7 +163,7 @@ public class UserStore {
     * Should only be called in PersistentDataStore when the messageCount attr does not exist
     */
   public int getMessageCountForUser(UUID uuid){
-    List<Message> messages = MessageStore.getInstance().getAllMessages();
+    List<Message> messages = MessageStore.getInstance().getMessages();
     int messageCount = 0;
     for (Message message : messages) {
       UUID id = message.getAuthorId();
@@ -175,8 +181,11 @@ public class UserStore {
     */
   public void sortUserList(){
     Collections.sort(users, new Comparator<User>(){
+
       public int compare(User a, User b){
-        return b.getMessageCount() - a.getMessageCount();
+        Integer valueOne = a.getMessageCount();
+        Integer valueTwo = b.getMessageCount();
+        return (valueTwo.compareTo(valueOne));
       }
     });
   }
@@ -188,40 +197,37 @@ public class UserStore {
     *   {messageCount : 20, name : userOne},
     *   {messageCount : 10, name : userTwo}
     * ]
+    *
+    * Returns false when an error occurs
     */
-  public void writeJSON(){
+  public boolean writeJSON(){
     // get the users array sorted with the corresponding messageCount setup
     sortUserList();
 
     try {
       // check if the directory exists, if not, create it
       File path = new File("./api/stats");
+      List<String> userObjList = new ArrayList<>();
       if (!path.isDirectory()){
         path.mkdirs();
       }
       // make the JSON file in the directory ./api/stats
       File file = new File("./api/stats/", "userData.json");
       FileWriter fileWriter = new FileWriter(file);
-      int i = 1;  // fix for no counter in forEach loop, need to know when the loop ends to make it proper JSON file
-      fileWriter.write("[");
-      fileWriter.write("\n");
       for (User user : users) {
         JSONObject userObj = new JSONObject();
         userObj.put("messageCount", user.getMessageCount());
         userObj.put("name", user.getName());
-        fileWriter.write(userObj.toJSONString());
-        // adding "," between objects, don't add for the last object
-        if (i < users.size()){
-          fileWriter.write(",");
-        }
-        i++;
-        fileWriter.write("\n");
+        userObjList.add(userObj.toJSONString());
       }
+      fileWriter.write("[");
+      fileWriter.write(String.join(", \n", userObjList));
       fileWriter.write("]");
       fileWriter.flush();
       fileWriter.close();
+      return true;
     } catch (IOException e) {
-      e.printStackTrace();
+      return false;
     }
 
   }

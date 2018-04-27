@@ -90,7 +90,7 @@ public class MessageStore {
     UUID authorId = message.getAuthorId();
     User user = UserStore.getInstance().getUser(authorId);
     if(user != null){
-      user.messageCountIncrement();
+      user.incrementMessageCount();
     }
 
     messages.add(message);
@@ -126,7 +126,7 @@ public class MessageStore {
   /**
     * Returns the messages array
     */
-  public List<Message> getAllMessages(){
+  public List<Message> getMessages(){
     return messages;
   }
 }
