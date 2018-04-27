@@ -71,8 +71,10 @@ public class LoginServlet extends HttpServlet {
 
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
+      boolean admin = user.getAdmin();
       if(password.equals(user.getPassword())) {
         request.getSession().setAttribute("user", username);
+        request.getSession().setAttribute("admin", admin);
         response.sendRedirect("/conversations");
       }
       else {
@@ -84,7 +86,7 @@ public class LoginServlet extends HttpServlet {
 	  request.setAttribute("error", "That username was not found.");
 	  request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
-    
+
   }
-  
+
 }
