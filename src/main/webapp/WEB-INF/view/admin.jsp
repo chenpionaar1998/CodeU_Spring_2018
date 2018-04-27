@@ -35,7 +35,11 @@
     int messageCount = MessageStore.getInstance().getMessageCount();
     int conversationCount = ConversationStore.getInstance().getConversationCount();
     String topUser = UserStore.getInstance().getTopUser();
-    UserStore.getInstance().writeJSON();
+    if(UserStore.getInstance().writeJSON() == false){
+  %>
+    <div id="container">Word Cloud did not load...</div>
+  <%
+    }
   %>
 
   <div id="container">

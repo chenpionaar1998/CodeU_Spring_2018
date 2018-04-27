@@ -36,6 +36,7 @@ public class AdminServletTest {
   public void testDoGetAdmin() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/admin.jsp")).thenReturn(mockRequestDispatcher);
     Mockito.when(mockSession.getAttribute("user")).thenReturn("adminTest");
+    Mockito.when(mockSession.getAttribute("admin")).thenReturn(true);
     adminServlet.doGet(mockRequest,mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
   }
@@ -53,6 +54,7 @@ public class AdminServletTest {
   public void testDoGetNoPermission() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestDispatcher("/index.jsp")).thenReturn(mockRequestDispatcher);
     Mockito.when(mockSession.getAttribute("user")).thenReturn("randomUser");
+    Mockito.when(mockSession.getAttribute("admin")).thenReturn(false);
     adminServlet.doGet(mockRequest,mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
     Mockito.verify(mockRequest).setAttribute("error", "This user does not have permission.");

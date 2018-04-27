@@ -28,16 +28,22 @@ public class UserTest {
     Instant creation = Instant.now();
     String password = "password";
     int messageCount = 10;
+    boolean admin = false;
 
-    User user = new User(id, name, password, creation, messageCount);
+    // verify old constructor sets user.messageCount to 0
+    User userOld = new User(UUID.randomUUID(), name, password, creation);
+    Assert.assertEquals(0, userOld.getMessageCount());
+
+    User user = new User(id, name, password, creation, messageCount, admin);
 
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());
     Assert.assertEquals(password, user.getPassword());
     Assert.assertEquals(creation, user.getCreationTime());
     Assert.assertEquals(messageCount, user.getMessageCount());
+    Assert.assertEquals(admin, user.getAdmin());
 
-    user.messageCountIncrement();
+    user.incrementMessageCount();
 
     Assert.assertEquals(messageCount+1, user.getMessageCount());
   }
