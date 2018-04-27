@@ -22,11 +22,11 @@ public class UserStoreTest {
   private PersistentStorageAgent mockPersistentStorageAgent;
 
   private final User USER_ONE =
-      new User(UUID.randomUUID(), "test_username_one", "password one", Instant.ofEpochMilli(1000), 0);
+      new User(UUID.randomUUID(), "test_username_one", "password one", Instant.ofEpochMilli(1000), 0, false);
   private final User USER_TWO =
-      new User(UUID.randomUUID(), "test_username_two", "password two", Instant.ofEpochMilli(2000), 0);
+      new User(UUID.randomUUID(), "test_username_two", "password two", Instant.ofEpochMilli(2000), 0, false);
   private final User USER_THREE =
-      new User(UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000), 0);
+      new User(UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000), 0, false);
 
   private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   private final Message MESSAGE_ONE =
@@ -100,7 +100,7 @@ public class UserStoreTest {
 
   @Test
   public void testAddUser() {
-    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), 0);
+    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
 
     userStore.addUser(inputUser);
     User resultUser = userStore.getUser("test_username");
@@ -128,7 +128,7 @@ public class UserStoreTest {
     Assert.assertEquals(3, userCount);
 
     // add a mock user
-    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), 0);
+    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
     userStore.addUser(inputUser);
 
     //get userCount again to check if it is calcutlated correctly, expected result = 4
@@ -156,14 +156,26 @@ public class UserStoreTest {
   @Test
   public void testSortUserList(){
     // in setup USER_ONE is inserted in pos 0
-    List<User> users = userStore.getAllUsers();
-    USER_THREE.messageCountIncrement();
+    List<User> users = userStore.getUsers();
+    USER_THREE.incrementMessageCount();
     Assert.assertEquals(users.get(0), USER_ONE);
     userStore.sortUserList();
     // after sorting pos 0 should be USER_THREE with messageCount = 1;
     Assert.assertEquals(users.get(0), USER_THREE);
   }
 
+  @Test
+  public void testGetTopUser(){
+    String topUser = userStore.getTopUser();
+    // topUser should return last user when all users have messageCount = 0
+    Assert.assertEquals("test_username_three", topUser);
+
+    USER_TWO.incrementMessageCount();
+
+    topUser = userStore.getTopUser();
+    // topUser should now be userTwo since userTwo has messageCount = 1
+    Assert.assertEquals("test_username_two", topUser);
+  }
 
   private void assertEquals(User expectedUser, User actualUser) {
     Assert.assertEquals(expectedUser.getId(), actualUser.getId());

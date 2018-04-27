@@ -47,7 +47,7 @@ public class MessageStoreTest {
   public void setup() {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
-    
+
     messageList.add(MESSAGE_ONE);
     messageList.add(MESSAGE_TWO);
     messageList.add(MESSAGE_THREE);
@@ -84,8 +84,8 @@ public class MessageStoreTest {
 
 
   @Test
-  public void testGetAllMessages(){
-    Assert.assertEquals(messageList, messageStore.getAllMessages());
+  public void testGetMessages(){
+    Assert.assertEquals(messageList, messageStore.getMessages());
   }
 
   private void assertEquals(Message expectedMessage, Message actualMessage) {

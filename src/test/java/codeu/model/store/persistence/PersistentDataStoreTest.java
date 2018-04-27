@@ -43,14 +43,16 @@ public class PersistentDataStoreTest {
     String passwordOne = "password1";
     Instant creationOne = Instant.ofEpochMilli(1000);
     int messageCountOne = 10;
-    User inputUserOne = new User(idOne, nameOne, passwordOne, creationOne, messageCountOne);
+    boolean adminOne = false;
+    User inputUserOne = new User(idOne, nameOne, passwordOne, creationOne, messageCountOne, adminOne);
 
     UUID idTwo = UUID.randomUUID();
     String nameTwo = "test_username_two";
     String passwordTwo = "password2";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     int messageCountTwo = 20;
-    User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo, messageCountTwo);
+    boolean adminTwo = true;
+    User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo, messageCountTwo, adminTwo);
 
     // save
     persistentDataStore.writeThrough(inputUserOne);
@@ -67,6 +69,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordOne, resultUserOne.getPassword());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(10, resultUserOne.getMessageCount());
+    Assert.assertEquals(false, resultUserOne.getAdmin());
 
     User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
@@ -74,6 +77,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordTwo, resultUserTwo.getPassword());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(20, resultUserTwo.getMessageCount());
+    Assert.assertEquals(true, resultUserTwo.getAdmin());
 
   }
 
