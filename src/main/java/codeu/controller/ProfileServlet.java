@@ -65,18 +65,16 @@ public class ProfileServlet extends HttpServlet{
     String profilePage = requestUrl.substring("/profile/".length());
     User profileUser = userStore.getUser(profilePage);
     
-    if (profileUser== null) {
-      // couldn't find user, redirect to conversation page
-      System.out.println("user not found : " + profilePage);
-      response.sendRedirect("/conversations");
+    if (profileUser == null) {
+      // couldn't find user, redirect to empty profile page
+      request.setAttribute("error", "Profile user not found");
+      response.sendRedirect("/profile");
       return;
     }
     
-    Queue<Message> profileMessages = profileUser.getMessages();
     String aboutUser = profileUser.getAbout();
     request.setAttribute("profileUser", profileUser);
     request.setAttribute("aboutUser", aboutUser);
-    request.setAttribute("profileMessages", profileMessages);
     request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
   }
   
@@ -116,6 +114,5 @@ public class ProfileServlet extends HttpServlet{
     }
 
     response.sendRedirect(requestUrl);
-    
   }
 }
