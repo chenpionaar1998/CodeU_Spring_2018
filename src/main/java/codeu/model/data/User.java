@@ -42,7 +42,6 @@ public class User {
     this.password = password;
     this.creation = creation;
     this.messages = new LinkedList<Message>();
-    aboutUser = "";
   }
   
   // adds about me information for the user 
