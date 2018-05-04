@@ -44,7 +44,7 @@ String profileUser = (String) request.getAttribute("profileUser");
 
     <%
     Queue<Message> profileMessages = 
-      (Queue<Message>) request.getAttribute("profileMessages");
+      (Queue<Message>) profileUser.getMessages();
     if(profileMessages == null || profileMessages.isEmpty()){
     %>
       <p><%= profileUser %> has not sent any messages</p>
