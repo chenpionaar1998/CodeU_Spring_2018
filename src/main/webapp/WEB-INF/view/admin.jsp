@@ -1,4 +1,6 @@
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.UUID" %>
+<%@ page import="java.io.File" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.User" %>
@@ -31,13 +33,18 @@
   </nav>
 
   <%
+    UUID randomName = UUID.randomUUID();
     int userCount = UserStore.getInstance().getUserCount();
     int messageCount = MessageStore.getInstance().getMessageCount();
     int conversationCount = ConversationStore.getInstance().getConversationCount();
     String topUser = UserStore.getInstance().getTopUser();
-    if(UserStore.getInstance().writeJSON() == false){
   %>
-    <div id="container">Word Cloud did not load...</div>
+  <div style="display:none;" id="randomName"><%= randomName %></div>
+  <%
+
+    if(UserStore.getInstance().writeJSON(randomName) == false){
+  %>
+    <div id="container">Word Cloud did not load... Please reload the page</div>
   <%
     }
   %>
@@ -60,8 +67,8 @@
 
   <%-- use d3 library for the word cloud, treat d3.layout.cloud.js as a blackbox, implementations for the actual word cloud is in wordCLoud.js--%>
   <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script type="text/javascript" src="/js/d3.layout.cloud.js"></script>
-  <script type="text/javascript" src="/js/wordCloud.js"></script>
+  <script type="text/javascript" src="/js/d3.layout.cloud.js" ></script>
+  <script type="text/javascript" src="/js/wordCloud.js" ></script>
 </body>
 
 

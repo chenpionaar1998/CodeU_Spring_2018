@@ -3,15 +3,16 @@ var fill = d3.scale.category20();
 var width = 700;
 var height = 700;
 
+var randomNum = document.getElementById("randomName").innerHTML;
 var userScale = d3.scale.linear().range([10,80]);
-//asdasdasdasdsadsd
-d3.json("./api/stats/userData.json", function(data){
+var file = "./api/stats/" + randomNum + ".json";
+
+d3.json(file, function(data){
   if (data.length > 100){
     var users = data.slice(0,100).map(function(data){return {text: data.name, size: data.messageCount}});
   }else{
     var users = data.map(function(data){return {text: data.name, size: data.messageCount}});
   }
-  console.log(users);
   userScale.domain([
     d3.min(users, function(data){return data.size}),
     d3.max(users, function(data){return data.size})

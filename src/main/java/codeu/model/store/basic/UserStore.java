@@ -200,7 +200,7 @@ public class UserStore {
     *
     * Returns false when an error occurs
     */
-  public boolean writeJSON(){
+  public boolean writeJSON(UUID randomName){
     // get the users array sorted with the corresponding messageCount setup
     sortUserList();
 
@@ -211,8 +211,9 @@ public class UserStore {
       if (!path.isDirectory()){
         path.mkdirs();
       }
+      String filename =  String.valueOf(randomName);
       // make the JSON file in the directory ./api/stats
-      File file = new File("./api/stats/", "userData.json");
+      File file = new File("./api/stats/", filename + ".json");
       FileWriter fileWriter = new FileWriter(file);
       for (User user : users) {
         JSONObject userObj = new JSONObject();
