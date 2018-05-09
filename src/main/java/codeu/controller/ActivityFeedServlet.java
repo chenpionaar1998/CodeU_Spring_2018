@@ -27,7 +27,7 @@ public class ActivityFeedServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    request.setAttribute("activities", activityStore.getActivities());
+    request.setAttribute("activities", activityStore.getActivitiesCopy());
     request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
   }
 

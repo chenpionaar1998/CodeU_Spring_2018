@@ -34,18 +34,33 @@ public class ActivityStore {
     this.activities = new LinkedList<Activity>();  
   }
 
+  /* Adds given activity to list of activities and removes oldest (first) if
+   * there are more than capacity */
   public void addActivity(Activity newActivity) {
     if(activities.size() >= maxNumActivities) {
       activities.removeFirst();  //full queue, remove oldest
-      System.err.println("THERE SHOULD BE ONE LEST ACTCITIY NOW, is " + activities.size());
     }
     activities.addLast(newActivity);
   }
 
-  //return deep copy of the list
-  public LinkedList<Activity> getActivities() {
+  /* return deep copy of the list since there shouldn't be a reason to modify the
+   * order of the activities outside this class */ 
+  public LinkedList<Activity> getActivitiesCopy() {
     return new LinkedList<Activity>(activities);
+  }
 
+  // set the list of activities
+  public void setActivities(LinkedList<Activity> activities) {
+      this.activities = activities;
+  }
+
+  /**
+   * Instance getter function used for testing. Supply a mock for PersistentStorageAgent.
+   *
+   * @param persistentStorageAgent a mock used for testing
+   */
+  public static ActivityStore getTestInstance(PersistentStorageAgent persistentStorageAgent) {
+    return new ActivityStore(persistentStorageAgent);
   }
 
 }

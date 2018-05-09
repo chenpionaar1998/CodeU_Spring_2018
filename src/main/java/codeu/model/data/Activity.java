@@ -15,17 +15,19 @@ import java.util.UUID;
 
 public abstract class Activity {
 
-  private final Instant creation;
+  private final Instant creationTime;
   private final UUID actorId;
+  private final User actor;  //TODO
 
   //constructor for activity should be called by subclass
   protected Activity(UUID actor, Instant creation) {
     this.actorId = actor;
-    this.creation = creation;
+    this.actor = UserStore.getInstance().getUser(actorId);
+    this.creationTime = creation;
   }
 
   public User getActor() {
-    return UserStore.getInstance().getUser(actorId);  
+    return actor; 
   }
 
   public UUID getActorId() {
@@ -33,6 +35,7 @@ public abstract class Activity {
   }
 
   public Instant getCreationTime() {
-      return creation;
+    return creationTime;
   }
+
 }
