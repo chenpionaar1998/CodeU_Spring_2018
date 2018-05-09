@@ -70,7 +70,7 @@ public class RegisterServletTest {
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
     Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "test password");
-    Assert.assertEquals(userArgumentCaptor.getValue().getAdmin(), true);
+    Assert.assertEquals(userArgumentCaptor.getValue().isAdmin(), true);
 
 
     Mockito.verify(mockSession, Mockito.never()).setAttribute("user", "test username");

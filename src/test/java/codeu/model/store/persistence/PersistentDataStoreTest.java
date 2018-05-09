@@ -69,7 +69,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordOne, resultUserOne.getPassword());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(10, resultUserOne.getMessageCount());
-    Assert.assertEquals(false, resultUserOne.getAdmin());
+    Assert.assertEquals(false, resultUserOne.isAdmin());
 
     User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
@@ -77,7 +77,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passwordTwo, resultUserTwo.getPassword());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(20, resultUserTwo.getMessageCount());
-    Assert.assertEquals(true, resultUserTwo.getAdmin());
+    Assert.assertEquals(true, resultUserTwo.isAdmin());
 
   }
 

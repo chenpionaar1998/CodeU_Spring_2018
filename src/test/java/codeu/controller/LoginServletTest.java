@@ -82,7 +82,7 @@ public class LoginServletTest {
 
     Mockito.when(mockUser.getName()).thenReturn("test username");
     Mockito.when(mockUser.getPassword()).thenReturn("test password");
-    Mockito.when(mockUser.getAdmin()).thenReturn(true);
+    Mockito.when(mockUser.isAdmin()).thenReturn(true);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
 
     loginServlet.setUserStore(mockUserStore);

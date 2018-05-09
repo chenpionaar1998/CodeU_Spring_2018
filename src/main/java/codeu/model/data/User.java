@@ -25,7 +25,7 @@ public class User {
   private final Instant creation;
   private int messageCount;
   private final boolean admin;
-  
+
   /**
    * Constructs a new User.
    *
@@ -78,7 +78,7 @@ public class User {
   }
 
   /** Returns the boolean value of admin by the User. */
-  public boolean getAdmin() {
+  public boolean isAdmin() {
     return admin;
   }
 

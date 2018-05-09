@@ -71,7 +71,7 @@ public class LoginServlet extends HttpServlet {
 
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      boolean admin = user.getAdmin();
+      boolean admin = user.isAdmin();
       if(password.equals(user.getPassword())) {
         request.getSession().setAttribute("user", username);
         request.getSession().setAttribute("admin", admin);

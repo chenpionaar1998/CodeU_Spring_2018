@@ -41,7 +41,7 @@ public class UserTest {
     Assert.assertEquals(password, user.getPassword());
     Assert.assertEquals(creation, user.getCreationTime());
     Assert.assertEquals(messageCount, user.getMessageCount());
-    Assert.assertEquals(admin, user.getAdmin());
+    Assert.assertEquals(admin, user.isAdmin());
 
     user.incrementMessageCount();
 

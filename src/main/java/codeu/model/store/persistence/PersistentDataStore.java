@@ -165,7 +165,7 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("messageCount", user.getMessageCount());
-    userEntity.setProperty("admin", user.getAdmin());
+    userEntity.setProperty("admin", user.isAdmin());
     datastore.put(userEntity);
   }
 
