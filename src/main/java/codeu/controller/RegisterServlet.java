@@ -23,19 +23,25 @@ public class RegisterServlet extends HttpServlet{
    * Store class that gives access to Users.
    */
   private UserStore userStore;
-  
+
   @Override
   public void doGet (HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request,response);
   }
-  
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String admin = request.getParameter("admin");
+    boolean adminValue = false;
+
+    if (admin.equals("true")){
+      adminValue = true;
+    }
     String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
     if (!username.matches("[\\w*\\s*]*")) {
@@ -43,19 +49,19 @@ public class RegisterServlet extends HttpServlet{
 	  request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
 	  return;
     }
-    
+
     if (userStore.isUserRegistered(username)) {
       request.setAttribute("error", "That username is already taken.");
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
 
-    User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
+    User user = new User(UUID.randomUUID(), username, password, Instant.now(),0,adminValue);
     userStore.addUser(user);
 
     response.sendRedirect("/login");
   }
-  
+
   /**
    * Set up state for handling registration-related requests. This method is only called when
    * running in a server, not when running in a test.
@@ -65,7 +71,7 @@ public class RegisterServlet extends HttpServlet{
     super.init();
     setUserStore(UserStore.getInstance());
   }
-  
+
   /**
    * Sets the UserStore used by this servlet. This function provides a common setup method
    * for use by the test framework or the servlet's init() function.
@@ -73,5 +79,5 @@ public class RegisterServlet extends HttpServlet{
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
   }
-  
+
  }

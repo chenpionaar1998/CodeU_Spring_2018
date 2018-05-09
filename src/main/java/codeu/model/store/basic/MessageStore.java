@@ -14,6 +14,7 @@
 
 package codeu.model.store.basic;
 
+import codeu.model.data.User;
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
@@ -82,8 +83,16 @@ public class MessageStore {
     return loaded;
   }
 
-  /** Add a new message to the current set of messages known to the application. */
+  /** Add a new message to the current set of messages known to the application.
+    * Also increments the messageCount for the author
+    */
   public void addMessage(Message message) {
+    UUID authorId = message.getAuthorId();
+    User user = UserStore.getInstance().getUser(authorId);
+    if(user != null){
+      user.incrementMessageCount();
+    }
+
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
   }
@@ -105,5 +114,19 @@ public class MessageStore {
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
+  }
+
+  /**
+    * Returns the number of messages currently recorded
+    */
+  public int getMessageCount() {
+    return messages.size();
+  }
+
+  /**
+    * Returns the messages array
+    */
+  public List<Message> getMessages(){
+    return messages;
   }
 }

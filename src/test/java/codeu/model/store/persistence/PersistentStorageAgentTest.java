@@ -67,4 +67,5 @@ public class PersistentStorageAgentTest {
     persistentStorageAgent.writeThrough(message);
     Mockito.verify(mockPersistentDataStore).writeThrough(message);
   }
+
 }
