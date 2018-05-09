@@ -47,15 +47,20 @@
       <ul>
         <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA).</li>
         <li><strong>Dean Chiu</strong> Dean is a sophmore studying at Simon Fraser University, Canada. As of now, he has been doing mostly backend coding and would really like to learn more about the frontend side of computer science. Also, he has created a simple text based game in first year that can be found <a href="https://github.com/chenpionaar1998/Roids">here</a> if anyone is interested &#x1F601.</li>
-        <li><strong>Sherry Yang</strong></li>
-        <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics
-          and Computer Science (undergraduate) student at University of
-          California San Diego. Naomi is especially interested in working in
-          backend development, and she especially enjoys learning about about
-          algorithms and data structures. Her favorite sorting algorithm is
-          <a href="https://en.wikipedia.org/wiki/Bogosort">Bogosort</a>,
-          particularly the version that produces permutations of input until
-          the sorted version is produced. Naomi is excited to be a part of
+        <li><strong>Sherry Yang</strong> Sherry is a sophomore studying at 
+          University of Washington,Seattle (Yes, she craves for the sunlight). 
+          So far, she has been gaining backend skills and is hoping for getting 
+          involved in the "frontend community." One interesting fact about her 
+          is that she has been (too) into the Kpop band BTS since college, it is 
+          sometimes unhealthy to watch countless Youtube vidoes about them ^o^.</li>
+        <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
+          and Computer Science (undergraduate) student at University of 
+          California San Diego. Naomi is especially interested in working in 
+          backend development, and she especially enjoys learning about about 
+          algorithms and data structures. Her favorite sorting algorithm is 
+          <a href="https://en.wikipedia.org/wiki/Bogosort">Bogosort</a>, 
+          particularly the version that produces permutations of input until 
+          the sorted version is produced. Naomi is excited to be a part of 
           the CodeU program and learn a lot alongside her teammates.</li>
       </ul>
 

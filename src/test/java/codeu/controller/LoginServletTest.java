@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -83,6 +84,8 @@ public class LoginServletTest {
     Mockito.when(mockUser.getName()).thenReturn("test username");
     Mockito.when(mockUser.getPassword()).thenReturn("test password");
     Mockito.when(mockUser.isAdmin()).thenReturn(true);
+    String encryptedpw = BCrypt.hashpw("test password", BCrypt.gensalt());
+    Mockito.when(mockUser.getPassword()).thenReturn(encryptedpw);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
 
     loginServlet.setUserStore(mockUserStore);
@@ -108,7 +111,8 @@ public class LoginServletTest {
 
     User mockUser = Mockito.mock(User.class);
     Mockito.when(mockUser.getName()).thenReturn("test username");
-    Mockito.when(mockUser.getPassword()).thenReturn("test password");
+    String encryptedPw = BCrypt.hashpw("test password", BCrypt.gensalt());
+    Mockito.when(mockUser.getPassword()).thenReturn(encryptedPw);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
 
     loginServlet.setUserStore(mockUserStore);
