@@ -44,7 +44,7 @@
 .search-container button:hover {
   background: #ccc;
 }
-}
+
 </style>
 </head>
 <body>
@@ -60,12 +60,12 @@
     <% } %>
     <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
-    
+
     <div class="search-container">
-      // TODO: fix this to the actual page found after backend search
+      <%-- TODO: fix this to the actual page found after backend search --%>
       <form action="/action_page.jsp">
         <input type="text" placeholder="Search.." name="search">
-        <button type="submit"><i class="fa fa-search"></i></button>
+        <button type="submit"><i class="fa fa-search">search</i></button>
       </form>
     </div>
   </nav>
