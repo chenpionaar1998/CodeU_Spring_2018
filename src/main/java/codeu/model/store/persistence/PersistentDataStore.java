@@ -17,6 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -66,7 +67,17 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, password, creationTime);
+        int messageCount = 0;
+        boolean admin = false;
+        if (entity.hasProperty("messageCount")){
+          messageCount = (int) (long) entity.getProperty("messageCount");
+        }else {
+          messageCount = UserStore.getInstance().getMessageCountForUser(uuid);
+        }
+        if (entity.hasProperty("admin")){
+          admin = (boolean) entity.getProperty("admin");
+        }
+        User user = new User(uuid, userName, password, creationTime, messageCount, admin);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -153,6 +164,8 @@ public class PersistentDataStore {
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("password", user.getPassword());
+    userEntity.setProperty("messageCount", user.getMessageCount());
+    userEntity.setProperty("admin", user.isAdmin());
     datastore.put(userEntity);
   }
 
@@ -176,4 +189,5 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
+
 }

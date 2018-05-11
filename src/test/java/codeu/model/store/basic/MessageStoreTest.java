@@ -1,8 +1,10 @@
 package codeu.model.store.basic;
 
+import codeu.model.data.User;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import codeu.model.store.basic.UserStore;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class MessageStoreTest {
       new User(ID_TWO, "test_username_two", "password two", Instant.ofEpochMilli(2000));
   private final User USER_THREE =
       new User(ID_THREE, "test_username_three", "password three", Instant.ofEpochMilli(3000));
-  
+  private List<Message> messageList =  new ArrayList<>();
   private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   
   private final Message MESSAGE_ONE =
@@ -64,13 +66,13 @@ public class MessageStoreTest {
     userList.add(USER_TWO);
     userList.add(USER_THREE);
     userStore.setUsers(userList);
-
-    messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
-    final List<Message> messageList = new ArrayList<>();
     messageList.add(MESSAGE_ONE);
     messageList.add(MESSAGE_TWO);
     messageList.add(MESSAGE_THREE);
     messageStore.setMessages(messageList);
+    messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
+    final List<Message> messageList = new ArrayList<>();
+
   }
 
   @Test
@@ -98,6 +100,13 @@ public class MessageStoreTest {
 
     assertEquals(inputMessage, resultMessage);
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMessage);
+  }
+
+
+
+  @Test
+  public void testGetMessages(){
+    Assert.assertEquals(messageList, messageStore.getMessages());
   }
 
   private void assertEquals(Message expectedMessage, Message actualMessage) {
