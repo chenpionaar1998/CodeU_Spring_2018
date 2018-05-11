@@ -90,16 +90,16 @@ public class ProfileServlet extends HttpServlet{
     String currentUser = (String) request.getSession().getAttribute("user");
     if (currentUser == null) {
       // user is not logged in, let them log in first to view any profile page
-	  request.setAttribute("error", "Please login first.");
-	  request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-	  return;
+      request.setAttribute("error", "Please login first.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
     }
 
     if (userStore.getUser(currentUser) == null) {
       // user was not found, don't let them view the profile page
       request.setAttribute("error", "User not found");
-  	  request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-  	  return;
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
     }
     
     String requestUrl = request.getRequestURI();
