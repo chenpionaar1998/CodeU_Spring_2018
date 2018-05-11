@@ -28,6 +28,8 @@ public class User {
   private static final int NUMBER_OF_MESSAGES = 15;
   private final Queue<Message> messages;
   private String aboutUser;
+  private int messageCount;
+  private final boolean admin;
   /**
    * Constructs a new User.
    *
@@ -35,12 +37,16 @@ public class User {
    * @param name the username of this User
    * @param password the password of this User
    * @param creation the creation time of this User
+   * @param messageCount the number of messages sent by the User
+   * @param admin the boolean value for is admin
    */
-  public User(UUID id, String name, String password, Instant creation) {
+  public User(UUID id, String name, String password, Instant creation, int messageCount, boolean admin) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.creation = creation;
+    this.messageCount = messageCount;
+    this.admin = admin;
     this.messages = new LinkedList<Message>();
   }
   
@@ -62,7 +68,14 @@ public class User {
   }
   
   public Queue<Message> getMessages() {
-	  return messages;
+	  return messages; 
+  }
+
+  /**
+    * Consturctor for old User
+    */
+  public User(UUID id, String name, String password, Instant creation) {
+    this(id,name,password,creation,0,false);
   }
 
   /** Returns the ID of this User. */
@@ -83,5 +96,20 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns the number of messages sent by the User. */
+  public int getMessageCount() {
+    return messageCount;
+  }
+
+  /** Returns the boolean value of admin by the User. */
+  public boolean isAdmin() {
+    return admin;
+  }
+
+  /** Increment messageCount for the particularUser*/
+  public void incrementMessageCount(){
+    this.messageCount++;
   }
 }

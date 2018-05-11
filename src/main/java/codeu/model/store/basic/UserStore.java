@@ -14,11 +14,18 @@
 
 package codeu.model.store.basic;
 
+import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 import codeu.model.data.User;
+import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import org.json.simple.JSONObject;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -121,5 +128,109 @@ public class UserStore {
    */
   public void setUsers(List<User> users) {
     this.users = users;
+  }
+
+  /**
+    * Returns the number of users currently recorded
+    */
+  public int getUserCount() {
+    return users.size();
+  }
+
+  /**
+    * Returns the users array
+    */
+  public List<User> getUsers(){
+    return users;
+  }
+
+  /**
+    * Returns the user with the most messages sent, search method: linear search
+    */
+  public String getTopUser(){
+    int maxMessageCount = 0;
+    String userName = "";
+    for(User user : users){
+      if (user.getMessageCount() >= maxMessageCount){
+        maxMessageCount = user.getMessageCount();
+        userName = user.getName();
+      }
+    }
+    return userName;
+  }
+
+  /**
+    * Iterate through all messages and get the count for the owner of ther messages
+    * Should only be called in PersistentDataStore when the messageCount attr does not exist
+    */
+  public int getMessageCountForUser(UUID uuid){
+    List<Message> messages = MessageStore.getInstance().getMessages();
+    int messageCount = 0;
+    for (Message message : messages) {
+      UUID id = message.getAuthorId();
+      if (id != null) {
+        if (uuid == id) {
+          messageCount++;
+        }
+      }
+    }
+    return messageCount;
+  }
+
+  /**
+    * Sort the users list by using sort in the library
+    */
+  public void sortUserList(){
+    Collections.sort(users, new Comparator<User>(){
+
+      public int compare(User a, User b){
+        Integer valueOne = a.getMessageCount();
+        Integer valueTwo = b.getMessageCount();
+        return (valueTwo.compareTo(valueOne));
+      }
+    });
+  }
+
+  /**
+    * make a JSON file that consists JSON objects {user, messageCount}
+    * sample JSONFile :
+    * [
+    *   {messageCount : 20, name : userOne},
+    *   {messageCount : 10, name : userTwo}
+    * ]
+    *
+    * Returns false when an error occurs
+    */
+  public boolean writeJSON(UUID randomName){
+    // get the users array sorted with the corresponding messageCount setup
+    sortUserList();
+
+    try {
+      // check if the directory exists, if not, create it
+      File path = new File("./api/stats");
+      List<String> userObjList = new ArrayList<>();
+      if (!path.isDirectory()){
+        path.mkdirs();
+      }
+      String filename =  String.valueOf(randomName);
+      // make the JSON file in the directory ./api/stats
+      File file = new File("./api/stats/", filename + ".json");
+      FileWriter fileWriter = new FileWriter(file);
+      for (User user : users) {
+        JSONObject userObj = new JSONObject();
+        userObj.put("messageCount", user.getMessageCount());
+        userObj.put("name", user.getName());
+        userObjList.add(userObj.toJSONString());
+      }
+      fileWriter.write("[");
+      fileWriter.write(String.join(", \n", userObjList));
+      fileWriter.write("]");
+      fileWriter.flush();
+      fileWriter.close();
+      return true;
+    } catch (IOException e) {
+      return false;
+    }
+
   }
 }
