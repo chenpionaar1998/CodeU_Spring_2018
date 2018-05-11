@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the login page. */
 public class LoginServlet extends HttpServlet {
@@ -71,8 +72,10 @@ public class LoginServlet extends HttpServlet {
 
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      if(password.equals(user.getPassword())) {
+      boolean admin = user.isAdmin();
+      if(BCrypt.checkpw(password, user.getPassword())) {
         request.getSession().setAttribute("user", username);
+        request.getSession().setAttribute("admin", admin);
         response.sendRedirect("/conversations");
       }
       else {
@@ -84,7 +87,7 @@ public class LoginServlet extends HttpServlet {
 	  request.setAttribute("error", "That username was not found.");
 	  request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
-    
+
   }
-  
+
 }

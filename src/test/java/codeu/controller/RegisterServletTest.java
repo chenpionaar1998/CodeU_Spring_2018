@@ -1,5 +1,8 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
+
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,9 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
-import codeu.model.data.User;
-import codeu.model.store.basic.UserStore;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class RegisterServletTest {
 
@@ -37,10 +38,11 @@ public class RegisterServletTest {
     registerServlet.doGet(mockRequest,mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
   }
-  
+
   @Test
   public void testDoPost_BadUsername() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("bad !@#$% username");
+    Mockito.when(mockRequest.getParameter("admin")).thenReturn("false");
 
     registerServlet.doPost(mockRequest, mockResponse);
 
@@ -53,7 +55,8 @@ public class RegisterServletTest {
   public void testDoPost_NewUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
-    
+    Mockito.when(mockRequest.getParameter("admin")).thenReturn("true");
+
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
@@ -67,17 +70,20 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
-    Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "test password");
+    Assert.assertEquals(userArgumentCaptor.getValue().isAdmin(), true);
+
+    Assert.assertTrue(BCrypt.checkpw("test password", userArgumentCaptor.getValue().getPassword()));
     
     Mockito.verify(mockSession, Mockito.never()).setAttribute("user", "test username");
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
-  
+
   @Test
   public void testDoPost_ExistingUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
-    
+    Mockito.when(mockRequest.getParameter("admin")).thenReturn("false");
+
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     registerServlet.setUserStore(mockUserStore);

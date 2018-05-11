@@ -37,6 +37,12 @@
       <label for="password">Password: </label>
       <input type="password" name="password" id="password">
       <br/>
+      <label for="admin">Admin: </label>
+      <select name="admin">
+        <option value="true"> Yes </option>
+        <option value="false"> No </option>
+      </select>
+      <br/>
       <input type="checkbox" onclick="hidePassword()">hide/show password
       <script type="text/javascript">
         function hidePassword(){
