@@ -24,29 +24,35 @@
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
+    <a href="/about.jsp">About</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/admin">Admin Page</a>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
-    <a href="/about.jsp">About</a>
   </nav>
 
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About Team 21</h1>
+      <h1>About Team 21CodeMiners</h1>
       <p>
-        Team 21 is a team of 3 university students from North America with the
-        same passion of learning new skills and creating interesting apps. Here
+        Team 21CodeMiners is a team of 3 university students from North America with
+        the same passion of learning new skills and creating interesting apps. Here
         is a list of the team members:
       </p>
       <ul>
         <li><strong>Heng Sun (PA)</strong> Our supereme and righteous leader(PA).</li>
-        <li><strong>Dean Chiu</strong></li>
-        <li><strong>Sherry Yang</strong></li>
+        <li><strong>Dean Chiu</strong> Dean is a sophmore studying at Simon Fraser University, Canada. As of now, he has been doing mostly backend coding and would really like to learn more about the frontend side of computer science. Also, he has created a simple text based game in first year that can be found <a href="https://github.com/chenpionaar1998/Roids">here</a> if anyone is interested &#x1F601.</li>
+        <li><strong>Sherry Yang</strong> Sherry is a sophomore studying at 
+          University of Washington,Seattle (Yes, she craves for the sunlight). 
+          So far, she has been gaining backend skills and is hoping for getting 
+          involved in the "frontend community." One interesting fact about her 
+          is that she has been (too) into the Kpop band BTS since college, it is 
+          sometimes unhealthy to watch countless Youtube vidoes about them ^o^.</li>
         <li><strong>Naomi McCracken</strong> Naomi is a third year Mathematics 
           and Computer Science (undergraduate) student at University of 
           California San Diego. Naomi is especially interested in working in 
@@ -57,7 +63,7 @@
           the sorted version is produced. Naomi is excited to be a part of 
           the CodeU program and learn a lot alongside her teammates.</li>
       </ul>
-      
+
       <h1>About the CodeU Chat App</h1>
       <p>
         This is an example chat application designed to be a starting point
