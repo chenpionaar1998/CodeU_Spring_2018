@@ -31,7 +31,6 @@ public class ProfileServletTest {
   private HttpSession mockSession;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
-  private ConversationStore mockConversationStore;
   private MessageStore mockMessageStore;
   private UserStore mockUserStore;
 
