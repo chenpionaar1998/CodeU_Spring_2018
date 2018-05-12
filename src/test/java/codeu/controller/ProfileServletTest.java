@@ -101,7 +101,6 @@ public class ProfileServletTest {
         testUser.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
         					"test message " + i, Instant.now()));
     }
-
     profileServlet.doPost(mockRequest, mockResponse);
     
 //    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);

@@ -25,6 +25,7 @@ public class MessageStoreTest {
   private final UUID ID_ONE = UUID.randomUUID();
   private final UUID ID_TWO = UUID.randomUUID();
   private final UUID ID_THREE = UUID.randomUUID();
+  private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   
   private final User USER_ONE =
       new User(ID_ONE, "test_username_one", "password one", Instant.ofEpochMilli(1000));
@@ -32,8 +33,6 @@ public class MessageStoreTest {
       new User(ID_TWO, "test_username_two", "password two", Instant.ofEpochMilli(2000));
   private final User USER_THREE =
       new User(ID_THREE, "test_username_three", "password three", Instant.ofEpochMilli(3000));
-  
-  private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   
   private final Message MESSAGE_ONE=
       new Message(
