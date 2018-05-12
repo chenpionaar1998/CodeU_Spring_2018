@@ -1,5 +1,5 @@
 // Copyright 2017 Google Inc.
-//
+
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.UUID;
 
 /** Class representing a registered user. */
@@ -23,9 +25,11 @@ public class User {
   private final String name;
   private final String password;
   private final Instant creation;
+  private static final int NUMBER_OF_MESSAGES = 15;
+  private final Queue<Message> messages;
+  private String aboutUser;
   private int messageCount;
   private final boolean admin;
-
   /**
    * Constructs a new User.
    *
@@ -43,6 +47,28 @@ public class User {
     this.creation = creation;
     this.messageCount = messageCount;
     this.admin = admin;
+    this.messages = new LinkedList<Message>();
+  }
+  
+  // adds about me information for the user 
+  public void setAbout(String about) {
+	  this.aboutUser = about;
+  }
+  
+  // returns the current about me information
+  public String getAbout() {
+	  return aboutUser;
+  }
+  
+  public void addMessage(Message newMessage) {
+	  if (messages.size() == NUMBER_OF_MESSAGES) {
+		  messages.remove();
+	  }
+	  messages.add(newMessage);
+  }
+  
+  public Queue<Message> getMessages() {
+	  return messages; 
   }
 
   /**

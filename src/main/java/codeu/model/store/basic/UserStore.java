@@ -54,7 +54,8 @@ public class UserStore {
    * @param persistentStorageAgent a mock used for testing
    */
   public static UserStore getTestInstance(PersistentStorageAgent persistentStorageAgent) {
-    return new UserStore(persistentStorageAgent);
+	  instance = new UserStore(persistentStorageAgent);
+	  return instance;
   }
 
   /**

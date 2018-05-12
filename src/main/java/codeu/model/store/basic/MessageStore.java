@@ -1,5 +1,5 @@
 // Copyright 2017 Google Inc.
-//
+
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,6 +16,7 @@ package codeu.model.store.basic;
 
 import codeu.model.data.User;
 import codeu.model.data.Message;
+import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,7 @@ public class MessageStore {
 
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
+    addMessageToUser(message);
   }
 
   /** Access the current set of Messages within the given Conversation. */
@@ -114,6 +116,16 @@ public class MessageStore {
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
+    for (Message indMess: messages) {
+    	addMessageToUser(indMess);
+    }
+  }
+  
+  /** Adds one message to the corresponding user. */
+  private void addMessageToUser(Message message) {
+    UUID username = message.getAuthorId();
+    User user = UserStore.getInstance().getUser(username);
+    user.addMessage(message);
   }
 
   /**
