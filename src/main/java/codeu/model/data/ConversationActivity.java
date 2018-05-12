@@ -7,6 +7,7 @@ package codeu.model.data;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
+import codeu.model.store.basic.UserStore;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -43,6 +44,15 @@ public class ConversationActivity extends Activity {
 
   public String getMessagePreview() {
     return this.messagePreview;
+  }
+
+  public String getFeedDisplay() {
+     String actor = UserStore.getInstance().getUser(getActorId()).getName();
+     System.err.println(actor + " sent a message to <a href=\"/chat/" + conversationTitle + ">" 
+         + conversationTitle + "</a>: " + messagePreview);
+
+     return actor + " sent a message to <a href=\"/chat/" + conversationTitle + "\">" 
+         + conversationTitle + "</a>: " + messagePreview;
   }
 
 }

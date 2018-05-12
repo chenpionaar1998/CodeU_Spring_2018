@@ -76,29 +76,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <div id="chat">
       <ul>
     <%
-      List<Activity> activities = (List<Activity>) ActivityStore.getInstance().getActivities();
+      List<Activity> activities = (List<Activity>) ActivityStore.getInstance().getActivitiesCopy();
       DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime
           (FormatStyle.MEDIUM, FormatStyle.SHORT).withZone(ZoneId.systemDefault());
       for (Activity activity : activities) {
-        String actor = UserStore.getInstance().getUser(activity.getActorId()).getName();
     %>
-      <li><strong><%= formatter.format(activity.getCreationTime()) %></strong> 
-        <% if(activity instanceof ConversationActivity) { %>
-          <%= actor %> sent a message to 
-          <a href="/chat/<%= ((ConversationActivity) activity).getConversationTitle() %>"> 
-            <%= ((ConversationActivity)activity).getConversationTitle() %></a>: 
-            <%= ((ConversationActivity)activity).getMessagePreview() %>
-        <% } %>
-        <% if(activity instanceof NewConversationActivity) { %>
-          <%= actor %> created a new conversation 
-            <a href="/chat/<%= ((NewConversationActivity) activity).getConversationTitle() %>">
-            <%= ((NewConversationActivity)activity).getConversationTitle() %> </a> !
-        <% } %>
-        <% if(activity instanceof NewUserActivity) { %>
-          <%= actor %> joined!
-        <% } %>
-
-      </li>
+        <li><strong><%= formatter.format(activity.getCreationTime()) %></strong> 
+          <%= activity.getFeedDisplay() %>
+        </li>
 
     <%
       }

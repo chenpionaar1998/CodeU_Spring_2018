@@ -38,4 +38,6 @@ public abstract class Activity {
     return creationTime;
   }
 
+  abstract public String getFeedDisplay();
+
 }
