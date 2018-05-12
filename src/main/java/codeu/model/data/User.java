@@ -30,7 +30,6 @@ public class User {
   private String aboutUser;
   private int messageCount;
   private final boolean admin;
-
   /**
    * Constructs a new User.
    *

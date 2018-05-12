@@ -101,6 +101,7 @@ public class ProfileServletTest {
         testUser.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
         					"test message " + i, Instant.now()));
     }
+    
     profileServlet.doPost(mockRequest, mockResponse);
     
 //    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -130,7 +131,6 @@ public class ProfileServletTest {
 //    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
 //    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test_profileUser");
 //    Assert.assertEquals(userArgumentCaptor.getValue().getAbout(), "This is just a sample About Me");
-//    // TODO: verify the no empty edit box if present for About Me
 
     Mockito.verify(mockResponse).sendRedirect("/profile/test_profileUser");
   }

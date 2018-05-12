@@ -19,6 +19,8 @@ public class MessageStoreTest {
 
   private MessageStore messageStore;
   private PersistentStorageAgent mockPersistentStorageAgent;
+  private UserStore userStore;
+    
   private List<Message> messageList =  new ArrayList<>();
   private UserStore userStore;
   
@@ -33,8 +35,8 @@ public class MessageStoreTest {
       new User(ID_TWO, "test_username_two", "password two", Instant.ofEpochMilli(2000));
   private final User USER_THREE =
       new User(ID_THREE, "test_username_three", "password three", Instant.ofEpochMilli(3000));
-  
-  private final Message MESSAGE_ONE=
+
+  private final Message MESSAGE_ONE =
       new Message(
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
@@ -66,7 +68,7 @@ public class MessageStoreTest {
     userList.add(USER_TWO);
     userList.add(USER_THREE);
     userStore.setUsers(userList);
-    
+
     messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
     messageList.add(MESSAGE_ONE);
     messageList.add(MESSAGE_TWO);
