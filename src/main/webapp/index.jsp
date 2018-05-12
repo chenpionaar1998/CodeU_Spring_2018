@@ -32,12 +32,12 @@
 
 .search-container button {
   float: right;
-  padding: 6px 10px;
+  padding: 7px 7px;
   margin-top: 8px;
   margin-right: 16px;
   background: #ddd;
   font-size: 17px;
-  border: none;
+  border: 16px;
   cursor: pointer;
 }
 
@@ -67,7 +67,7 @@
       <!-- TODO: fix this to the actual page found after backend search -->
       <form action="/action_page.jsp">
         <input type="text" placeholder="Search.." name="search">
-        <button type="submit"><i class="fa fa-search"></i></button>
+        <button type="submit" class="btn">Go</button>
       </form>
     </div>
   </nav>
@@ -76,7 +76,7 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>CodeU Team 21CodeMiners Chat App</h1>
+      <h1>CodeU 21CodeMiners Chat App</h1>
       <h2>Welcome!</h2>
 
       <ul>
