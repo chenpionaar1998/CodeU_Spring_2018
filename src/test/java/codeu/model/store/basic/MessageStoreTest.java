@@ -104,8 +104,6 @@ public class MessageStoreTest {
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMessage);
   }
 
-
-
   @Test
   public void testGetMessages(){
     Assert.assertEquals(messageList, messageStore.getMessages());

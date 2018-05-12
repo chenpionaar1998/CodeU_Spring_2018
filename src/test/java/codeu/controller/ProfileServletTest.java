@@ -106,9 +106,7 @@ public class ProfileServletTest {
     
 //    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
 //    Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test_profileUser");
-//    Assert.assertEquals(userArgumentCaptor.getValue().getAbout(), "This is just a sample About Me");
-//    // TODO: verify there appears an edit box for About Me
-//    
+//    Assert.assertEquals(userArgumentCaptor.getValue().getAbout(), "This is just a sample About Me");    
     Mockito.verify(mockResponse).sendRedirect("/profile/test_profileUser");
   }
   
