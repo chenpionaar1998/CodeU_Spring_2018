@@ -22,7 +22,6 @@ public class MessageStoreTest {
   private UserStore userStore;
     
   private List<Message> messageList =  new ArrayList<>();
-  private UserStore userStore;
   
   private final UUID ID_ONE = UUID.randomUUID();
   private final UUID ID_TWO = UUID.randomUUID();
