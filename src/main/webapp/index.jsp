@@ -19,6 +19,7 @@
   <title>CodeU Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
 <style>
+
 .search-container {
   float: right;
 }
@@ -32,12 +33,12 @@
 
 .search-container button {
   float: right;
-  padding: 6px 10px;
+  padding: 7px 7px;
   margin-top: 8px;
   margin-right: 16px;
   background: #ddd;
   font-size: 17px;
-  border: none;
+  border: 16px;
   cursor: pointer;
 }
 
@@ -53,6 +54,7 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <a href="/about.jsp">About</a>
+    <a href="/searchResult">Search</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/admin">Admin Page</a>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -60,7 +62,6 @@
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
-    <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
 
     <div class="search-container">
