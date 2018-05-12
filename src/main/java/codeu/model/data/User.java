@@ -68,7 +68,7 @@ public class User {
   }
   
   public Queue<Message> getMessages() {
-	  return messages; 
+	  return messages;
   }
 
   /**

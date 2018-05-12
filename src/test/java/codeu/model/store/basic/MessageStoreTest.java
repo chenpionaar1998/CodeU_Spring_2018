@@ -22,11 +22,12 @@ public class MessageStoreTest {
   private UserStore userStore;
     
   private List<Message> messageList =  new ArrayList<>();
-  private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
+  private UserStore userStore;
   
   private final UUID ID_ONE = UUID.randomUUID();
   private final UUID ID_TWO = UUID.randomUUID();
   private final UUID ID_THREE = UUID.randomUUID();
+  private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   
   private final User USER_ONE =
       new User(ID_ONE, "test_username_one", "password one", Instant.ofEpochMilli(1000));
@@ -34,7 +35,7 @@ public class MessageStoreTest {
       new User(ID_TWO, "test_username_two", "password two", Instant.ofEpochMilli(2000));
   private final User USER_THREE =
       new User(ID_THREE, "test_username_three", "password three", Instant.ofEpochMilli(3000));
-  
+
   private final Message MESSAGE_ONE =
       new Message(
           UUID.randomUUID(),
@@ -69,12 +70,11 @@ public class MessageStoreTest {
     userStore.setUsers(userList);
 
     messageStore = MessageStore.getTestInstance(mockPersistentStorageAgent);
-    final List<Message> messageList = new ArrayList<>();
-
     messageList.add(MESSAGE_ONE);
     messageList.add(MESSAGE_TWO);
     messageList.add(MESSAGE_THREE);
     messageStore.setMessages(messageList);
+    
   }
 
   @Test
@@ -93,18 +93,17 @@ public class MessageStoreTest {
         new Message(
             UUID.randomUUID(),
             inputConversationId,
-            UUID.randomUUID(),
+            ID_ONE,
             "test message",
             Instant.now());
 
     messageStore.addMessage(inputMessage);
+    messageList.add(inputMessage);
     Message resultMessage = messageStore.getMessagesInConversation(inputConversationId).get(0);
 
     assertEquals(inputMessage, resultMessage);
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMessage);
   }
-
-
 
   @Test
   public void testGetMessages(){
