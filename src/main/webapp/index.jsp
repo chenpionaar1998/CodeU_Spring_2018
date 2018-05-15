@@ -18,6 +18,35 @@
 <head>
   <title>CodeU Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
+<style>
+
+.search-container {
+  float: right;
+}
+
+.search-container input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.search-container button {
+  float: right;
+  padding: 7px 7px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: 16px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background: #ccc;
+}
+
+</style>
 </head>
 <body>
 
@@ -25,6 +54,7 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <a href="/about.jsp">About</a>
+    <a href="/searchResult">Search</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/admin">Admin Page</a>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -32,6 +62,15 @@
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
+    <a href="/testdata">Load Test Data</a>
+
+    <div class="search-container">
+      <%-- TODO: fix this to the actual page found after backend search --%>
+      <form action="/action_page.jsp">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search">search</i></button>
+      </form>
+    </div>
   </nav>
 
   <div id="container">
