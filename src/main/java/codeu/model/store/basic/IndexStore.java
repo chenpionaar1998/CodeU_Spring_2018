@@ -43,7 +43,7 @@ public class IndexStore {
     * Splits the given message into words and hash them into the hashtable for future use
     */
   public void splitAndHashMessage(Message message) {
-    String[] words = message.getContent().split("-|,|!|\\?|\\.|\\s+");
+    String[] words = message.getContent().split("-|,|!|\\?|\\.|\\s+|\\W");
     for (String word: words){
       addMapping(word, message);
     }
