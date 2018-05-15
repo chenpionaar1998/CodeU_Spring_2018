@@ -22,5 +22,7 @@
     <runtime>java8</runtime>
     <static-files>
       <include path="/api/stats/*"></include>
+      <include path="/css/*"></include>
+      <include path="/js/*"></include>
     </static-files>
 </appengine-web-app>
