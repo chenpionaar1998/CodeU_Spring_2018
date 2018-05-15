@@ -66,7 +66,7 @@
 
     <div class="search-container">
       <%-- TODO: fix this to the actual page found after backend search --%>
-      <form action="/action_page.jsp">
+      <form action="/searchResult" method="get">
         <input type="text" placeholder="Search.." name="search">
         <button type="submit"><i class="fa fa-search">search</i></button>
       </form>
