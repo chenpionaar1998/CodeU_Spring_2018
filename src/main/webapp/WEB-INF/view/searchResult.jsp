@@ -61,6 +61,8 @@
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
+    <a href="/about.jsp">About</a>
+    <a href="/activity_feed">Activity Feed</a>
   </nav>
 
   <div class="search-container">
