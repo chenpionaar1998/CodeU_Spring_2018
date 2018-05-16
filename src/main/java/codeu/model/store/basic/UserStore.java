@@ -200,7 +200,7 @@ public class UserStore {
     * ]
     *
     */
-  public List<String> writeJSON(){
+  public List<String> makeJSONString(){
     // get the users array sorted with the corresponding messageCount setup
     sortUserList();
     List<String> userObjList = new ArrayList<>();

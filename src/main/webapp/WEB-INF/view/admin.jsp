@@ -39,7 +39,7 @@
     int conversationCount = ConversationStore.getInstance().getConversationCount();
     String topUser = UserStore.getInstance().getTopUser();
     List<String> userList = new ArrayList<>();
-    userList = UserStore.getInstance().writeJSON();
+    userList = UserStore.getInstance().makeJSONString();
   %>
   <div style="display:none;" id="JSONList"><%= userList %></div>
 
