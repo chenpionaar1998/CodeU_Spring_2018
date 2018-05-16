@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.UUID" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.io.File" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
@@ -34,21 +34,14 @@
   </nav>
 
   <%
-    UUID randomName = UUID.randomUUID();
     int userCount = UserStore.getInstance().getUserCount();
     int messageCount = MessageStore.getInstance().getMessageCount();
     int conversationCount = ConversationStore.getInstance().getConversationCount();
     String topUser = UserStore.getInstance().getTopUser();
+    List<String> userList = new ArrayList<>();
+    userList = UserStore.getInstance().makeJSONString();
   %>
-  <div style="display:none;" id="randomName"><%= randomName %></div>
-  <%
-
-    if(UserStore.getInstance().writeJSON(randomName) == false){
-  %>
-    <div id="container">Word Cloud did not load... Please reload the page</div>
-  <%
-    }
-  %>
+  <div style="display:none;" id="JSONList"><%= userList %></div>
 
   <div id="container">
     <h1>Administration</h1>
