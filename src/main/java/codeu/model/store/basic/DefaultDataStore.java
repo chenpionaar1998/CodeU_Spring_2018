@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.Random;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -94,6 +95,18 @@ public class DefaultDataStore {
     return messages;
   }
 
+  public int getUserCount(){
+    return DEFAULT_USER_COUNT;
+  }
+
+  public int getMessageCount(){
+    return DEFAULT_MESSAGE_COUNT;
+  }
+
+  public int getConversationCount(){
+    return DEFAULT_CONVERSATION_COUNT;
+  }
+
   private void addRandomUsers() {
 
     List<String> randomUsernames = getRandomUsernames();
@@ -102,7 +115,7 @@ public class DefaultDataStore {
     Collections.shuffle(randomPasswords);
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      String encryptedPassword = BCrypt.hashpw(randomPasswords.get(i), BCrypt.gensalt());  
+      String encryptedPassword = BCrypt.hashpw(randomPasswords.get(i), BCrypt.gensalt());
       User user = new User(UUID.randomUUID(), randomUsernames.get(i), encryptedPassword, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
@@ -130,6 +143,8 @@ public class DefaultDataStore {
           new Message(
               UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
+      author.incrementMessageCount();
+      IndexStore.getInstance().splitAndHashMessage(message);
       messages.add(message);
     }
   }

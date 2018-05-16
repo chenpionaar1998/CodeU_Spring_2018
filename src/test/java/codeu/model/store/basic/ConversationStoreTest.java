@@ -72,6 +72,25 @@ public class ConversationStoreTest {
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputConversation);
   }
 
+  // add conversation and get conversationCount to see if the calculation is correct
+  @Test
+  public void testGetConversationCount(){
+    int conversation = conversationStore.getConversationCount();
+
+    // test before conversation added, expected result = 1 (1 added from setup)
+    Assert.assertEquals(1, conversation);
+
+    // add a mock conversation
+    Conversation inputConversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+
+    conversationStore.addConversation(inputConversation);
+
+    //get conversationCount again to check if it is calcutlated correctly, expected result = 1
+    conversation = conversationStore.getConversationCount();
+    Assert.assertEquals(2, conversation);
+  }
+
   private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {
     Assert.assertEquals(expectedConversation.getId(), actualConversation.getId());
     Assert.assertEquals(expectedConversation.getOwnerId(), actualConversation.getOwnerId());
