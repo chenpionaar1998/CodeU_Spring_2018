@@ -191,16 +191,15 @@ public class UserStore {
   }
 
   /**
-    * make a JSON file that consists JSON objects {user, messageCount}
-    * sample JSONFile :
+    * make a JSON String that consists JSON objects {user, messageCount}
+    * sample output :
     * [
     *   {messageCount : 20, name : userOne},
     *   {messageCount : 10, name : userTwo}
     * ]
     *
-    * Returns false when an error occurs
     */
-  public boolean writeJSON(UUID randomName){
+  public List<String> writeJSON(){
     // get the users array sorted with the corresponding messageCount setup
     sortUserList();
     List<String> userObjList = new ArrayList<>();
