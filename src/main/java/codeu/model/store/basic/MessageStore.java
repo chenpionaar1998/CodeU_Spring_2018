@@ -120,12 +120,13 @@ public class MessageStore {
     	addMessageToUser(indMess);
     }
   }
-  
+
   /** Adds one message to the corresponding user. */
   private void addMessageToUser(Message message) {
     UUID username = message.getAuthorId();
     User user = UserStore.getInstance().getUser(username);
     user.addMessage(message);
+    user.incrementMessageCount();
   }
 
   /**

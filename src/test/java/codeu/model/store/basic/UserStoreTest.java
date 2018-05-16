@@ -33,14 +33,14 @@ public class UserStoreTest {
       new Message(
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
-          USER_THREE.getId(),
+          USER_ONE.getId(),
           "message one",
           Instant.ofEpochMilli(1000));
   private final Message MESSAGE_TWO =
       new Message(
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
-          USER_THREE.getId(),
+          USER_TWO.getId(),
           "message two",
           Instant.ofEpochMilli(2000));
   private final Message MESSAGE_THREE =
@@ -149,8 +149,8 @@ public class UserStoreTest {
       }
     }
 
-    // after distributing the message count, messageCount should be 3 as the 3 messages created all have id = USER_THREE
-    Assert.assertEquals(3, messageCount);
+    // after distributing the message count, messageCount should be 1 as the 1 message created have id = USER_THREE
+    Assert.assertEquals(1, messageCount);
   }
 
   @Test
