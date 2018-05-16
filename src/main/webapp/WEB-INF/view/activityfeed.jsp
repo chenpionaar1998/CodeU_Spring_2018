@@ -14,18 +14,25 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.format.FormatStyle" %>
+<%@ page import="java.time.ZoneId" %>
+<%@ page import="codeu.model.data.Activity" %>
+<%@ page import="codeu.model.data.ConversationActivity" %>
+<%@ page import="codeu.model.data.NewConversationActivity" %>
+<%@ page import="codeu.model.data.NewUserActivity" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.store.basic.ActivityStore"%>
 <%
-Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= conversation.getTitle() %></title>
+  <title> Activity Feed </title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
 
   <style>
@@ -49,22 +56,19 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
-    <a href="/about.jsp">About</a>
-    <a href="/searchResult">Search</a>
-    <% if (request.getSession().getAttribute("user") != null) { %>
-      <a href="/admin">Admin Page</a>
-      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else { %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/activityfeed">Activity Feed</a>
+    <a href="/activity_feed">Activity Feed</a>
   </nav>
 
   <div id="container">
 
-    <h1><%= conversation.getTitle() %>
+    <h1>Activity Feed
       <a href="" style="float: right">&#8635;</a></h1>
 
     <hr/>
@@ -72,28 +76,20 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <div id="chat">
       <ul>
     <%
-      for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
+      List<Activity> activities = (List<Activity>) ActivityStore.getInstance().getActivitiesCopy();
+      DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime
+          (FormatStyle.MEDIUM, FormatStyle.SHORT).withZone(ZoneId.systemDefault());
+      for (Activity activity : activities) {
     %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+        <li><strong><%= formatter.format(activity.getCreationTime()) %></strong> 
+          <%= activity.getFeedDisplay() %>
+        </li>
+
     <%
       }
     %>
       </ul>
     </div>
-
-    <hr/>
-
-    <% if (request.getSession().getAttribute("user") != null) { %>
-    <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <input type="text" name="message">
-        <br/>
-        <button type="submit">Send</button>
-    </form>
-    <% } else { %>
-      <p><a href="/login">Login</a> to send a message.</p>
-    <% } %>
 
     <hr/>
 

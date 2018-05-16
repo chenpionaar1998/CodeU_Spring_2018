@@ -63,7 +63,7 @@
       <a href="/register">Register</a>
     <% } %>
     <a href="/testdata">Load Test Data</a>
-
+    <a href="/activityfeed">Activity Feed</a>
     <div class="search-container">
       <%-- TODO: fix this to the actual page found after backend search --%>
       <form action="/searchResult" method="get">
