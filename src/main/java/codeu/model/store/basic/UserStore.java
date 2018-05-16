@@ -203,33 +203,13 @@ public class UserStore {
   public boolean writeJSON(UUID randomName){
     // get the users array sorted with the corresponding messageCount setup
     sortUserList();
-
-    try {
-      // check if the directory exists, if not, create it
-      File path = new File("./api/stats");
-      List<String> userObjList = new ArrayList<>();
-      if (!path.isDirectory()){
-        path.mkdirs();
-      }
-      String filename =  String.valueOf(randomName);
-      // make the JSON file in the directory ./api/stats
-      File file = new File("./api/stats/", filename + ".json");
-      FileWriter fileWriter = new FileWriter(file);
-      for (User user : users) {
-        JSONObject userObj = new JSONObject();
-        userObj.put("messageCount", user.getMessageCount());
-        userObj.put("name", user.getName());
-        userObjList.add(userObj.toJSONString());
-      }
-      fileWriter.write("[");
-      fileWriter.write(String.join(", \n", userObjList));
-      fileWriter.write("]");
-      fileWriter.flush();
-      fileWriter.close();
-      return true;
-    } catch (IOException e) {
-      return false;
+    List<String> userObjList = new ArrayList<>();
+    for (User user : users) {
+      JSONObject userObj = new JSONObject();
+      userObj.put("messageCount", user.getMessageCount());
+      userObj.put("name", user.getName());
+      userObjList.add(userObj.toJSONString());
     }
-
+    return userObjList;
   }
 }
