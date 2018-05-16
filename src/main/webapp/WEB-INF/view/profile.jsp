@@ -1,11 +1,16 @@
+<%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="java.util.Queue" %>
+
 <%
 String aboutUser = (String) request.getAttribute("aboutUser");
-String profileUser = (String) request.getAttribute("profileUser");
+User profileUser = (User) request.getAttribute("profileUser");
+String profileUserName = profileUser.getName();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= profileUser %>'s Profile Page</title>
+  <title><%= profileUserName %>'s Profile Page</title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
   <hr/>
 </head>
@@ -20,16 +25,18 @@ String profileUser = (String) request.getAttribute("profileUser");
       <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
+    <a href="/activity_feed">Activity Feed</a>
   </nav>
 
-  <div id="container">
+  <div id="container"
     style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-    <h1>About <%= profilePage %></h1>
+    <h1>About <%= profileUserName %></h1>
     <p><%= aboutUser %></p>
       
-	<% if(request.getSession().getAttribute("currentUser") == profileUser){ %>
-	  <h1>Edit Your About Me (only you can see this)
+    <%if(request.getSession().getAttribute("user") != null && 
+          request.getSession().getAttribute("user").equals(profileUserName)) { %>
+      <h1>Edit Your About Me (only you can see this)
 	  	<a href="" style="float: right">&#8635;</a></h1>
 	  	
 	  <form action="/profile" method="POST">
@@ -40,14 +47,14 @@ String profileUser = (String) request.getAttribute("profileUser");
 	  <hr/>
 	<% } %>
 	
-	<h1><%= profileUser %>'s Sent Messages</h1>
+	<h1><%= profileUserName %>'s Sent Messages</h1>
 
     <%
     Queue<Message> profileMessages = 
       (Queue<Message>) profileUser.getMessages();
     if(profileMessages == null || profileMessages.isEmpty()){
     %>
-      <p><%= profileUser %> has not sent any messages</p>
+      <p><%= profileUserName %> has not sent any messages</p>
     <%
     }
     else{

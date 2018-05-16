@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet class responsible for activity feed page
  */
-public class ActivityFeedServlet extends HttpServlet {
+public class ActivityServlet extends HttpServlet {
 
   /* store class that gives access to activities */
   private ActivityStore activityStore;
