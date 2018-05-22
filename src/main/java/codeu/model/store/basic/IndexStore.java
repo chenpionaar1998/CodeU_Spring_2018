@@ -103,6 +103,7 @@ public class IndexStore {
         hashSetOne.add(message);
       }
       List<Message> result = new ArrayList<Message>(hashSetOne);
+      result = sortMessageList(result);
       return result;
     }
   }
