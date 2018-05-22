@@ -48,7 +48,7 @@ public class IndexStoreTest {
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
           UUID.randomUUID(),
-          "Random test message one.",
+          "Random test message one four.",
           Instant.ofEpochMilli(4000));
   private Set<Message> messageList = new HashSet<>();
   private List<Message> inOrderMessageList = new ArrayList<>();
@@ -110,9 +110,10 @@ public class IndexStoreTest {
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_ONE);
     expectedList.add(MESSAGE_FOUR);
-    Assert.assertEquals(expectedList, indexStore.search("test&&one"));
-    Assert.assertEquals(null, indexStore.search("test&&"));
-    Assert.assertEquals(null, indexStore.search("&&one"));
+    Assert.assertEquals(expectedList, indexStore.search("test&&one&&message"));
+    Assert.assertEquals(expectedList, indexStore.search("test&&one&&"));
+    Assert.assertEquals(expectedList, indexStore.search("&&one&&test"));
+
   }
 
   @Test
@@ -120,13 +121,14 @@ public class IndexStoreTest {
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_TWO);
     expectedList.add(MESSAGE_THREE);
-    Assert.assertEquals(expectedList, indexStore.search("two||three"));
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("two||three||four"));
     expectedList.remove(MESSAGE_THREE);
-    Assert.assertEquals(expectedList, indexStore.search("two||"));
+    Assert.assertEquals(expectedList, indexStore.search("two||four||"));
     expectedList.remove(MESSAGE_TWO);
+    expectedList.remove(MESSAGE_FOUR);
     expectedList.add(MESSAGE_THREE);
-    Assert.assertEquals(expectedList, indexStore.search("||three"));
-    // String test = "two||";
-    // Assert.assertEquals(true,test.indexOf("|") == test.length()-2);
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("||three||four"));
   }
 }

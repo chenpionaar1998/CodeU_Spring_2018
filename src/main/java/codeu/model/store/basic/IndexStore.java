@@ -88,23 +88,30 @@ public class IndexStore {
     * returns the union of the elements in the given searchTarget
     */
   public List<Message> searchUnion (String searchTarget) {
+    // remove bad format || in searchtarget
+    if (searchTarget.indexOf("|") == 0) {
+      searchTarget = searchTarget.substring(2);
+    }
+    if (searchTarget.indexOf("||") == (searchTarget.length()-2)) {
+      searchTarget = searchTarget.substring(0,searchTarget.length()-2);
+    }
     String[] words = searchTarget.split("\\|\\|");
 
-    if (words.length > 2) {
+    if (words.length == 0) {
       return null;
-    }else if (searchTarget.indexOf("|") == 0) {
-      return search(words[1]);
-    }else if (searchTarget.indexOf("|") == (searchTarget.length()-2)) {
-      return search(words[0]);
     }else {
-      Set<Message> hashSetOne = new HashSet<Message>(search(words[0]));
-      Set<Message> hashSetTwo = new HashSet<Message>(search(words[1]));
-      for (Message message : hashSetTwo){
-        hashSetOne.add(message);
+      Set<Message> hashSetResult = new HashSet<Message>(search(words[0]));
+      for (String word : words){
+        if (search(word) != null) {
+          Set<Message> hashSetTemp = new HashSet<Message>(search(word));
+          for (Message message : hashSetTemp){
+            hashSetResult.add(message);
+          }
+        }
       }
-      List<Message> result = new ArrayList<Message>(hashSetOne);
-      result = sortMessageList(result);
-      return result;
+      List<Message> unionResult = new ArrayList<Message>(hashSetResult);
+      unionResult = sortMessageList(unionResult);
+      return unionResult;
     }
   }
 
@@ -113,23 +120,30 @@ public class IndexStore {
     * returns the intersection of the elements in the given searchTarget
     */
   public List<Message> searchIntersection (String searchTarget) {
+    // remove bad format && in searchtarget
+    if (searchTarget.indexOf("&") == 0) {
+      searchTarget = searchTarget.substring(2);
+    }
+    if (searchTarget.indexOf("&&") == (searchTarget.length()-2)) {
+      searchTarget = searchTarget.substring(0,searchTarget.length()-2);
+    }
     String[] words = searchTarget.split("&&");
-    List<Message> wordOneResult = new ArrayList<>();
-    List<Message> wordTwoResult = new ArrayList<>();
-    if (words.length != 2 || searchTarget.indexOf("&") == 0) {
+
+    if (words.length == 0) {
       return null;
     }else {
-      wordOneResult = search(words[0]);
-      wordTwoResult = search(words[1]);
-      Set<Message> hashSet = new HashSet<Message>(wordOneResult);
-      List<Message> result = new ArrayList<>();
-      for (Message message : wordTwoResult) {
-        if (hashSet.contains(message)){
-          result.add(message);
+      List<Message> intersectionResult = new ArrayList<Message>(search(words[0]));
+      for (String word : words) {
+        if (search(word) != null) {
+          List<Message> intersectionTemp = new ArrayList<Message>(search(word));
+          intersectionResult.retainAll(intersectionTemp);
+        }else {
+          // if any of the search targets have null result, the intersection should also be null
+          return null;
         }
       }
-      result = sortMessageList(result);
-      return result;
+      intersectionResult = sortMessageList(intersectionResult);
+      return intersectionResult;
     }
   }
 
