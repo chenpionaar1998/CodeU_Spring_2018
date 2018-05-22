@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
@@ -34,13 +36,19 @@ public class Message {
    * @param author the ID of the User who sent this Message
    * @param content the text content of this Message
    * @param creation the creation time of this Message
+   * @param parseImages whether or not links in the message should be found and
+   *          added as loaded pictures at end. Based on whether new message or loaded.
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, 
+                 boolean parseImages) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
-    this.content = content;
     this.creation = creation;
+    if(parseImages) 
+        this.content = parseImages(content);
+    else
+        this.content = content;
   }
 
   /** Returns the ID of this Message. */
@@ -61,6 +69,48 @@ public class Message {
   /** Returns the text content of this Message. */
   public String getContent() {
     return content;
+  }
+
+  /** Finds picture links that end in jpg and add to the end of the message the
+   * html rendered picture (link picture, opens to picture in another window)
+   * with maximum picture width at 500 */
+  public String parseImages(String message) { 
+    int startIndex = 0;
+    int linkStartIndex;
+    int spaceIndex;
+    int newlineIndex;
+    int endWordIndex;
+    List<String> links = new ArrayList<String>(); 
+
+    while (startIndex < message.length()) {
+        linkStartIndex = message.indexOf("http", startIndex);
+        if(linkStartIndex == -1)
+            return message;   //indicated http not in string
+ 
+        spaceIndex = message.indexOf(' ', linkStartIndex);
+        newlineIndex = message.indexOf('\n', linkStartIndex);
+        if(spaceIndex == -1)     //-1 if no space in the rest of the string
+            spaceIndex = message.length();
+        if(newlineIndex == -1)
+            newlineIndex = message.length();
+        endWordIndex = Math.min(newlineIndex, spaceIndex);
+        System.out.println("start index is " + startIndex + " end is " + endWordIndex);
+
+        if(message.substring(endWordIndex - 4, endWordIndex).equals(".jpg")) {
+            links.add("\n<a href =" + message.substring(
+                      linkStartIndex, endWordIndex) + "><img style=\"max-width:500px\" src=" + 
+                      message.substring(linkStartIndex, endWordIndex) + "></a>");
+        }
+        startIndex = endWordIndex;
+    }
+
+    if(links.size() > 0)
+        message = message + "\n";
+   
+    for(String link : links) {
+        message = message + link; 
+    }
+    return message;
   }
 
   /** Returns the creation time of this Message. */
