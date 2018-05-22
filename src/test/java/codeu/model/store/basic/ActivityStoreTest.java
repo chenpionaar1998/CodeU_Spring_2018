@@ -21,7 +21,6 @@ import org.mockito.Mockito;
 public class ActivityStoreTest {
 
   private ActivityStore activityStore;
-  //private ConversationStore conversationStore;
   private PersistentStorageAgent mockPersistentStorageAgent;
 
 
@@ -55,7 +54,6 @@ public class ActivityStoreTest {
 
       Assert.assertEquals(inputActivity.getActorId(), resultActivity.getActorId());
       Assert.assertEquals(inputActivity.getCreationTime(), resultActivity.getCreationTime());
-      //Mockito.verify(mockPersistentStorageAgent.writeThrough(inputActivity));
   }
 
   @Test
@@ -73,7 +71,6 @@ public class ActivityStoreTest {
       Assert.assertEquals(inputActivity.getActorId(), testActivity.getActorId());
       Assert.assertEquals(inputActivity.getCreationTime(), testActivity.getCreationTime());
       Assert.assertEquals(inputActivity.getConversationTitle(), testActivity.getConversationTitle());
-      //Mockito.verify(mockPersistentStorageAgent.writeThrough(inputActivity));
   }
 
   @Test
@@ -92,14 +89,5 @@ public class ActivityStoreTest {
       Assert.assertEquals(inputActivity.getCreationTime(), testActivity.getCreationTime());
       Assert.assertEquals(inputActivity.getConversationTitle(), testActivity.getConversationTitle());
       Assert.assertEquals(inputActivity.getMessagePreview(), testActivity.getMessagePreview());
-      //Mockito.verify(mockPersistentStorageAgent.writeThrough(inputActivity));
   }
-/*
-  private void assertEquals(Conversation expectedConversation, Conversation actualConversation) {
-    Assert.assertEquals(expectedConversation.getId(), actualConversation.getId());
-    Assert.assertEquals(expectedConversation.getOwnerId(), actualConversation.getOwnerId());
-    Assert.assertEquals(expectedConversation.getTitle(), actualConversation.getTitle());
-    Assert.assertEquals(
-        expectedConversation.getCreationTime(), actualConversation.getCreationTime());
-  }*/
 }
