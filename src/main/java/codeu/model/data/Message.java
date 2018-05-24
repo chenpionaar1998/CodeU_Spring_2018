@@ -81,34 +81,21 @@ public class Message {
     int newlineIndex;
     int endWordIndex;
     List<String> links = new ArrayList<String>(); 
+    String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
+    String [] words = message.split("\\s");
 
-    while (startIndex < message.length()) {
-        linkStartIndex = message.indexOf("http", startIndex);
-        if(linkStartIndex == -1)
-            return message;   //indicated http not in string
- 
-        spaceIndex = message.indexOf(' ', linkStartIndex);
-        newlineIndex = message.indexOf('\n', linkStartIndex);
-        if(spaceIndex == -1)     //-1 if no space in the rest of the string
-            spaceIndex = message.length();
-        if(newlineIndex == -1)
-            newlineIndex = message.length();
-        endWordIndex = Math.min(newlineIndex, spaceIndex);
-        System.out.println("start index is " + startIndex + " end is " + endWordIndex);
-
-        if(message.substring(endWordIndex - 4, endWordIndex).equals(".jpg")) {
-            links.add("\n<a href =" + message.substring(
-                      linkStartIndex, endWordIndex) + "><img style=\"max-width:500px\" src=" + 
-                      message.substring(linkStartIndex, endWordIndex) + "></a>");
-        }
-        startIndex = endWordIndex;
+    for(String word : words) {
+        if(word.matches(linkRegex))
+            links.add(word);
     }
 
+    //new line separating message and loaded pictures
     if(links.size() > 0)
         message = message + "\n";
    
     for(String link : links) {
-        message = message + link; 
+        message = message + "<a href=" + link + "><img style=\"max-width:500px\" src=" +
+                  link + "></a>"; 
     }
     return message;
   }
