@@ -95,7 +95,7 @@ public class Message {
    
     for(String link : links) {
         message = message + "<a href=" + link + "><img style=\"max-width:500px\" src=" +
-                  link + "></a>"; 
+                  link + "></a> "; 
     }
     return message;
   }
