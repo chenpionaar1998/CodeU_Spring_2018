@@ -75,6 +75,10 @@ public class IndexStore {
     if (searchTarget.contains("||")) {
       return searchUnion(searchTarget);
     }else if (searchTarget.contains("&&")) {
+      searchTarget = searchTarget.replaceAll(" ","");
+      return searchIntersection(searchTarget);
+    } else if (searchTarget.contains(" ")) {
+      searchTarget = searchTarget.replaceAll("\\s+", "&&");
       return searchIntersection(searchTarget);
     }else if (wordsHash.containsKey(searchTarget)){
       List<Message> messageList = new ArrayList<Message>(wordsHash.get(searchTarget));
@@ -88,31 +92,23 @@ public class IndexStore {
     * returns the union of the elements in the given searchTarget
     */
   public List<Message> searchUnion (String searchTarget) {
-    // remove bad format || in searchtarget
-    if (searchTarget.indexOf("|") == 0) {
-      searchTarget = searchTarget.substring(2);
-    }
-    if (searchTarget.indexOf("||") == (searchTarget.length()-2)) {
-      searchTarget = searchTarget.substring(0,searchTarget.length()-2);
-    }
-    String[] words = searchTarget.split("\\|\\|");
+    String[] words = searchTarget.split("\\|\\||\\s+");
 
     if (words.length == 0) {
       return null;
-    }else {
-      Set<Message> hashSetResult = new HashSet<Message>(search(words[0]));
-      for (String word : words){
-        if (search(word) != null) {
-          Set<Message> hashSetTemp = new HashSet<Message>(search(word));
-          for (Message message : hashSetTemp){
-            hashSetResult.add(message);
-          }
+    }
+    Set<Message> hashSetResult = new HashSet<Message>();
+    for (String word : words){
+      if (search(word) != null) {
+        Set<Message> hashSetTemp = new HashSet<Message>(search(word));
+        for (Message message : hashSetTemp){
+          hashSetResult.add(message);
         }
       }
-      List<Message> unionResult = new ArrayList<Message>(hashSetResult);
-      unionResult = sortMessageList(unionResult);
-      return unionResult;
     }
+    List<Message> unionResult = new ArrayList<Message>(hashSetResult);
+    unionResult = sortMessageList(unionResult);
+    return unionResult;
   }
 
   /**
@@ -120,31 +116,27 @@ public class IndexStore {
     * returns the intersection of the elements in the given searchTarget
     */
   public List<Message> searchIntersection (String searchTarget) {
-    // remove bad format && in searchtarget
-    if (searchTarget.indexOf("&") == 0) {
+    if (searchTarget.indexOf("&&") == 0) {
       searchTarget = searchTarget.substring(2);
     }
-    if (searchTarget.indexOf("&&") == (searchTarget.length()-2)) {
-      searchTarget = searchTarget.substring(0,searchTarget.length()-2);
-    }
     String[] words = searchTarget.split("&&");
-
-    if (words.length == 0) {
+    if (words.length == 0 || search(words[0]) == null) {
       return null;
-    }else {
-      List<Message> intersectionResult = new ArrayList<Message>(search(words[0]));
-      for (String word : words) {
-        if (search(word) != null) {
-          List<Message> intersectionTemp = new ArrayList<Message>(search(word));
-          intersectionResult.retainAll(intersectionTemp);
-        }else {
-          // if any of the search targets have null result, the intersection should also be null
-          return null;
-        }
-      }
-      intersectionResult = sortMessageList(intersectionResult);
-      return intersectionResult;
     }
+    List<Message> intersectionResult = new ArrayList<Message>(search(words[0]));
+    for (int i = 1 ; i < words.length ; i++) {
+      String word = words[i];
+      if (search(word) != null) {
+        List<Message> intersectionTemp = new ArrayList<Message>(search(word));
+        intersectionResult.retainAll(intersectionTemp);
+      }else {
+        // if any of the search targets have null result, the intersection should also be null
+        return null;
+      }
+    }
+    intersectionResult = sortMessageList(intersectionResult);
+    return intersectionResult;
+
   }
 
   /**

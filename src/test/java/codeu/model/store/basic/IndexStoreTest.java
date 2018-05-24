@@ -84,6 +84,11 @@ public class IndexStoreTest {
     // Testing for both "message" and "test" should both only return the set with one MESSAGE_ONE
     Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
     Assert.assertEquals(inOrderMessageList, indexStore.search("test"));
+
+    // Testing for String with no && but contains 2 words should be parsed into A&&B
+    List<Message> expectedList = new ArrayList<>();
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("one four"));
     Assert.assertEquals(null, indexStore.search("hello"));
     Assert.assertEquals(null, indexStore.search("one."));
   }
@@ -111,9 +116,14 @@ public class IndexStoreTest {
     expectedList.add(MESSAGE_ONE);
     expectedList.add(MESSAGE_FOUR);
     Assert.assertEquals(expectedList, indexStore.search("test&&one&&message"));
+    Assert.assertEquals(expectedList, indexStore.search("test && one && message"));
     Assert.assertEquals(expectedList, indexStore.search("test&&one&&"));
     Assert.assertEquals(expectedList, indexStore.search("&&one&&test"));
-
+    Assert.assertEquals(expectedList, indexStore.search("test one"));
+    expectedList.remove(MESSAGE_ONE);
+    expectedList.remove(MESSAGE_FOUR);
+    Assert.assertEquals(null, indexStore.search("five && six"));
+    Assert.assertEquals(null, indexStore.search(" && "));
   }
 
   @Test
@@ -130,5 +140,11 @@ public class IndexStoreTest {
     expectedList.add(MESSAGE_THREE);
     expectedList.add(MESSAGE_FOUR);
     Assert.assertEquals(expectedList, indexStore.search("||three||four"));
+    Assert.assertEquals(expectedList, indexStore.search("three || four"));
+    Assert.assertEquals(expectedList, indexStore.search("three || || four"));
+    expectedList.remove(MESSAGE_THREE);
+    expectedList.remove(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("five || six"));
+    Assert.assertEquals(null, indexStore.search(" || "));
   }
 }
