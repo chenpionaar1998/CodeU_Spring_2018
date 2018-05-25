@@ -140,8 +140,8 @@ public class DefaultDataStore {
       String content = getRandomMessageContent();
 
       Message message =
-          new Message(
-              UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
+          new Message(UUID.randomUUID(), conversation.getId(), author.getId(), content, 
+                      Instant.now(), true);
       PersistentStorageAgent.getInstance().writeThrough(message);
       author.incrementMessageCount();
       IndexStore.getInstance().splitAndHashMessage(message);
