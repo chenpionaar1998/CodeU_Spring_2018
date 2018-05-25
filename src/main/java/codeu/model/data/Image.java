@@ -10,6 +10,10 @@ public class Image {
     public Image(String url) {
     	this.url = url;
     }
+
+    public String getUrl() {
+        return url;
+    }
    
     /* gets imagee from image store by this url. If image not in imagestore
      * imagestore will add a image by this url */

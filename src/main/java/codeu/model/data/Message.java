@@ -27,7 +27,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
-  private final List<String> imageLinks;
+  private final List<Image> images;
 
   /**
    * Constructs a new Message.
@@ -46,7 +46,7 @@ public class Message {
     this.conversation = conversation;
     this.author = author;
     this.creation = creation;
-    this.imageLinks = parseImages(content);
+    this.images = parseImages(content);
     this.content = content;
   }
 
@@ -69,12 +69,12 @@ public class Message {
   public String getContent() {
     String contentWithPictures = content;
 
-    if(imageLinks.size() > 0)
+    if(images.size() > 0)
         contentWithPictures += '\n';
 
-    for(String link : imageLinks) { 
-        contentWithPictures = contentWithPictures + "<a href=" + link + 
-                              "><img style=\"max-width:500px\" src=" + link + "></a> ";
+    for(Image image : images) { 
+        contentWithPictures = contentWithPictures + "<a href=" + image.getUrl() + 
+                              "><img style=\"max-width:500px\" src=" + image.getUrl() + "></a> ";
     }
     return contentWithPictures;
   }
@@ -82,24 +82,25 @@ public class Message {
   /** Finds picture links that end in jpg and add to the end of the message the
    * html rendered picture (link picture, opens to picture in another window)
    * with maximum picture width at 500 */
-  public List<String> parseImages(String message) { 
-    List<String> images = new ArrayList<String>(); 
+  public List<Image> parseImages(String message) { 
+    List<Image> images = new ArrayList<Image>(); 
     String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
     String [] words = message.split("\\s");
 
     for(String word : words) {
         if(word.matches(linkRegex)) 
-            images.add(word);
+            images.add(Image.getImageFromUrl(word));
     }
 
     //new line separating message and loaded pictures
-    if(images.size() > 0)
+/*    if(images.size() > 0)
         message = message + "\n";
+   
    
     for(String link : images) {
         message = message + "<a href=" + link + "><img style=\"max-width:500px\" src=" +
                   link + "></a> "; 
-    }
+    }*/
     return images;
   }
 
