@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
@@ -25,6 +27,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private final List<Image> images;
 
   /**
    * Constructs a new Message.
@@ -34,13 +37,17 @@ public class Message {
    * @param author the ID of the User who sent this Message
    * @param content the text content of this Message
    * @param creation the creation time of this Message
+   * @param parseImages whether or not links in the message should be found and
+   *          added as loaded pictures at end. Based on whether new message or loaded.
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, 
+                 boolean parseImages) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
-    this.content = content;
     this.creation = creation;
+    this.images = parseImages(content);
+    this.content = content;
   }
 
   /** Returns the ID of this Message. */
@@ -60,7 +67,41 @@ public class Message {
 
   /** Returns the text content of this Message. */
   public String getContent() {
-    return content;
+    String contentWithPictures = content;
+
+    if(images.size() > 0)
+        contentWithPictures += '\n';
+
+    for(Image image : images) { 
+        contentWithPictures = contentWithPictures + "<a href=" + image.getUrl() + 
+                              "><img style=\"max-width:500px\" src=" + image.getUrl() + "></a> ";
+    }
+    return contentWithPictures;
+  }
+
+  /** Finds picture links that end in jpg and add to the end of the message the
+   * html rendered picture (link picture, opens to picture in another window)
+   * with maximum picture width at 500 */
+  public List<Image> parseImages(String message) { 
+    List<Image> images = new ArrayList<Image>(); 
+    String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
+    String [] words = message.split("\\s");
+
+    for(String word : words) {
+        if(word.matches(linkRegex)) 
+            images.add(Image.getImageFromUrl(word));
+    }
+
+    //new line separating message and loaded pictures
+/*    if(images.size() > 0)
+        message = message + "\n";
+   
+   
+    for(String link : images) {
+        message = message + "<a href=" + link + "><img style=\"max-width:500px\" src=" +
+                  link + "></a> "; 
+    }*/
+    return images;
   }
 
   /** Returns the creation time of this Message. */

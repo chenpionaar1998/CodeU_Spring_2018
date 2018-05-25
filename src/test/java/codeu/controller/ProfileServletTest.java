@@ -82,7 +82,7 @@ public class ProfileServletTest {
   private void addSomeMessages(Queue<Message> testMessages) {
 	  for (int i = 0; i < 16; i++) {
 	        testMessages.add(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
-	        					"test message " + i, Instant.now()));
+	        					"test message " + i, Instant.now(), true));
 	    }
   }
   
@@ -99,7 +99,7 @@ public class ProfileServletTest {
     
     for (int i = 0; i < 16; i++) {
         testUser.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
-        					"test message " + i, Instant.now()));
+        					"test message " + i, Instant.now(), true));
     }
     
     profileServlet.doPost(mockRequest, mockResponse);
@@ -123,7 +123,7 @@ public class ProfileServletTest {
     
     for (int i = 0; i < 16; i++) {
         testUser.addMessage(new Message(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
-        					"test message " + i, Instant.now()));
+        					"test message " + i, Instant.now(), true));
     }
 
     profileServlet.doPost(mockRequest, mockResponse);
