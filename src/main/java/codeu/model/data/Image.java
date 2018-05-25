@@ -14,6 +14,10 @@ public class Image {
     public String getUrl() {
         return url;
     }
+
+    public String getHtml() {
+        return "<a href=" + url + "><img style=\"max-width:500px\" src=" + url + "></a> ";
+    }
    
     /* gets imagee from image store by this url. If image not in imagestore
      * imagestore will add a image by this url */

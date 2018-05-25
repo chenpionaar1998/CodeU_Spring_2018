@@ -40,8 +40,7 @@ public class Message {
    * @param parseImages whether or not links in the message should be found and
    *          added as loaded pictures at end. Based on whether new message or loaded.
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, 
-                 boolean parseImages) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
@@ -72,10 +71,9 @@ public class Message {
     if(images.size() > 0)
         contentWithPictures += '\n';
 
-    for(Image image : images) { 
-        contentWithPictures = contentWithPictures + "<a href=" + image.getUrl() + 
-                              "><img style=\"max-width:500px\" src=" + image.getUrl() + "></a> ";
-    }
+    for(Image image : images)  
+        contentWithPictures = contentWithPictures + image.getHtml();
+
     return contentWithPictures;
   }
 
@@ -92,15 +90,6 @@ public class Message {
             images.add(Image.getImageFromUrl(word));
     }
 
-    //new line separating message and loaded pictures
-/*    if(images.size() > 0)
-        message = message + "\n";
-   
-   
-    for(String link : images) {
-        message = message + "<a href=" + link + "><img style=\"max-width:500px\" src=" +
-                  link + "></a> "; 
-    }*/
     return images;
   }
 

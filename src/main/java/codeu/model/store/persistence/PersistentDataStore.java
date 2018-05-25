@@ -145,8 +145,7 @@ public class PersistentDataStore {
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String content = (String) entity.getProperty("content");
-        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime, 
-                                      false);
+        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         IndexStore.getInstance().splitAndHashMessage(message);
         messages.add(message);
       } catch (Exception e) {

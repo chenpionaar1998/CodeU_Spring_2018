@@ -35,24 +35,21 @@ public class UserStoreTest {
           CONVERSATION_ID_ONE,
           USER_ONE.getId(),
           "message one",
-          Instant.ofEpochMilli(1000),
-          true);
+          Instant.ofEpochMilli(1000));
   private final Message MESSAGE_TWO =
       new Message(
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
           USER_TWO.getId(),
           "message two",
-          Instant.ofEpochMilli(2000),
-          true);
+          Instant.ofEpochMilli(2000));
   private final Message MESSAGE_THREE =
       new Message(
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
           USER_THREE.getId(),
           "message three",
-          Instant.ofEpochMilli(3000),
-          true);
+          Instant.ofEpochMilli(3000));
 
   final List<User> userList = new ArrayList<>();
   final List<Message> messageList = new ArrayList<>();
