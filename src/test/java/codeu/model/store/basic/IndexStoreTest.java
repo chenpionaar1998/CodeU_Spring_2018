@@ -48,7 +48,7 @@ public class IndexStoreTest {
           UUID.randomUUID(),
           CONVERSATION_ID_ONE,
           UUID.randomUUID(),
-          "Random test message one four.",
+          "is Random test message one four.",
           Instant.ofEpochMilli(4000));
   private Set<Message> messageList = new HashSet<>();
   private List<Message> inOrderMessageList = new ArrayList<>();
@@ -84,6 +84,7 @@ public class IndexStoreTest {
     // Testing for both "message" and "test" should both only return the set with one MESSAGE_ONE
     Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
     Assert.assertEquals(inOrderMessageList, indexStore.search("test"));
+    Assert.assertEquals(inOrderMessageList, indexStore.search("is&&test message"));
 
     // Testing for String with no && but contains 2 words should be parsed into A&&B
     List<Message> expectedList = new ArrayList<>();

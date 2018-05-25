@@ -75,7 +75,7 @@ public class IndexStore {
     if (searchTarget.contains("||")) {
       return searchUnion(searchTarget);
     }else if (searchTarget.contains("&&")) {
-      searchTarget = searchTarget.replaceAll(" ","");
+      searchTarget = searchTarget.replaceAll(" ","&&");
       return searchIntersection(searchTarget);
     } else if (searchTarget.contains(" ")) {
       searchTarget = searchTarget.replaceAll("\\s+", "&&");
