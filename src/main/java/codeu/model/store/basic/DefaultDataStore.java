@@ -139,9 +139,8 @@ public class DefaultDataStore {
       User author = getRandomElement(users);
       String content = getRandomMessageContent();
 
-      Message message =
-          new Message(UUID.randomUUID(), conversation.getId(), author.getId(), content, 
-                      Instant.now(), true);
+      Message message = new Message(
+              UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       author.incrementMessageCount();
       IndexStore.getInstance().splitAndHashMessage(message);

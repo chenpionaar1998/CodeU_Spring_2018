@@ -38,7 +38,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
-  private final List<Image> images;
+  private final List<codeu.model.data.Image> images;
 
   /**
    * Constructs a new Message.
@@ -51,8 +51,7 @@ public class Message {
    * @param parseImages whether or not links in the message should be found and
    *          added as loaded pictures at end. Based on whether new message or loaded.
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, 
-                 boolean parseImages) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
@@ -83,35 +82,25 @@ public class Message {
     if(images.size() > 0)
         contentWithPictures += '\n';
 
-    for(Image image : images) { 
-        contentWithPictures = contentWithPictures + "<a href=" + image.getUrl() + 
-                              "><img style=\"max-width:500px\" src=" + image.getUrl() + "></a> ";
-    }
+    for(codeu.model.data.Image image : images)  
+        contentWithPictures = contentWithPictures + image.getHtml();
+
     return contentWithPictures;
   }
 
   /** Finds picture links that end in jpg and add to the end of the message the
    * html rendered picture (link picture, opens to picture in another window)
    * with maximum picture width at 500 */
-  public List<Image> parseImages(String message) { 
-    List<Image> images = new ArrayList<Image>(); 
+  public List<codeu.model.data.Image> parseImages(String message) { 
+    List<codeu.model.data.Image> images = new ArrayList<codeu.model.data.Image>(); 
     String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
     String [] words = message.split("\\s");
 
     for(String word : words) {
         if(word.matches(linkRegex)) 
-            images.add(Image.getImageFromUrl(word));
+            images.add(codeu.model.data.Image.getImageFromUrl(word));
     }
 
-    //new line separating message and loaded pictures
-/*    if(images.size() > 0)
-        message = message + "\n";
-   
-   
-    for(String link : images) {
-        message = message + "<a href=" + link + "><img style=\"max-width:500px\" src=" +
-                  link + "></a> "; 
-    }*/
     return images;
   }
 
