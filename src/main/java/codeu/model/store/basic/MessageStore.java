@@ -93,7 +93,7 @@ public class MessageStore {
     if(user != null){
       user.incrementMessageCount();
     }
-
+    IndexStore.getInstance().splitAndHashMessage(message);
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
     addMessageToUser(message);

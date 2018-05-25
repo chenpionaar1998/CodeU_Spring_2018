@@ -29,6 +29,7 @@
     <a href="/conversations">Conversation</a>
     <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
+    <a href="/searchResult">Search</a>
     <a>Hello <%=request.getSession().getAttribute("user")%> !</a>
   </nav>
 
@@ -66,7 +67,7 @@
   <div id="wordCloud"></div>
 
   <%-- use d3 library for the word cloud, treat d3.layout.cloud.js as a blackbox, implementations for the actual word cloud is in wordCLoud.js--%>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="/js/d3.v3.min.js"></script>
   <script type="text/javascript" src="/js/d3.layout.cloud.js" ></script>
   <script type="text/javascript" src="/js/wordCloud.js" ></script>
 </body>

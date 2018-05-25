@@ -19,6 +19,7 @@
   <title>CodeU Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
 <style>
+
 .search-container {
   float: right;
 }
@@ -53,6 +54,7 @@
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <a href="/about.jsp">About</a>
+    <a href="/searchResult">Search</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/admin">Admin Page</a>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -60,14 +62,13 @@
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
-    <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
-    
+
     <div class="search-container">
-      <!-- TODO: fix this to the actual page found after backend search -->
-      <form action="/action_page.jsp">
+      <%-- TODO: fix this to the actual page found after backend search --%>
+      <form action="/searchResult" method="get">
         <input type="text" placeholder="Search.." name="search">
-        <button type="submit" class="btn">Go</button>
+        <button type="submit"><i class="fa fa-search">search</i></button>
       </form>
     </div>
   </nav>
