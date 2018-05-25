@@ -72,7 +72,7 @@ public class Message {
         contentWithPictures += '\n';
 
     for(codeu.model.data.Image image : images)  
-        contentWithPictures = contentWithPictures + image.getHtml();
+        contentWithPictures = contentWithPictures + image.getHTML();;
 
     return contentWithPictures;
   }
@@ -86,8 +86,11 @@ public class Message {
     String [] words = message.split("\\s");
 
     for(String word : words) {
-        if(word.matches(linkRegex)) 
-            images.add(codeu.model.data.Image.getImageFromUrl(word));
+        if(word.matches(linkRegex)) {
+          codeu.model.data.Image newImage = codeu.model.data.Image.getImageFromUrl(word);
+          newImage.callToAPI();
+          images.add(newImage);
+        }
     }
 
     return images;
