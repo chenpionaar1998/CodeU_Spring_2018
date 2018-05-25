@@ -3,9 +3,14 @@ package codeu.model.store.basic;
 import codeu.model.data.Message;
 import codeu.model.data.Conversation;
 import codeu.model.data.User;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class IndexStore {
 
@@ -66,11 +71,86 @@ public class IndexStore {
   /**
     * Search function for a single word, returns a Set of messages from the Hashtable if the word is in it, otherwise return null
     */
-  public Set<Message> searchWord (String word) {
-    if (wordsHash.containsKey(word)) {
-      return wordsHash.get(word);
+  public List<Message> search (String searchTarget) {
+    if (searchTarget.contains("||")) {
+      return searchUnion(searchTarget);
+    }else if (searchTarget.contains("&&")) {
+      searchTarget = searchTarget.replaceAll(" ","&&");
+      return searchIntersection(searchTarget);
+    } else if (searchTarget.contains(" ")) {
+      searchTarget = searchTarget.replaceAll("\\s+", "&&");
+      return searchIntersection(searchTarget);
+    }else if (wordsHash.containsKey(searchTarget)){
+      List<Message> messageList = new ArrayList<Message>(wordsHash.get(searchTarget));
+      return sortMessageList(messageList);
     }
     return null;
+  }
+
+  /**
+    * Pre: the given string contains "||"
+    * returns the union of the elements in the given searchTarget
+    */
+  public List<Message> searchUnion (String searchTarget) {
+    String[] words = searchTarget.split("\\|\\||\\s+");
+
+    if (words.length == 0) {
+      return null;
+    }
+    Set<Message> hashSetResult = new HashSet<Message>();
+    for (String word : words){
+      if (search(word) != null) {
+        Set<Message> hashSetTemp = new HashSet<Message>(search(word));
+        for (Message message : hashSetTemp){
+          hashSetResult.add(message);
+        }
+      }
+    }
+    List<Message> unionResult = new ArrayList<Message>(hashSetResult);
+    unionResult = sortMessageList(unionResult);
+    return unionResult;
+  }
+
+  /**
+    * Pre: the given string contains "&&"
+    * returns the intersection of the elements in the given searchTarget
+    */
+  public List<Message> searchIntersection (String searchTarget) {
+    if (searchTarget.indexOf("&&") == 0) {
+      searchTarget = searchTarget.substring(2);
+    }
+    String[] words = searchTarget.split("&&");
+    if (words.length == 0 || search(words[0]) == null) {
+      return null;
+    }
+    List<Message> intersectionResult = new ArrayList<Message>(search(words[0]));
+    for (int i = 1 ; i < words.length ; i++) {
+      String word = words[i];
+      if (search(word) != null) {
+        List<Message> intersectionTemp = new ArrayList<Message>(search(word));
+        intersectionResult.retainAll(intersectionTemp);
+      }else {
+        // if any of the search targets have null result, the intersection should also be null
+        return null;
+      }
+    }
+    intersectionResult = sortMessageList(intersectionResult);
+    return intersectionResult;
+
+  }
+
+  /**
+    * Sorts the Set<Message> so that the output is in order with the creation time of the message
+    */
+  public List<Message> sortMessageList (List<Message> messageSet) {
+    Collections.sort(messageSet, new Comparator<Message> () {
+      public int compare (Message a, Message b){
+        Instant creationTimeA = a.getCreationTime();
+        Instant creationTimeB = b.getCreationTime();
+        return (creationTimeA.compareTo(creationTimeB));
+      }
+    });
+    return messageSet;
   }
 
   /**
