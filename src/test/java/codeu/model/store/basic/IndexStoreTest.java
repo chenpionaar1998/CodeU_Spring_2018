@@ -8,6 +8,10 @@ import java.util.UUID;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,15 +30,44 @@ public class IndexStoreTest {
           "This is test message one.",
           Instant.ofEpochMilli(1000),
           true);
+  private final Message MESSAGE_TWO =
+      new Message(
+          UUID.randomUUID(),
+          CONVERSATION_ID_ONE,
+          UUID.randomUUID(),
+          "This is test message two.",
+          Instant.ofEpochMilli(2000), true);
+  private final Message MESSAGE_THREE =
+      new Message(
+          UUID.randomUUID(),
+          CONVERSATION_ID_ONE,
+          UUID.randomUUID(),
+          "This is test message three.",
+          Instant.ofEpochMilli(3000), true);
+  private final Message MESSAGE_FOUR =
+      new Message(
+          UUID.randomUUID(),
+          CONVERSATION_ID_ONE,
+          UUID.randomUUID(),
+          "is Random test message one four.",
+          Instant.ofEpochMilli(4000), true);
+
   private Set<Message> messageList = new HashSet<>();
+  private List<Message> inOrderMessageList = new ArrayList<>();
 
   @Before
   public void setup () {
     indexStore = IndexStore.getTestInstance();
     indexStore.setHashTable(wordsHash);
     messageList.add(MESSAGE_ONE);
-    indexStore.addMapping("This", MESSAGE_ONE);
-    indexStore.addMapping("is", MESSAGE_ONE);
+    inOrderMessageList.add(MESSAGE_ONE);
+    inOrderMessageList.add(MESSAGE_TWO);
+    inOrderMessageList.add(MESSAGE_THREE);
+    inOrderMessageList.add(MESSAGE_FOUR);
+    indexStore.splitAndHashMessage(MESSAGE_FOUR);
+    indexStore.splitAndHashMessage(MESSAGE_THREE);
+    indexStore.splitAndHashMessage(MESSAGE_TWO);
+    indexStore.splitAndHashMessage(MESSAGE_ONE);
   }
 
   @Test
@@ -49,18 +82,22 @@ public class IndexStoreTest {
   }
 
   @Test
-  public void testSearchWord () {
-    // Testing for both "This" and "is" should both only return the set with one MESSAGE_ONE
-    Assert.assertEquals(messageList, indexStore.searchWord("This"));
-    Assert.assertEquals(messageList, indexStore.searchWord("is"));
-    Assert.assertEquals(null, indexStore.searchWord("hello"));
-    Assert.assertEquals(null, indexStore.searchWord("one."));
+  public void testSearch () {
+    // Testing for both "message" and "test" should both only return the set with one MESSAGE_ONE
+    Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
+    Assert.assertEquals(inOrderMessageList, indexStore.search("test"));
+    Assert.assertEquals(inOrderMessageList, indexStore.search("is&&test message"));
+
+    // Testing for String with no && but contains 2 words should be parsed into A&&B
+    List<Message> expectedList = new ArrayList<>();
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("one four"));
+    Assert.assertEquals(null, indexStore.search("hello"));
+    Assert.assertEquals(null, indexStore.search("one."));
   }
 
   @Test
   public void testSplitAndHashMessage () {
-    indexStore.splitAndHashMessage(MESSAGE_ONE);
-
     Assert.assertEquals(true, wordsHash.containsKey("This"));
     Assert.assertEquals(true, wordsHash.containsKey("is"));
     Assert.assertEquals(true, wordsHash.containsKey("test"));
@@ -71,4 +108,46 @@ public class IndexStoreTest {
     Assert.assertEquals(false, wordsHash.containsKey("one."));
   }
 
+  @Test
+  public void testsortMessageList () {
+    Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
+  }
+
+  @Test
+  public void testSearchIntersection () {
+    List<Message> expectedList = new ArrayList<>();
+    expectedList.add(MESSAGE_ONE);
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("test&&one&&message"));
+    Assert.assertEquals(expectedList, indexStore.search("test && one && message"));
+    Assert.assertEquals(expectedList, indexStore.search("test&&one&&"));
+    Assert.assertEquals(expectedList, indexStore.search("&&one&&test"));
+    Assert.assertEquals(expectedList, indexStore.search("test one"));
+    expectedList.remove(MESSAGE_ONE);
+    expectedList.remove(MESSAGE_FOUR);
+    Assert.assertEquals(null, indexStore.search("five && six"));
+    Assert.assertEquals(null, indexStore.search(" && "));
+  }
+
+  @Test
+  public void testSearchUnion () {
+    List<Message> expectedList = new ArrayList<>();
+    expectedList.add(MESSAGE_TWO);
+    expectedList.add(MESSAGE_THREE);
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("two||three||four"));
+    expectedList.remove(MESSAGE_THREE);
+    Assert.assertEquals(expectedList, indexStore.search("two||four||"));
+    expectedList.remove(MESSAGE_TWO);
+    expectedList.remove(MESSAGE_FOUR);
+    expectedList.add(MESSAGE_THREE);
+    expectedList.add(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("||three||four"));
+    Assert.assertEquals(expectedList, indexStore.search("three || four"));
+    Assert.assertEquals(expectedList, indexStore.search("three || || four"));
+    expectedList.remove(MESSAGE_THREE);
+    expectedList.remove(MESSAGE_FOUR);
+    Assert.assertEquals(expectedList, indexStore.search("five || six"));
+    Assert.assertEquals(null, indexStore.search(" || "));
+  }
 }
