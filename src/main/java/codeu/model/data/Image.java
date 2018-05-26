@@ -22,7 +22,7 @@ public class Image {
 
   private String url;
   private String response;
-  private Set<String> descriptions;
+  private Set<String> descriptions = new HashSet<String>();
   private boolean error;
   private String errorMessage;
 
