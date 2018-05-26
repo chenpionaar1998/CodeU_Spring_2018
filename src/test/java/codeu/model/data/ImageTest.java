@@ -9,19 +9,12 @@ public class ImageTest {
 
   @Test
   public void testCreate() {
-    UUID id = UUID.randomUUID();
-    UUID conversation = UUID.randomUUID();
-    UUID author = UUID.randomUUID();
-    String content = "test content";
-    Instant creation = Instant.now();
+    String url = "https://en.wikipedia.org/wiki/Cumulonimbus_cloud#/media/File:Fly00890_-_Flickr_-_NOAA_Photo_Library.jpg";
+    String html = "<a href=" + url + "><img style=\"max-width:500px\" src=" + url + "></a> ";
+    codeu.model.data.Image pic = new codeu.model.data.Image(url);
 
-    Message message = new Message(id, conversation, author, content, creation, true);
-
-    Assert.assertEquals(id, message.getId());
-    Assert.assertEquals(conversation, message.getConversationId());
-    Assert.assertEquals(author, message.getAuthorId());
-    Assert.assertEquals(content, message.getContent());
-    Assert.assertEquals(creation, message.getCreationTime());
+    Assert.assertEquals(url, pic.getUrl());
+    Assert.assertEquals(html, pic.getHTML());
   }
 
 }
