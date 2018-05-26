@@ -28,28 +28,32 @@ public class IndexStoreTest {
             CONVERSATION_ID_ONE,
             UUID.randomUUID(),
             "This is test message one.",
-            Instant.ofEpochMilli(1000));
+            Instant.ofEpochMilli(1000),
+            false);
     private final Message MESSAGE_TWO =
         new Message(
             UUID.randomUUID(),
             CONVERSATION_ID_ONE,
             UUID.randomUUID(),
             "This is test message two.",
-            Instant.ofEpochMilli(2000));
+            Instant.ofEpochMilli(2000),
+            false);
     private final Message MESSAGE_THREE =
         new Message(
             UUID.randomUUID(),
             CONVERSATION_ID_ONE,
             UUID.randomUUID(),
             "This is test message three.",
-            Instant.ofEpochMilli(3000));
+            Instant.ofEpochMilli(3000),
+            false);
     private final Message MESSAGE_FOUR =
         new Message(
             UUID.randomUUID(),
             CONVERSATION_ID_ONE,
             UUID.randomUUID(),
             "is Random test message one four.",
-            Instant.ofEpochMilli(4000));
+            Instant.ofEpochMilli(4000),
+            false);
   private Set<Message> messageList = new HashSet<>();
   private List<Message> inOrderMessageList = new ArrayList<>();
 

@@ -18,17 +18,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import codeu.model.data.*;
-
-import com.google.cloud.vision.v1.AnnotateImageRequest;
-import com.google.cloud.vision.v1.AnnotateImageResponse;
-import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
-import com.google.cloud.vision.v1.EntityAnnotation;
-import com.google.cloud.vision.v1.Feature;
-import com.google.cloud.vision.v1.Feature.Type;
-import com.google.cloud.vision.v1.Image;
-import com.google.cloud.vision.v1.ImageAnnotatorClient;
-import com.google.protobuf.ByteString;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {
@@ -39,7 +28,7 @@ public class Message {
   private final String content;
   private final Instant creation;
   private final List<codeu.model.data.Image> images;
-
+  // private boolean init;
   /**
    * Constructs a new Message.
    *
@@ -51,12 +40,12 @@ public class Message {
    * @param parseImages whether or not links in the message should be found and
    *          added as loaded pictures at end. Based on whether new message or loaded.
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, boolean init) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
     this.creation = creation;
-    this.images = parseImages(content);
+    this.images = parseImages(content, init);
     this.content = content;
   }
 
@@ -78,29 +67,29 @@ public class Message {
   /** Returns the text content of this Message. */
   public String getContent() {
     String contentWithPictures = content;
-
-    if(images.size() > 0)
-        contentWithPictures += '\n';
-
+ 
     for(codeu.model.data.Image image : images)  
-        contentWithPictures = contentWithPictures + image.getHtml();
-
+        contentWithPictures = contentWithPictures + "\n" + image.getHTML();;
+ 
     return contentWithPictures;
   }
 
   /** Finds picture links that end in jpg and add to the end of the message the
    * html rendered picture (link picture, opens to picture in another window)
    * with maximum picture width at 500 */
-  public List<codeu.model.data.Image> parseImages(String message) { 
-    List<codeu.model.data.Image> images = new ArrayList<codeu.model.data.Image>(); 
-    String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
-    String [] words = message.split("\\s");
-
-    for(String word : words) {
-        if(word.matches(linkRegex)) 
-            images.add(codeu.model.data.Image.getImageFromUrl(word));
-    }
-
+  private List<codeu.model.data.Image> parseImages(String message, boolean init) {
+	List<Image> images = new ArrayList<codeu.model.data.Image>();
+	if (init) {
+	    String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
+	    String [] words = message.split("\\s");	
+	    for(String word : words) {
+	      if(word.matches(linkRegex)) {
+	        codeu.model.data.Image newImage = codeu.model.data.Image.getImageFromUrl(word);
+	        newImage.callToAPI();
+	        images.add(newImage);
+	      }
+	    }
+	}
     return images;
   }
 
