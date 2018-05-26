@@ -70,9 +70,13 @@ public class Message {
 
     for(codeu.model.data.Image image : images) {
       if (image.hasError()){
-        contentWithPictures += image.getErrorMessage();
+        contentWithPictures += "\n" + "[CLOUD_VISION_API_ERROR]" + image.getErrorMessage();
+        contentWithPictures = contentWithPictures + "\n" + image.getHTML();
+      }else {
+        contentWithPictures = contentWithPictures + "\n" + image.getHTML();
+        String descriptions = String.join(",",image.getDescription());
+        contentWithPictures += "\n" + "Descriptions: " + descriptions;
       }
-      contentWithPictures = contentWithPictures + "\n" + image.getHTML();
     }
 
     return contentWithPictures;

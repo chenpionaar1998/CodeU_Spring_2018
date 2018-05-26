@@ -59,7 +59,7 @@ public class IndexStore {
       for (Image image : images) {
         String url = image.getUrl();
         Set<String> descriptions = image.getDescription();
-        if (image.hasError() == false){
+        if (!image.hasError()){
           splitAndHashImage(url,descriptions);
         }
       }
