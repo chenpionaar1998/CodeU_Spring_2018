@@ -64,9 +64,9 @@ public class Image {
       httpResponseScanner.close();
       parseJSON();
 	} catch(Exception e) {
-		System.out.println(e.getMessage());
+		System.out.println(e.toString());
     error = true;
-    errorMessage = e.getMessage();
+    errorMessage = e.toString();
 	}
   }
 
