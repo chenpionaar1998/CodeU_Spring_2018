@@ -23,12 +23,16 @@ public class Image {
   private String url;
   private String response;
   private Set<String> descriptions;
+  private boolean error;
+  private String errorMessage;
 
   public Image(String url) {
     this.url = url;
+    this.error = false;
+    this.errorMessage = "";
   }
 
-  public void callToAPI() {
+  public String callToAPI() {
     try {
       URL serverUrl = new URL(TARGET_URL + API_KEY);
       URLConnection urlConnection = serverUrl.openConnection();
@@ -47,7 +51,9 @@ public class Image {
       System.out.println(httpMessage);
       if (httpConnection.getInputStream() == null) {
 	    System.out.println("No stream");
-	    return;
+      error = true;
+      errorMessage = "ERROR: No Stream";
+	    return "ERROR: No Stream";
       }
       Scanner httpResponseScanner = new Scanner (httpConnection.getInputStream());
       while (httpResponseScanner.hasNext()) {
@@ -59,8 +65,11 @@ public class Image {
       parseJSON();
 	} catch(Exception e) {
 		System.out.println(e.getMessage());
-		return;
+    error = true;
+    errorMessage = e.getMessage();
+		return e.getMessage();
 	}
+  return null;
   }
 
   /**
@@ -114,5 +123,13 @@ public class Image {
 
   public void addDescription(String description){
     descriptions.add(description);
+  }
+
+  public boolean hasError(){
+    return error;
+  }
+
+  public String getErrorMessage(){
+    return errorMessage;
   }
 }

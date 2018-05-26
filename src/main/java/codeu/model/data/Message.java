@@ -68,8 +68,12 @@ public class Message {
   public String getContent() {
     String contentWithPictures = content;
 
-    for(codeu.model.data.Image image : images)
-        contentWithPictures = contentWithPictures + "\n" + image.getHTML();;
+    for(codeu.model.data.Image image : images) {
+      if (image.hasError()){
+        contentWithPictures += image.getErrorMessage();
+      }
+      contentWithPictures = contentWithPictures + "\n" + image.getHTML();
+    }
 
     return contentWithPictures;
   }
@@ -85,7 +89,7 @@ public class Message {
 	    for(String word : words) {
 	      if(word.matches(linkRegex)) {
 	        codeu.model.data.Image newImage = codeu.model.data.Image.getImageFromUrl(word);
-	        newImage.callToAPI();
+          newImage.callToAPI();
 	        images.add(newImage);
 	      }
 	    }
