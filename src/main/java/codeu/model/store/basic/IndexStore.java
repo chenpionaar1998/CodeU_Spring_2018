@@ -53,6 +53,14 @@ public class IndexStore {
     for (String word: words){
       addMapping(word, message);
     }
+    List<Image> images = message.getImages();
+    if (images.size() > 0) {
+      for (Image image : images) {
+        String url = image.getUrl();
+        Set<String> descriptions = image.getDescription();
+        splitAndHashImage(url,descriptions);
+      }
+    }
   }
 
   /**
