@@ -158,4 +158,14 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
 
   }
+
+  @Test 
+  public void testSaveAndLoadImages() thros PersistentDataStoreException {
+    String [] descriptionsArr1 = {"one", "two", "three", "four"};
+    Image image1 = new Image("http://test.jpg");
+    for(String description : descriptionsArr1)
+        image1.addDescription(description);
+    
+    persistentDataStore.writeThrough(image1);
+  }
 }
