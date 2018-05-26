@@ -24,7 +24,7 @@ public class IndexStoreTest {
           CONVERSATION_ID_ONE,
           UUID.randomUUID(),
           "This is test message one.",
-          Instant.ofEpochMilli(1000));
+          Instant.ofEpochMilli(1000), false);
   private Set<Message> messageList = new HashSet<>();
 
   @Before

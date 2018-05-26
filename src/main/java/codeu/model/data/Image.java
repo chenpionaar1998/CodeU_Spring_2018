@@ -9,7 +9,7 @@ import java.io.*;
 public class Image {
 	
   private static final String TARGET_URL = "https://vision.googleapis.com/v1/images:annotate?";
-  private static final String API_KEY = "key=AIzaSyAmTbdJrzov7ZVwGBzCVHPTM8F1L913yZM";
+  private static final String API_KEY = "key=AIzaSyDLnrdjHdAGkP3JzAszfk1AHT96ll5Y5Gw";
   private String url; 
   private String response;
 
@@ -29,11 +29,11 @@ public class Image {
             OutputStreamWriter(httpConnection.getOutputStream()));
       httpRequestBodyWriter.write
       		("{\"requests\":  [{ \"features\":  [ {\"type\": \"LABEL_DETECTION\""
-			+"}], \"image\": {\"source\": { \"ImageUri\":"
+			+"}], \"image\": {\"source\": { \"imageUri\":"
 			+" \"" + url + "\"}}}]}");
       httpRequestBodyWriter.close();
       String httpMessage = httpConnection.getResponseMessage(); 
-	
+      System.out.println(httpMessage);
       if (httpConnection.getInputStream() == null) {
 	    System.out.println("No stream");
 	    return;
