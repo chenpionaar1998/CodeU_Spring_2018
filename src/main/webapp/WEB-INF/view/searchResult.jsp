@@ -82,6 +82,7 @@
     <%
       String targetString = request.getParameter("search");
       List<Message> messageResultSet = IndexStore.getInstance().searchMessage(targetString);
+      List<String> imageResultSet = IndexStore.getInstance().searchImage(targetString);
       if (messageResultSet != null){
         for (Message message: messageResultSet){
           String time = message.getCreationTime().toString();
@@ -99,6 +100,18 @@
     %>
         <h3 class="search-container">Word not found</h3>
     <%
+      }
+      if (imageResultSet != null){
+        for (String url : imageResultSet) {
+          url.getHTML();
+    %>
+          <h4 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=url%> </h4>
+    <%
+          String descriptions = String.join(",",url.getDescription());
+    %>
+          <h4 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=descriptions%> </h4>
+    <%
+        }
       }
     } %>
   </div>
