@@ -1,6 +1,7 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Image;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -157,5 +158,16 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
 
+  }
+
+  @Test 
+  public void testSaveAndLoadImages() throws PersistentDataStoreException {
+    String [] descriptionsArr1 = {"one", "two", "three", "four"};
+    Image image1 = new Image("http://test.jpg");
+    for(int i = 0; i < descriptionsArr1.length; i++)
+        image1.addDescription(descriptionsArr1[i]);
+    
+    persistentDataStore.writeThrough(image1);
+  
   }
 }
