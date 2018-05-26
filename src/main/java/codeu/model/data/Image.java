@@ -7,10 +7,9 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import com.google.appengine.repackaged.org.json.JSONArray;
 
 import java.io.*;
 
@@ -87,10 +86,10 @@ public class Image {
 	  JSONParser parse = new JSONParser();
 	  JSONObject jobj = (JSONObject)parse.parse(response);
 	  JSONArray jarr = (JSONArray)jobj.get("responses");
-	  for (int i = 0; i < jarr.length(); i++) {
+	  for (int i = 0; i < jarr.size(); i++) {
 	    JSONObject tempJ = (JSONObject)jarr.get(i);
 	    JSONArray tempJarr = (JSONArray) tempJ.get("labelAnnotations");
-		  for (int j = 0; j < tempJarr.length(); j++) {
+		  for (int j = 0; j < tempJarr.size(); j++) {
 		    JSONObject desJ = (JSONObject) tempJarr.get(j);
 		    String description = (String) desJ.get("description");
 		    descriptions.add(description);
