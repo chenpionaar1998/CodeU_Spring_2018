@@ -32,7 +32,7 @@ public class Image {
     this.errorMessage = "";
   }
 
-  public String callToAPI() {
+  public void callToAPI() {
     try {
       URL serverUrl = new URL(TARGET_URL + API_KEY);
       URLConnection urlConnection = serverUrl.openConnection();
@@ -53,7 +53,7 @@ public class Image {
 	    System.out.println("No stream");
       error = true;
       errorMessage = "ERROR: No Stream";
-	    return "ERROR: No Stream";
+	    return;
       }
       Scanner httpResponseScanner = new Scanner (httpConnection.getInputStream());
       while (httpResponseScanner.hasNext()) {
@@ -67,9 +67,7 @@ public class Image {
 		System.out.println(e.getMessage());
     error = true;
     errorMessage = e.getMessage();
-		return e.getMessage();
 	}
-  return null;
   }
 
   /**
