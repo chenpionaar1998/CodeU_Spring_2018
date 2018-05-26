@@ -3,15 +3,12 @@ package codeu.model.data;
 import codeu.model.store.basic.ImageStore;
 
 import java.net.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.google.appengine.repackaged.org.json.JSONArray;
 
