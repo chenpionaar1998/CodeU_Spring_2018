@@ -73,9 +73,9 @@ public class Message {
         contentWithPictures += "\n" + "[CLOUD_VISION_API_ERROR]" + image.getErrorMessage();
         contentWithPictures = contentWithPictures + "\n" + image.getHTML();
       }else {
-        contentWithPictures = contentWithPictures + "\n" + image.getHTML();
+        contentWithPictures = contentWithPictures + " <br/> " + image.getHTML();
         String descriptions = String.join(",",image.getDescription());
-        contentWithPictures += "\n" + "Descriptions: " + descriptions;
+        contentWithPictures += " <br/> " + "Descriptions: " + descriptions;
       }
     }
 

@@ -25,17 +25,17 @@ public class ImageTest {
   @Test
   public void testCreate() {
     String url = "https://en.wikipedia.org/wiki/Cumulonimbus_cloud#/media/File:Fly00890_-_Flickr_-_NOAA_Photo_Library.jpg";
-    String html = "<a href=" + url + "><img style=\"max-width:500px\" src=" + url + "></a> ";
+    String html = "<a href=" + url + "><img style=\"max-width:500px; clear:right;\" src=" + url + "></a> ";
     codeu.model.data.Image pic = new codeu.model.data.Image(url);
 
     Assert.assertEquals(url, pic.getUrl());
     Assert.assertEquals(html, pic.getHTML());
   }
 
-  @Test 
+  @Test
     public void testGetHtml() {
       String url = "http://TEST.jpg";
-      String correctHtml = "<a href=http://TEST.jpg><img style=\"max-width:500px\" src=http://TEST.jpg></a> ";
+      String correctHtml = "<a href=http://TEST.jpg><img style=\"max-width:500px; clear:right;\" src=http://TEST.jpg></a> ";
       Image testImage = new Image(url);
 
       Assert.assertEquals(correctHtml, testImage.getHTML());

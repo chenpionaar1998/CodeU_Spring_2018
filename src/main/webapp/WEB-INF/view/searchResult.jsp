@@ -102,19 +102,8 @@
         <h3 class="search-container">Word not found</h3>
     <%
       }
-      if (imageResultSet != null){
-        for (Image image : imageResultSet) {
+    }
     %>
-          <a href="<%=image.getUrl()%>"><img style=\"max-width:500px\" src="<%=image.getUrl()%>"></a>
-          <h4 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=image.getUrl()%> </h4>
-    <%
-          String descriptions = String.join(",",image.getDescription());
-    %>
-          <h4 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=descriptions%> </h4>
-    <%
-        }
-      }
-    } %>
   </div>
 </body>
 

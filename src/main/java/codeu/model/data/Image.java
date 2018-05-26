@@ -30,6 +30,7 @@ public class Image {
     this.url = url;
     this.error = false;
     this.errorMessage = "";
+    this.response = "";
   }
 
   public void callToAPI() {
@@ -110,7 +111,7 @@ public class Image {
   }
 
   public String getHTML() {
-   return "<a href=" + url + "><img style=\"max-width:500px\" src=" + url + "></a> ";
+   return "<a href=" + url + "><img style=\"max-width:500px; clear:right;\" src=" + url + "></a> ";
   }
 
   /* gets imagee from image store by this url. If image not in imagestore
