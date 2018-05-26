@@ -1,6 +1,7 @@
 <%@ page import="codeu.model.store.basic.IndexStore" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.data.Image" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.List" %>
@@ -82,6 +83,7 @@
     <%
       String targetString = request.getParameter("search");
       List<Message> messageResultSet = IndexStore.getInstance().searchMessage(targetString);
+      List<Image> imageResultSet = IndexStore.getInstance().searchImage(targetString);
       if (messageResultSet != null){
         for (Message message: messageResultSet){
           String time = message.getCreationTime().toString();
@@ -99,6 +101,18 @@
     %>
         <h3 class="search-container">Word not found</h3>
     <%
+      }
+      if (imageResultSet != null){
+        for (Image image : imageResultSet) {
+    %>
+          <a href="<%=image.getUrl()%>"><img style=\"max-width:500px\" src="<%=image.getUrl()%>"></a>
+          <h4 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=image.getUrl()%> </h4>
+    <%
+          String descriptions = String.join(",",image.getDescription());
+    %>
+          <h4 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=descriptions%> </h4>
+    <%
+        }
       }
     } %>
   </div>

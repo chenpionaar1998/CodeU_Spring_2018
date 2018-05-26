@@ -65,7 +65,7 @@ public class PersistentDataStore {
     
     for (Entity entity : results.asIterable()) {
         try {
-          codeu.model.data.Image.API_KEY = (String) entity.getProperty("api");
+          codeu.model.data.Image.API_KEY = (String) entity.getProperty("key");
         } catch (Exception e) {
           // In a production environment, errors should be very rare. Errors which may
           // occur include network errors, Datastore service errors, authorization errors,
