@@ -49,7 +49,7 @@ public class ConversationActivityTest {
 
     Conversation conversation = new Conversation(conversationId, actorId, title, conversationCreation); 
     Instant messageCreation = Instant.now();
-    Message message = new Message(messageId, conversationId, actorId, content, messageCreation); 
+    Message message = new Message(messageId, conversationId, actorId, content, messageCreation, false); 
     Activity activity = new ConversationActivity(message, title);
 
     Assert.assertEquals(conversation.getOwnerId(), activity.getActorId());

@@ -3,7 +3,18 @@ package codeu.model.data;
 import codeu.model.store.basic.ImageStore;
 
 import java.net.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.google.appengine.repackaged.org.json.JSONArray;
+
 import java.io.*;
 
 public class Image {
@@ -48,12 +59,51 @@ public class Image {
       httpResponseScanner.close();
 	} catch(Exception e) {
 		System.out.println(e.getMessage());
+		return;
 	}
-}
+  }
 
+  /**
+   * Returns a response string produced by the Cloud Vision API
+   * The string is in JSON notation
+   */
   public String getResponse() {
     return response;
   }
+  
+  /**
+   * Returns a set of descriptions of the image determined by the API
+   */
+  public Set<String> getDescription() {
+	  return parseJSON();
+  }
+  
+  /**
+   * Parses the response string produced by API and returns a set
+   * of descriptions after parsing JSON format.
+   */
+  private Set<String> parseJSON() {
+	try {
+	  Set<String> tags = new HashSet<String>();
+	  JSONParser parse = new JSONParser();
+	  JSONObject jobj = (JSONObject)parse.parse(response);
+	  JSONArray jarr = (JSONArray)jobj.get("responses");
+	  for (int i = 0; i < jarr.length(); i++) {
+	    JSONObject tempJ = (JSONObject)jarr.get(i);
+	    JSONArray tempJarr = (JSONArray) tempJ.get("labelAnnotations");
+		  for (int j = 0; j < tempJarr.length(); j++) {
+		    JSONObject desJ = (JSONObject) tempJarr.get(j);
+		    String description = (String) desJ.get("description");
+		    tags.add(description);
+		  }
+	  }
+	  return tags;
+	} catch (Exception e) {
+	  System.out.println(e.getMessage());
+	  return null;
+	}
+  }
+  
   public String getUrl() {
     return url;
   }
