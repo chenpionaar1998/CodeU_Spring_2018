@@ -82,20 +82,20 @@ public class Image {
    * Parses the response string produced by API and returns a set
    * of descriptions after parsing JSON format.
    */
-  private void parseJSON() {
-    descriptions = new HashSet<String>();
-    JSONParser parse = new JSONParser();
-    JSONObject jobj = (JSONObject)parse.parse(response);
-    JSONArray jarr = (JSONArray)jobj.get("responses");
-    for (int i = 0; i < jarr.size(); i++) {
-      JSONObject tempJ = (JSONObject)jarr.get(i);
-      JSONArray tempJarr = (JSONArray) tempJ.get("labelAnnotations");
-  	  for (int j = 0; j < tempJarr.size(); j++) {
-  	    JSONObject desJ = (JSONObject) tempJarr.get(j);
-  	    String description = (String) desJ.get("description");
-  	    descriptions.add(description);
-  	  }
-    }
+  private void parseJSON() throws org.json.simple.parser.ParseException {
+	  descriptions = new HashSet<String>();
+	  JSONParser parse = new JSONParser();
+	  JSONObject jobj = (JSONObject)parse.parse(response);
+	  JSONArray jarr = (JSONArray)jobj.get("responses");
+	  for (int i = 0; i < jarr.size(); i++) {
+	    JSONObject tempJ = (JSONObject)jarr.get(i);
+	    JSONArray tempJarr = (JSONArray) tempJ.get("labelAnnotations");
+		  for (int j = 0; j < tempJarr.size(); j++) {
+		    JSONObject desJ = (JSONObject) tempJarr.get(j);
+		    String description = (String) desJ.get("description");
+		    descriptions.add(description);
+		  }
+	  }
   }
 
   public String getUrl() {
