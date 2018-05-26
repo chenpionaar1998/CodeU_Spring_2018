@@ -67,10 +67,10 @@ public class Message {
   /** Returns the text content of this Message. */
   public String getContent() {
     String contentWithPictures = content;
- 
-    for(codeu.model.data.Image image : images)  
+
+    for(codeu.model.data.Image image : images)
         contentWithPictures = contentWithPictures + "\n" + image.getHTML();;
- 
+
     return contentWithPictures;
   }
 
@@ -81,7 +81,7 @@ public class Message {
 	List<Image> images = new ArrayList<codeu.model.data.Image>();
 	if (init) {
 	    String linkRegex = "http(s)?://(.)*(.jpg|.jpeg|.png)";
-	    String [] words = message.split("\\s");	
+	    String [] words = message.split("\\s");
 	    for(String word : words) {
 	      if(word.matches(linkRegex)) {
 	        codeu.model.data.Image newImage = codeu.model.data.Image.getImageFromUrl(word);
@@ -96,5 +96,10 @@ public class Message {
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns the List of the images connected to this message. */
+  public List<Image> getImages() {
+    return images;
   }
 }
