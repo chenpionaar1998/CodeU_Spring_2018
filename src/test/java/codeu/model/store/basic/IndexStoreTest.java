@@ -23,13 +23,14 @@ public class IndexStoreTest {
 
   private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   private final Message MESSAGE_ONE =
-      new Message(
-          UUID.randomUUID(),
-          CONVERSATION_ID_ONE,
-          UUID.randomUUID(),
-          "This is test message one.",
-          Instant.ofEpochMilli(1000), false);
-  private final Message MESSAGE_TWO =
+        new Message(
+            UUID.randomUUID(),
+            CONVERSATION_ID_ONE,
+            UUID.randomUUID(),
+            "This is test message one.",
+            Instant.ofEpochMilli(1000),
+            false);
+    private final Message MESSAGE_TWO =
         new Message(
             UUID.randomUUID(),
             CONVERSATION_ID_ONE,
@@ -59,7 +60,7 @@ public class IndexStoreTest {
   @Before
   public void setup () {
     indexStore = IndexStore.getTestInstance();
-    indexStore.setHashTable(wordsHash);
+    indexStore.setHashTable(wordsHash,null);
     messageList.add(MESSAGE_ONE);
     inOrderMessageList.add(MESSAGE_ONE);
     inOrderMessageList.add(MESSAGE_TWO);
@@ -85,16 +86,15 @@ public class IndexStoreTest {
   @Test
   public void testSearch () {
     // Testing for both "message" and "test" should both only return the set with one MESSAGE_ONE
-    Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
-    Assert.assertEquals(inOrderMessageList, indexStore.search("test"));
-    Assert.assertEquals(inOrderMessageList, indexStore.search("is&&test message"));
+    Assert.assertEquals(inOrderMessageList, indexStore.searchMessage("message"));
+    Assert.assertEquals(inOrderMessageList, indexStore.searchMessage("test"));
 
     // Testing for String with no && but contains 2 words should be parsed into A&&B
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_FOUR);
-    Assert.assertEquals(expectedList, indexStore.search("one four"));
-    Assert.assertEquals(null, indexStore.search("hello"));
-    Assert.assertEquals(null, indexStore.search("one."));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("one four"));
+    Assert.assertEquals(null, indexStore.searchMessage("hello"));
+    Assert.assertEquals(null, indexStore.searchMessage("one."));
   }
 
   @Test
@@ -111,44 +111,44 @@ public class IndexStoreTest {
 
   @Test
   public void testsortMessageList () {
-    Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
+    Assert.assertEquals(inOrderMessageList, indexStore.searchMessage("message"));
   }
 
   @Test
-  public void testSearchIntersection () {
+  public void testSearchMessageIntersection () {
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_ONE);
     expectedList.add(MESSAGE_FOUR);
-    Assert.assertEquals(expectedList, indexStore.search("test&&one&&message"));
-    Assert.assertEquals(expectedList, indexStore.search("test && one && message"));
-    Assert.assertEquals(expectedList, indexStore.search("test&&one&&"));
-    Assert.assertEquals(expectedList, indexStore.search("&&one&&test"));
-    Assert.assertEquals(expectedList, indexStore.search("test one"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("test&&one&&message"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("test && one && message"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("test&&one&&"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("&&one&&test"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("test one"));
     expectedList.remove(MESSAGE_ONE);
     expectedList.remove(MESSAGE_FOUR);
-    Assert.assertEquals(null, indexStore.search("five && six"));
-    Assert.assertEquals(null, indexStore.search(" && "));
+    Assert.assertEquals(null, indexStore.searchMessage("five && six"));
+    Assert.assertEquals(null, indexStore.searchMessage(" && "));
   }
 
   @Test
-  public void testSearchUnion () {
+  public void testSearchMessageUnion () {
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_TWO);
     expectedList.add(MESSAGE_THREE);
     expectedList.add(MESSAGE_FOUR);
-    Assert.assertEquals(expectedList, indexStore.search("two||three||four"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("two||three||four"));
     expectedList.remove(MESSAGE_THREE);
-    Assert.assertEquals(expectedList, indexStore.search("two||four||"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("two||four||"));
     expectedList.remove(MESSAGE_TWO);
     expectedList.remove(MESSAGE_FOUR);
     expectedList.add(MESSAGE_THREE);
     expectedList.add(MESSAGE_FOUR);
-    Assert.assertEquals(expectedList, indexStore.search("||three||four"));
-    Assert.assertEquals(expectedList, indexStore.search("three || four"));
-    Assert.assertEquals(expectedList, indexStore.search("three || || four"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("||three||four"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("three || four"));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("three || || four"));
     expectedList.remove(MESSAGE_THREE);
     expectedList.remove(MESSAGE_FOUR);
-    Assert.assertEquals(expectedList, indexStore.search("five || six"));
-    Assert.assertEquals(null, indexStore.search(" || "));
+    Assert.assertEquals(expectedList, indexStore.searchMessage("five || six"));
+    Assert.assertEquals(null, indexStore.searchMessage(" || "));
   }
 }

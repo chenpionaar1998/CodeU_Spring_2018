@@ -81,9 +81,9 @@
       <h1 class="search-container"> Result </h1>
     <%
       String targetString = request.getParameter("search");
-      List<Message> resultSet = IndexStore.getInstance().search(targetString);
-      if (resultSet != null){
-        for (Message message: resultSet){
+      List<Message> messageResultSet = IndexStore.getInstance().searchMessage(targetString);
+      if (messageResultSet != null){
+        for (Message message: messageResultSet){
           String time = message.getCreationTime().toString();
           time = time.replace("T"," ");
           time = time.replace("Z"," ");
