@@ -18,14 +18,18 @@ import java.io.*;
 public class Image {
 
   private static final String TARGET_URL = "https://vision.googleapis.com/v1/images:annotate?";
-  private static final String API_KEY = "key=AIzaSyAmTbdJrzov7ZVwGBzCVHPTM8F1L913yZM";
+  public static String API_KEY = "key=AIzaSyAmTbdJrzov7ZVwGBzCVHPTM8F1L913yZM";
 
   private String url;
   private String response;
   private Set<String> descriptions = new HashSet<String>();
+  private boolean error;
+  private String errorMessage;
 
   public Image(String url) {
     this.url = url;
+    this.error = false;
+    this.errorMessage = "";
   }
 
   public void callToAPI() {
@@ -47,6 +51,8 @@ public class Image {
       System.out.println(httpMessage);
       if (httpConnection.getInputStream() == null) {
 	    System.out.println("No stream");
+      error = true;
+      errorMessage = "ERROR: No Stream";
 	    return;
       }
       Scanner httpResponseScanner = new Scanner (httpConnection.getInputStream());
@@ -59,7 +65,8 @@ public class Image {
       parseJSON();
 	} catch(Exception e) {
 		System.out.println(e.getMessage());
-		return;
+    error = true;
+    errorMessage = e.getMessage();
 	}
   }
 
@@ -114,5 +121,13 @@ public class Image {
 
   public void addDescription(String description){
     descriptions.add(description);
+  }
+
+  public boolean hasError(){
+    return error;
+  }
+
+  public String getErrorMessage(){
+    return errorMessage;
   }
 }

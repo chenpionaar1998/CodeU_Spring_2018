@@ -162,12 +162,12 @@ public class PersistentDataStoreTest {
 
   @Test 
   public void testSaveAndLoadImages() throws PersistentDataStoreException {
-/*    String [] descriptionsArr1 = {"one", "two", "three", "four"};
+    String [] descriptionsArr1 = {"one", "two", "three", "four"};
     Image image1 = new Image("http://test.jpg");
     for(int i = 0; i < descriptionsArr1.length; i++)
         image1.addDescription(descriptionsArr1[i]);
     
     persistentDataStore.writeThrough(image1);
-  */
+  
   }
 }

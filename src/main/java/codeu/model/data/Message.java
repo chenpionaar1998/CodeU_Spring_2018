@@ -68,8 +68,16 @@ public class Message {
   public String getContent() {
     String contentWithPictures = content;
 
-    for(codeu.model.data.Image image : images)
-        contentWithPictures = contentWithPictures + "\n" + image.getHTML();;
+    for(codeu.model.data.Image image : images) {
+      if (image.hasError()){
+        contentWithPictures += "\n" + "[CLOUD_VISION_API_ERROR]" + image.getErrorMessage();
+        contentWithPictures = contentWithPictures + "\n" + image.getHTML();
+      }else {
+        contentWithPictures = contentWithPictures + "\n" + image.getHTML();
+        String descriptions = String.join(",",image.getDescription());
+        contentWithPictures += "\n" + "Descriptions: " + descriptions;
+      }
+    }
 
     return contentWithPictures;
   }
@@ -85,7 +93,7 @@ public class Message {
 	    for(String word : words) {
 	      if(word.matches(linkRegex)) {
 	        codeu.model.data.Image newImage = codeu.model.data.Image.getImageFromUrl(word);
-	        newImage.callToAPI();
+          newImage.callToAPI();
 	        images.add(newImage);
 	      }
 	    }

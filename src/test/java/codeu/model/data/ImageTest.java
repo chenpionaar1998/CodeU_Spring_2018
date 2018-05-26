@@ -23,21 +23,21 @@ import org.junit.Test;
 public class ImageTest {
 
   @Test
-  public void testCreate() {
-    String url = "http://TEST.jpg"; 
+    public void testCreate() {
+      String url = "http://TEST.jpg"; 
 
-    Image testImage = new Image(url);
+      Image testImage = new Image(url);
 
-    Assert.assertEquals(url, testImage.getUrl());
-  }
+      Assert.assertEquals(url, testImage.getUrl());
+    }
 
   @Test 
-  public void testGetHtml() {
+    public void testGetHtml() {
       String url = "http://TEST.jpg";
       String correctHtml = "<a href=http://TEST.jpg><img style=\"max-width:500px\" src=http://TEST.jpg></a> ";
       Image testImage = new Image(url);
-      
+
       Assert.assertEquals(correctHtml, testImage.getHTML());
-  }
+    }
 
 }

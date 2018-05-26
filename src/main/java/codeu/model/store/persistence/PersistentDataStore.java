@@ -54,6 +54,26 @@ public class PersistentDataStore {
   public PersistentDataStore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
+  
+  /**
+   * Load API key from the cloud platform
+   * @throws PersistentDataStoreException
+   */
+  public void loadAPIKey() throws PersistentDataStoreException {
+    Query query = new Query("api-key");
+    PreparedQuery results = datastore.prepare(query);
+    
+    for (Entity entity : results.asIterable()) {
+        try {
+          codeu.model.data.Image.API_KEY = (String) entity.getProperty("api");
+        } catch (Exception e) {
+          // In a production environment, errors should be very rare. Errors which may
+          // occur include network errors, Datastore service errors, authorization errors,
+          // database entity definition mismatches, or service mismatches.
+          throw new PersistentDataStoreException(e);
+        }
+    }
+  }
 
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
