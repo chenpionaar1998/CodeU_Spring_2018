@@ -38,14 +38,14 @@ public class IndexStore {
   /**
     * Sets the hashtable of indices stored by IndexStore
     */
-  public  void setHashTable (Hashtable<String, Set<Message>> wordsHash, Hashtable<String, Set<String>> imageHash) {
+  public  void setHashTable (Hashtable<String, Set<Message>> wordsHash, Hashtable<String, Set<Image>> imageHash) {
     this.wordsHash = wordsHash;
     this.imageHash = imageHash;
   }
 
   /** the in-memory hashtable of IndexStore */
   private Hashtable<String, Set<Message>> wordsHash = new Hashtable<>();
-  private Hashtable<String, Set<String>> imageHash = new Hashtable<>();
+  private Hashtable<String, Set<Image>> imageHash = new Hashtable<>();
   /**
     * Splits the given message into words and hash them into the hashtable for future use
     */
@@ -57,10 +57,9 @@ public class IndexStore {
     List<Image> images = message.getImages();
     if (images.size() > 0) {
       for (Image image : images) {
-        String url = image.getUrl();
         Set<String> descriptions = image.getDescription();
         if (!image.hasError()){
-          splitAndHashImage(url,descriptions);
+          splitAndHashImage(image,descriptions);
         }
       }
     }
@@ -69,9 +68,9 @@ public class IndexStore {
   /**
     * Splits the given discriptions and hash them into the hashtable for future use
     */
-  public void splitAndHashImage(String url, Set<String> descriptions) {
+  public void splitAndHashImage(Image image, Set<String> descriptions) {
     for (String description : descriptions) {
-      addMapping(description, url);
+      addMapping(description, image);
     }
   }
 
@@ -92,12 +91,12 @@ public class IndexStore {
     * Hashes a single description to the hashtable, if the description exists in the hashtable, add the url to the list. Otherwise, add the description to the hashtable.
     * This function should be called whenever a image is being added to ImageStore
     */
-  public void addMapping (String description, String url) {
+  public void addMapping (String description, Image image) {
     if (imageHash.containsKey(description)) {
-      imageHash.get(description).add(url);
+      imageHash.get(description).add(image);
     } else {
-      Set<String> imageList = new HashSet<>();
-      imageList.add(url);
+      Set<Image> imageList = new HashSet<>();
+      imageList.add(image);
       imageHash.put(description, imageList);
     }
   }
@@ -124,7 +123,7 @@ public class IndexStore {
   /**
     * Search function for description, returns a List of url from the hashtable if there is a restult, otherwise, return null
     */
-  public List<String> searchImage (String descriptions){
+  public List<Image> searchImage (String descriptions){
     if (descriptions.contains("||")) {
       return searchImageUnion(descriptions);
     }else if (descriptions.contains("&&")) {
@@ -134,7 +133,7 @@ public class IndexStore {
       descriptions.replaceAll("\\s+","&&");
       return searchImageIntersection(descriptions);
     }else if (imageHash.containsKey(descriptions)) {
-      List<String> imageList = new ArrayList<String>(imageHash.get(descriptions));
+      List<Image> imageList = new ArrayList<Image>(imageHash.get(descriptions));
       return imageList;
     }
     return null;
@@ -168,22 +167,22 @@ public class IndexStore {
     * Pre: the given string contains "||"
     * returns the union of the elements in the given searchTarget
     */
-  public List<String> searchImageUnion (String searchTarget) {
+  public List<Image> searchImageUnion (String searchTarget) {
     String[] descriptions = searchTarget.split("\\|\\||\\s+");
 
     if (descriptions.length == 0) {
       return null;
     }
-    Set<String> hashSetResult = new HashSet<String>();
+    Set<Image> hashSetResult = new HashSet<Image>();
     for (String description : descriptions){
       if (searchImage(description) != null) {
-        Set<String> hashSetTemp = new HashSet<String>(searchImage(description));
-        for (String url : hashSetTemp){
-          hashSetResult.add(url);
+        Set<Image> hashSetTemp = new HashSet<Image>(searchImage(description));
+        for (Image image : hashSetTemp){
+          hashSetResult.add(image);
         }
       }
     }
-    List<String> unionResult = new ArrayList<String>(hashSetResult);
+    List<Image> unionResult = new ArrayList<Image>(hashSetResult);
     return unionResult;
   }
 
@@ -221,7 +220,7 @@ public class IndexStore {
     * Pre: the given string contains "&&"
     * returns the intersection of the elements in the given searchTarget
     */
-  public List<String> searchImageIntersection (String searchTarget) {
+  public List<Image> searchImageIntersection (String searchTarget) {
     if (searchTarget.indexOf("&&") == 0) {
       searchTarget = searchTarget.substring(2);
     }
@@ -229,11 +228,11 @@ public class IndexStore {
     if (descriptions.length == 0 || searchImage(descriptions[0]) == null) {
       return null;
     }
-    List<String> intersectionResult = new ArrayList<String>(searchImage(descriptions[0]));
+    List<Image> intersectionResult = new ArrayList<Image>(searchImage(descriptions[0]));
     for (int i = 1 ; i < descriptions.length ; i++) {
       String description = descriptions[i];
       if (searchImage(description) != null) {
-        List<String> intersectionTemp = new ArrayList<String>(searchImage(description));
+        List<Image> intersectionTemp = new ArrayList<Image>(searchImage(description));
         intersectionResult.retainAll(intersectionTemp);
       }else {
         // if any of the search targets have null result, the intersection should also be null
