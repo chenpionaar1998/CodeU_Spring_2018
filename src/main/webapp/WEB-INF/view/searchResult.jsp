@@ -3,6 +3,8 @@
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.UUID" %>
 <%@ page import="java.time.Instant" %>
 
@@ -70,6 +72,7 @@
     <form action="/searchResult" method="GET">
       <input type="text" placeholder="Search.." name="search">
       <button type="submit"><i class="fa fa-search">search</i></button>
+      <h4 style="color: #aaa;"> Use || to search for unions of 2 words and use && to search for intersections </h4>
     </form>
   </div>
 
@@ -78,7 +81,7 @@
       <h1 class="search-container"> Result </h1>
     <%
       String targetString = request.getParameter("search");
-      Set<Message> resultSet = IndexStore.getInstance().searchWord(targetString);
+      List<Message> resultSet = IndexStore.getInstance().search(targetString);
       if (resultSet != null){
         for (Message message: resultSet){
           String time = message.getCreationTime().toString();
@@ -89,7 +92,7 @@
           User user = UserStore.getInstance().getUser(authorId);
           String username = user.getName();
     %>
-          <h3 class="search-container" > <%=time%> <%=username%> :<%=message.getContent()%></h3>
+          <h3 class="search-container" style= "word-wrap:break-word; width:80vw;"> <%=time%> <%=username%> : <%=message.getContent()%></h3>
     <%
         }
       } else {
