@@ -5,15 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import java.net.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.google.appengine.repackaged.org.json.JSONArray;
 
@@ -60,6 +57,7 @@ public class Image {
 	    System.out.println(line);  //  alternatively, print the line of response
       }
       httpResponseScanner.close();
+      parseJSON();
 	} catch(Exception e) {
 		System.out.println(e.getMessage());
 		return;
@@ -82,18 +80,10 @@ public class Image {
   }
   
   /**
-   * @param descrip, non-empty string that can be used as a label for the image
-   * @return true if string is added
-   */
-  public boolean addDescription(String descrip) {
-	  return this.descriptions.add(descrip);
-  }
-
-  /**
    * Parses the response string produced by API and returns a set
    * of descriptions after parsing JSON format.
    */
-  private Set<String> parseJSON() {
+  private void parseJSON() {
 	try {
 	  descriptions = new HashSet<String>();
 	  JSONParser parse = new JSONParser();
@@ -108,10 +98,9 @@ public class Image {
 		    descriptions.add(description);
 		  }
 	  }
-	  return descriptions;
 	} catch (Exception e) {
 	  System.out.println(e.getMessage());
-	  return null;
+	  return;
 	}
   }
 
