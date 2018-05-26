@@ -3,6 +3,7 @@ package codeu.model.store.basic;
 import codeu.model.data.Message;
 import codeu.model.data.Conversation;
 import codeu.model.data.User;
+import codeu.model.data.Image;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -125,7 +126,7 @@ public class IndexStore {
     if (descriptions.contains("||")) {
       return searchImageUnion(descriptions);
     }else if (descriptions.contains("&&")) {
-      descriptions.replaceAll(" ","");
+      descriptions.replaceAll(" ","&&");
       return searchImageIntersection(descriptions);
     }else if (descriptions.contains(" ")) {
       descriptions.replaceAll("\\s+","&&");
@@ -226,15 +227,15 @@ public class IndexStore {
     if (descriptions.length == 0 || searchImage(descriptions[0]) == null) {
       return null;
     }
-    List<String> intersectionResult = new ArrayList<String>(searchImage(words[0]));
+    List<String> intersectionResult = new ArrayList<String>(searchImage(descriptions[0]));
     for (int i = 1 ; i < descriptions.length ; i++) {
       String description = descriptions[i];
-      if (searchImage(word) != null) {
-        List<String> intersectionTemp = new ArrayList<String>(searchImage(descriptions));
+      if (searchImage(description) != null) {
+        List<String> intersectionTemp = new ArrayList<String>(searchImage(description));
         intersectionResult.retainAll(intersectionTemp);
       }else {
         // if any of the search targets have null result, the intersection should also be null
-        if (word != ""){
+        if (description != ""){
           return null;
         }
       }
