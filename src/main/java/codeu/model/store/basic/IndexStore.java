@@ -122,7 +122,7 @@ public class IndexStore {
     }else if (descriptions.contains(" ")) {
       descriptions.replaceAll("\\s+","&&");
       return searchImageIntersection(descriptions);
-    }else if (imageHash.comtainsKey(descriptions)) {
+    }else if (imageHash.containsKey(descriptions)) {
       List<String> imageList = new ArrayList<String>(imageHash.get(descriptions));
       return imageList;
     }
