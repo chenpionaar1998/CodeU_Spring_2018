@@ -58,6 +58,10 @@ public class PersistentStorageAgent {
   private PersistentStorageAgent(PersistentDataStore persistentDataStore) {
     this.persistentDataStore = persistentDataStore;
   }
+  
+  public void loadAPIKey() throws PersistentDataStoreException {
+	  persistentDataStore.loadAPIKey();
+  }
 
   /**
    * Retrieve all User objects from the Datastore service. The returned list may be empty.
