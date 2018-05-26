@@ -25,6 +25,7 @@ import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -137,10 +138,14 @@ public class PersistentDataStore {
    *     load from Datastore service */
   public Image loadImage(String url) throws PersistentDataStoreException {
     Key imageKey = KeyFactory.createKey("image", url);
-    Entity imageEntity = datastore.get(imageKey);
-    
-    if(imageEntity == null)
+    Entity imageEntity; 
+    try {
+      imageEntity = datastore.get(imageKey);
+    } catch(EntityNotFoundException e) {
       return null;
+    } catch(Exception e) {
+      throw new PersistentDataStoreException(e);
+    }
 
     Scanner descriptionsScanner;
     Image image = new Image(url);
@@ -234,8 +239,8 @@ public class PersistentDataStore {
   public void writeThrough(Image image) {
     Key imageKey = KeyFactory.createKey("image", image.getUrl());
     Entity imageEntity = new Entity("chat-image", imageKey);
-    StringBuilder descpriptions = new StringBuilder();
-    for(String descpription : image.getDescriptions()) {
+    StringBuilder descriptions = new StringBuilder();
+    for(String description : image.getDescriptions()) {
       descriptions.append(description);
       descriptions.append(' ' );
     }

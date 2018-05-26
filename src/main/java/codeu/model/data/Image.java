@@ -108,6 +108,14 @@ public class Image {
   public String getHTML() {
    return "<a href=" + url + "><img style=\"max-width:500px\" src=" + url + "></a> ";
   }
+
+  public Set<String> getDescriptions() {
+    return descriptions;
+  }
+
+  public void addDescription(String description) {
+    descriptions.add(description);
+  }
    
   /* gets imagee from image store by this url. If image not in imagestore
    * imagestore will add a image by this url */
