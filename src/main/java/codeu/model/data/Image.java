@@ -83,24 +83,19 @@ public class Image {
    * of descriptions after parsing JSON format.
    */
   private void parseJSON() {
-	try {
-	  descriptions = new HashSet<String>();
-	  JSONParser parse = new JSONParser();
-	  JSONObject jobj = (JSONObject)parse.parse(response);
-	  JSONArray jarr = (JSONArray)jobj.get("responses");
-	  for (int i = 0; i < jarr.size(); i++) {
-	    JSONObject tempJ = (JSONObject)jarr.get(i);
-	    JSONArray tempJarr = (JSONArray) tempJ.get("labelAnnotations");
-		  for (int j = 0; j < tempJarr.size(); j++) {
-		    JSONObject desJ = (JSONObject) tempJarr.get(j);
-		    String description = (String) desJ.get("description");
-		    descriptions.add(description);
-		  }
-	  }
-	} catch (Exception e) {
-	  System.out.println(e.getMessage());
-	  return;
-	}
+    descriptions = new HashSet<String>();
+    JSONParser parse = new JSONParser();
+    JSONObject jobj = (JSONObject)parse.parse(response);
+    JSONArray jarr = (JSONArray)jobj.get("responses");
+    for (int i = 0; i < jarr.size(); i++) {
+      JSONObject tempJ = (JSONObject)jarr.get(i);
+      JSONArray tempJarr = (JSONArray) tempJ.get("labelAnnotations");
+  	  for (int j = 0; j < tempJarr.size(); j++) {
+  	    JSONObject desJ = (JSONObject) tempJarr.get(j);
+  	    String description = (String) desJ.get("description");
+  	    descriptions.add(description);
+  	  }
+    }
   }
 
   public String getUrl() {
