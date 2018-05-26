@@ -32,7 +32,7 @@ public class Image {
       return descriptions;
     }
 
-    public void addDiscription(String description){
+    public void addDescription(String description){
       descriptions.add(description);
     }
 }
