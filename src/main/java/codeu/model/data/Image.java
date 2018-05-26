@@ -24,6 +24,7 @@ public class Image {
   
   private String url; 
   private String response;
+  private Set<String> descriptions;
 
   public Image(String url) {
     this.url = url;
@@ -75,7 +76,15 @@ public class Image {
    * Returns a set of descriptions of the image determined by the API
    */
   public Set<String> getDescription() {
-	  return parseJSON();
+	  return descriptions;
+  }
+  
+  /**
+   * @param descrip, non-empty string that can be used as a label for the image
+   * @return true if string is added
+   */
+  public boolean addDescription(String descrip) {
+	  return this.descriptions.add(descrip);
   }
   
   /**
@@ -84,7 +93,7 @@ public class Image {
    */
   private Set<String> parseJSON() {
 	try {
-	  Set<String> tags = new HashSet<String>();
+	  descriptions = new HashSet<String>();
 	  JSONParser parse = new JSONParser();
 	  JSONObject jobj = (JSONObject)parse.parse(response);
 	  JSONArray jarr = (JSONArray)jobj.get("responses");
@@ -94,10 +103,10 @@ public class Image {
 		  for (int j = 0; j < tempJarr.length(); j++) {
 		    JSONObject desJ = (JSONObject) tempJarr.get(j);
 		    String description = (String) desJ.get("description");
-		    tags.add(description);
+		    descriptions.add(description);
 		  }
 	  }
-	  return tags;
+	  return descriptions;
 	} catch (Exception e) {
 	  System.out.println(e.getMessage());
 	  return null;
