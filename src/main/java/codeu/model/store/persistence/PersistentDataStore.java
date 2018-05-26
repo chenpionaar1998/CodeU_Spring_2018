@@ -25,12 +25,15 @@ import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.lang.StringBuilder;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
 
 /**
@@ -133,7 +136,8 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the
    *     load from Datastore service */
   public Image loadImage(String url) throws PersistentDataStoreException {
-    Entity imageEntity = datastore.get("image-" + url);
+    Key imageKey = KeyFactory.createKey("image", url);
+    Entity imageEntity = datastore.get(imageKey);
     
     if(imageEntity == null)
       return null;
@@ -142,7 +146,7 @@ public class PersistentDataStore {
     Image image = new Image(url);
 
     try {
-      descriptionsScanner = new Scanner((String) entity.getProperty("descriptions"));
+      descriptionsScanner = new Scanner((String) imageEntity.getProperty("descriptions"));
     }
     catch(Exception e) {
       throw new PersistentDataStoreException(e);
@@ -228,7 +232,8 @@ public class PersistentDataStore {
    *  note: key for image entity will be in the form "image-<link>" to make
    *  clear that the key is for an image */
   public void writeThrough(Image image) {
-    Entity imageEntity = new Entity("chat-image", "image-" + image.getUrl());
+    Key imageKey = KeyFactory.createKey("image", image.getUrl());
+    Entity imageEntity = new Entity("chat-image", imageKey);
     StringBuilder descpriptions = new StringBuilder();
     for(String descpription : image.getDescriptions()) {
       descriptions.append(description);
