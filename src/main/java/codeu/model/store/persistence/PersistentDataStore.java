@@ -240,7 +240,7 @@ public class PersistentDataStore {
     Key imageKey = KeyFactory.createKey("image", image.getUrl());
     Entity imageEntity = new Entity("chat-image", imageKey);
     StringBuilder descriptions = new StringBuilder();
-    for(String description : image.getDescriptions()) {
+    for(String description : image.getDescription()) {
       descriptions.append(description);
       descriptions.append(' ' );
     }

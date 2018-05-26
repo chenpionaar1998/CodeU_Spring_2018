@@ -74,7 +74,7 @@ public class Image {
   /**
    * Returns a set of descriptions of the image determined by the API
    */
-  public Set<String> getDescriptions() {
+  public Set<String> getDescription() {
 	  return descriptions;
   }
 
