@@ -157,7 +157,7 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the
    *     load from Datastore service */
   public Image loadImage(String url) throws PersistentDataStoreException {
-    Key imageKey = KeyFactory.createKey("image", url);
+    Key imageKey = KeyFactory.createKey("chat-image", url);
     Entity imageEntity; 
     try {
       imageEntity = datastore.get(imageKey);
@@ -167,18 +167,11 @@ public class PersistentDataStore {
       throw new PersistentDataStoreException(e);
     }
 
-    Scanner descriptionsScanner;
     Image image = new Image(url);
+    String [] descriptionsLoaded = ((String)imageEntity.getProperty("descriptions")).split("\\|");
 
-    try {
-      descriptionsScanner = new Scanner((String) imageEntity.getProperty("descriptions"));
-    }
-    catch(Exception e) {
-      throw new PersistentDataStoreException(e);
-    }
-
-    while(descriptionsScanner.hasNext())
-      image.addDescription(descriptionsScanner.next());
+    for(int i = 0; i < descriptionsLoaded.length; i++) 
+      image.addDescription(descriptionsLoaded[i]);
     
     return image;
   }
@@ -257,14 +250,15 @@ public class PersistentDataStore {
    *  note: key for image entity will be in the form "image-<link>" to make
    *  clear that the key is for an image */
   public void writeThrough(Image image) {
-    Key imageKey = KeyFactory.createKey("image", image.getUrl());
-    Entity imageEntity = new Entity("chat-image", imageKey);
+    Key imageKey = KeyFactory.createKey("chat-image", image.getUrl());
+    Entity imageEntity = new Entity("chat-image", image.getUrl());
     StringBuilder descriptions = new StringBuilder();
     for(String description : image.getDescription()) {
       descriptions.append(description);
-      descriptions.append(' ' );
+      descriptions.append('|' );
     }
     imageEntity.setProperty("descriptions", descriptions.toString());
+    System.err.println("\n\nEntity kind is " + imageEntity.getKind() + " and key is " + imageEntity.getKey());
     datastore.put(imageEntity);
   }
 
