@@ -3,15 +3,12 @@ package codeu.model.data;
 import codeu.model.store.basic.ImageStore;
 
 import java.net.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.google.appengine.repackaged.org.json.JSONArray;
 
@@ -24,6 +21,7 @@ public class Image {
   
   private String url; 
   private String response;
+  private Set<String> descriptions;
 
   public Image(String url) {
     this.url = url;
@@ -57,6 +55,7 @@ public class Image {
 	    System.out.println(line);  //  alternatively, print the line of response
       }
       httpResponseScanner.close();
+      parseJSON();
 	} catch(Exception e) {
 		System.out.println(e.getMessage());
 		return;
@@ -75,16 +74,16 @@ public class Image {
    * Returns a set of descriptions of the image determined by the API
    */
   public Set<String> getDescription() {
-	  return parseJSON();
+	  return descriptions;
   }
   
   /**
    * Parses the response string produced by API and returns a set
    * of descriptions after parsing JSON format.
    */
-  private Set<String> parseJSON() {
+  private void parseJSON() {
 	try {
-	  Set<String> tags = new HashSet<String>();
+	  descriptions = new HashSet<String>();
 	  JSONParser parse = new JSONParser();
 	  JSONObject jobj = (JSONObject)parse.parse(response);
 	  JSONArray jarr = (JSONArray)jobj.get("responses");
@@ -94,13 +93,12 @@ public class Image {
 		  for (int j = 0; j < tempJarr.length(); j++) {
 		    JSONObject desJ = (JSONObject) tempJarr.get(j);
 		    String description = (String) desJ.get("description");
-		    tags.add(description);
+		    descriptions.add(description);
 		  }
 	  }
-	  return tags;
 	} catch (Exception e) {
 	  System.out.println(e.getMessage());
-	  return null;
+	  return;
 	}
   }
   
