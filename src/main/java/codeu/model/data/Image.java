@@ -9,7 +9,7 @@ import java.io.*;
 public class Image {
 	
   private static final String TARGET_URL = "https://vision.googleapis.com/v1/images:annotate?";
-  private static final String API_KEY = "key=AIzaSyDLnrdjHdAGkP3JzAszfk1AHT96ll5Y5Gw";
+  private static final String API_KEY = "key=AIzaSyAmTbdJrzov7ZVwGBzCVHPTM8F1L913yZM";
   private String url; 
   private String response;
 
