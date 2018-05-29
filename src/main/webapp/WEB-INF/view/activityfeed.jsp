@@ -57,7 +57,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
     <a href="/searchResult">Search</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
+    <% if (request.getSession().getAttribute("user") != null) { %>
+      <a href="/admin">Admin Page</a>
     <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else { %>
       <a href="/login">Login</a>
@@ -82,7 +83,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           (FormatStyle.MEDIUM, FormatStyle.SHORT).withZone(ZoneId.systemDefault());
       for (Activity activity : activities) {
     %>
-        <li><strong><%= formatter.format(activity.getCreationTime()) %></strong> 
+        <li><strong><%= formatter.format(activity.getCreationTime()) %></strong>
           <%= activity.getFeedDisplay() %>
         </li>
 

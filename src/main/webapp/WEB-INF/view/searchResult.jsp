@@ -66,6 +66,7 @@
     <% } %>
     <a href="/about.jsp">About</a>
     <a href="/activity_feed">Activity Feed</a>
+    <a href="/testdata">Load Test Data</a>
   </nav>
 
   <div class="search-container">

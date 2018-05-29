@@ -27,9 +27,10 @@
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversation</a>
-    <a href="/about.jsp">About</a>
-    <a href="/testdata">Load Test Data</a>
     <a href="/searchResult">Search</a>
+    <a href="/about.jsp">About</a>
+    <a href="/activity_feed">Activity Feed</a>
+    <a href="/testdata">Load Test Data</a>
     <a>Hello <%=request.getSession().getAttribute("user")%> !</a>
   </nav>
 
