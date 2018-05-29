@@ -104,15 +104,15 @@ public class IndexStore {
   /**
     * Search function for a single word, returns a Set of messages from the Hashtable if the word is in it, otherwise return null
     */
-  public List<Message> searchMessage (String searchTarget) {
+  public List<Message> search (String searchTarget) {
     if (searchTarget.contains("||")) {
-      return searchMessageUnion(searchTarget);
+      return searchUnion(searchTarget);
     }else if (searchTarget.contains("&&")) {
       searchTarget = searchTarget.replaceAll(" ","");
-      return searchMessageIntersection(searchTarget);
+      return searchIntersection(searchTarget);
     } else if (searchTarget.contains(" ")) {
       searchTarget = searchTarget.replaceAll("\\s+", "&&");
-      return searchMessageIntersection(searchTarget);
+      return searchIntersection(searchTarget);
     }else if (wordsHash.containsKey(searchTarget)){
       List<Message> messageList = new ArrayList<Message>(wordsHash.get(searchTarget));
       return sortMessageList(messageList);
@@ -121,29 +121,10 @@ public class IndexStore {
   }
 
   /**
-    * Search function for description, returns a List of url from the hashtable if there is a restult, otherwise, return null
-    */
-  public List<Image> searchImage (String descriptions){
-    if (descriptions.contains("||")) {
-      return searchImageUnion(descriptions);
-    }else if (descriptions.contains("&&")) {
-      descriptions.replaceAll(" ","&&");
-      return searchImageIntersection(descriptions);
-    }else if (descriptions.contains(" ")) {
-      descriptions.replaceAll("\\s+","&&");
-      return searchImageIntersection(descriptions);
-    }else if (imageHash.containsKey(descriptions)) {
-      List<Image> imageList = new ArrayList<Image>(imageHash.get(descriptions));
-      return imageList;
-    }
-    return null;
-  }
-
-  /**
     * Pre: the given string contains "||"
     * returns the union of the elements in the given searchTarget
     */
-  public List<Message> searchMessageUnion (String searchTarget) {
+  public List<Message> searchUnion (String searchTarget) {
     String[] words = searchTarget.split("\\|\\||\\s+");
 
     if (words.length == 0) {
@@ -151,8 +132,8 @@ public class IndexStore {
     }
     Set<Message> hashSetResult = new HashSet<Message>();
     for (String word : words){
-      if (searchMessage(word) != null) {
-        Set<Message> hashSetTemp = new HashSet<Message>(searchMessage(word));
+      if (search(word) != null) {
+        Set<Message> hashSetTemp = new HashSet<Message>(search(word));
         for (Message message : hashSetTemp){
           hashSetResult.add(message);
         }
@@ -164,45 +145,22 @@ public class IndexStore {
   }
 
   /**
-    * Pre: the given string contains "||"
-    * returns the union of the elements in the given searchTarget
-    */
-  public List<Image> searchImageUnion (String searchTarget) {
-    String[] descriptions = searchTarget.split("\\|\\||\\s+");
-
-    if (descriptions.length == 0) {
-      return null;
-    }
-    Set<Image> hashSetResult = new HashSet<Image>();
-    for (String description : descriptions){
-      if (searchImage(description) != null) {
-        Set<Image> hashSetTemp = new HashSet<Image>(searchImage(description));
-        for (Image image : hashSetTemp){
-          hashSetResult.add(image);
-        }
-      }
-    }
-    List<Image> unionResult = new ArrayList<Image>(hashSetResult);
-    return unionResult;
-  }
-
-  /**
     * Pre: the given string contains "&&"
     * returns the intersection of the elements in the given searchTarget
     */
-  public List<Message> searchMessageIntersection (String searchTarget) {
+  public List<Message> searchIntersection (String searchTarget) {
     if (searchTarget.indexOf("&&") == 0) {
       searchTarget = searchTarget.substring(2);
     }
     String[] words = searchTarget.split("&&");
-    if (words.length == 0 || searchMessage(words[0]) == null) {
+    if (words.length == 0 || search(words[0]) == null) {
       return null;
     }
-    List<Message> intersectionResult = new ArrayList<Message>(searchMessage(words[0]));
+    List<Message> intersectionResult = new ArrayList<Message>(search(words[0]));
     for (int i = 1 ; i < words.length ; i++) {
       String word = words[i];
-      if (searchMessage(word) != null) {
-        List<Message> intersectionTemp = new ArrayList<Message>(searchMessage(word));
+      if (search(word) != null) {
+        List<Message> intersectionTemp = new ArrayList<Message>(search(word));
         intersectionResult.retainAll(intersectionTemp);
       }else {
         // if any of the search targets have null result, the intersection should also be null
@@ -217,34 +175,6 @@ public class IndexStore {
   }
 
   /**
-    * Pre: the given string contains "&&"
-    * returns the intersection of the elements in the given searchTarget
-    */
-  public List<Image> searchImageIntersection (String searchTarget) {
-    if (searchTarget.indexOf("&&") == 0) {
-      searchTarget = searchTarget.substring(2);
-    }
-    String[] descriptions = searchTarget.split("&&");
-    if (descriptions.length == 0 || searchImage(descriptions[0]) == null) {
-      return null;
-    }
-    List<Image> intersectionResult = new ArrayList<Image>(searchImage(descriptions[0]));
-    for (int i = 1 ; i < descriptions.length ; i++) {
-      String description = descriptions[i];
-      if (searchImage(description) != null) {
-        List<Image> intersectionTemp = new ArrayList<Image>(searchImage(description));
-        intersectionResult.retainAll(intersectionTemp);
-      }else {
-        // if any of the search targets have null result, the intersection should also be null
-        if (description != ""){
-          return null;
-        }
-      }
-    }
-    return intersectionResult;
-
-  }
-  /**
     * Sorts the Set<Message> so that the output is in order with the creation time of the message
     */
   public List<Message> sortMessageList (List<Message> messageSet) {
@@ -258,19 +188,4 @@ public class IndexStore {
     return messageSet;
   }
 
-  /**
-    * User search with username calls the function in UserStore and returns the User if found
-    */
-  public User searchUser (String username) {
-    User user = UserStore.getInstance().getUser(username);
-    return user;
-  }
-
-  /**
-    * Conversation search with conversation title calls the function in ConversationStore and returns the Conversation if found
-    */
-  public Conversation searchConversation (String title) {
-    Conversation conversation = ConversationStore.getInstance().getConversationWithTitle(title);
-    return conversation;
-  }
 }

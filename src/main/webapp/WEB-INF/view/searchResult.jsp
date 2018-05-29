@@ -73,7 +73,7 @@
     <form action="/searchResult" method="GET">
       <input type="text" placeholder="Search.." name="search">
       <button type="submit"><i class="fa fa-search">search</i></button>
-      <h4 style="color: #aaa;"> Use || to search for unions of 2 words and use && to search for intersections </h4>
+      <h4 style="color: #aaa;"> Use || to search for unions of words and use && to search for intersections </h4>
     </form>
   </div>
 
@@ -82,10 +82,9 @@
       <h1 class="search-container"> Result </h1>
     <%
       String targetString = request.getParameter("search");
-      List<Message> messageResultSet = IndexStore.getInstance().searchMessage(targetString);
-      List<Image> imageResultSet = IndexStore.getInstance().searchImage(targetString);
-      if (messageResultSet != null){
-        for (Message message: messageResultSet){
+      List<Message> ResultSet = IndexStore.getInstance().search(targetString);
+      if (ResultSet != null){
+        for (Message message: ResultSet){
           String time = message.getCreationTime().toString();
           time = time.replace("T"," ");
           time = time.replace("Z"," ");
