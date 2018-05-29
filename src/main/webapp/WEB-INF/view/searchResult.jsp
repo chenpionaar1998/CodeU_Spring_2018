@@ -1,6 +1,7 @@
 <%@ page import="codeu.model.store.basic.IndexStore" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.data.Image" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.List" %>
@@ -72,7 +73,7 @@
     <form action="/searchResult" method="GET">
       <input type="text" placeholder="Search.." name="search">
       <button type="submit"><i class="fa fa-search">search</i></button>
-      <h4 style="color: #aaa;"> Use || to search for unions of 2 words and use && to search for intersections </h4>
+      <h4 style="color: #aaa;"> Use || to search for unions of words and use && to search for intersections </h4>
     </form>
   </div>
 
@@ -81,9 +82,9 @@
       <h1 class="search-container"> Result </h1>
     <%
       String targetString = request.getParameter("search");
-      List<Message> resultSet = IndexStore.getInstance().search(targetString);
-      if (resultSet != null){
-        for (Message message: resultSet){
+      List<Message> ResultSet = IndexStore.getInstance().search(targetString);
+      if (ResultSet != null){
+        for (Message message: ResultSet){
           String time = message.getCreationTime().toString();
           time = time.replace("T"," ");
           time = time.replace("Z"," ");
@@ -100,7 +101,8 @@
         <h3 class="search-container">Word not found</h3>
     <%
       }
-    } %>
+    }
+    %>
   </div>
 </body>
 

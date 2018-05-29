@@ -22,6 +22,8 @@ public class ServerStartupListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
+      PersistentStorageAgent.getInstance().loadAPIKey();
+      
       List<User> users = PersistentStorageAgent.getInstance().loadUsers();
       UserStore.getInstance().setUsers(users);
 

@@ -15,6 +15,7 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Image;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStore;
@@ -58,6 +59,10 @@ public class PersistentStorageAgent {
   private PersistentStorageAgent(PersistentDataStore persistentDataStore) {
     this.persistentDataStore = persistentDataStore;
   }
+  
+  public void loadAPIKey() throws PersistentDataStoreException {
+	  persistentDataStore.loadAPIKey();
+  }
 
   /**
    * Retrieve all User objects from the Datastore service. The returned list may be empty.
@@ -89,6 +94,17 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadMessages();
   }
 
+  /**
+   * Retrieve a single Image from the Datastore service. The returned image will be null
+   * if image is not in storage.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public Image loadImage(String url) throws PersistentDataStoreException {
+    return persistentDataStore.loadImage(url);
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     persistentDataStore.writeThrough(user);
@@ -102,6 +118,11 @@ public class PersistentStorageAgent {
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
+  }
+
+  /** Write an Image object to the Datastore service. */
+  public void writeThrough(Image image) {
+    persistentDataStore.writeThrough(image);
   }
 
 }

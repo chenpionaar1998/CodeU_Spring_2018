@@ -23,20 +23,44 @@ public class IndexStoreTest {
 
   private final UUID CONVERSATION_ID_ONE = UUID.randomUUID();
   private final Message MESSAGE_ONE =
-      new Message(
-          UUID.randomUUID(),
-          CONVERSATION_ID_ONE,
-          UUID.randomUUID(),
-          "This is test message one.",
-          Instant.ofEpochMilli(1000), false);
-  
+        new Message(
+            UUID.randomUUID(),
+            CONVERSATION_ID_ONE,
+            UUID.randomUUID(),
+            "This is test message one.",
+            Instant.ofEpochMilli(1000),
+            false);
+    private final Message MESSAGE_TWO =
+        new Message(
+            UUID.randomUUID(),
+            CONVERSATION_ID_ONE,
+            UUID.randomUUID(),
+            "This is test message two.",
+            Instant.ofEpochMilli(2000),
+            false);
+    private final Message MESSAGE_THREE =
+        new Message(
+            UUID.randomUUID(),
+            CONVERSATION_ID_ONE,
+            UUID.randomUUID(),
+            "This is test message three.",
+            Instant.ofEpochMilli(3000),
+            false);
+    private final Message MESSAGE_FOUR =
+        new Message(
+            UUID.randomUUID(),
+            CONVERSATION_ID_ONE,
+            UUID.randomUUID(),
+            "is Random test message one four.",
+            Instant.ofEpochMilli(4000),
+            false);
   private Set<Message> messageList = new HashSet<>();
   private List<Message> inOrderMessageList = new ArrayList<>();
 
   @Before
   public void setup () {
     indexStore = IndexStore.getTestInstance();
-    indexStore.setHashTable(wordsHash);
+    indexStore.setHashTable(wordsHash,null);
     messageList.add(MESSAGE_ONE);
     inOrderMessageList.add(MESSAGE_ONE);
     inOrderMessageList.add(MESSAGE_TWO);
@@ -64,7 +88,6 @@ public class IndexStoreTest {
     // Testing for both "message" and "test" should both only return the set with one MESSAGE_ONE
     Assert.assertEquals(inOrderMessageList, indexStore.search("message"));
     Assert.assertEquals(inOrderMessageList, indexStore.search("test"));
-    Assert.assertEquals(inOrderMessageList, indexStore.search("is&&test message"));
 
     // Testing for String with no && but contains 2 words should be parsed into A&&B
     List<Message> expectedList = new ArrayList<>();
@@ -92,7 +115,7 @@ public class IndexStoreTest {
   }
 
   @Test
-  public void testSearchIntersection () {
+  public void testsearchIntersection () {
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_ONE);
     expectedList.add(MESSAGE_FOUR);
@@ -108,7 +131,7 @@ public class IndexStoreTest {
   }
 
   @Test
-  public void testSearchUnion () {
+  public void testsearchUnion () {
     List<Message> expectedList = new ArrayList<>();
     expectedList.add(MESSAGE_TWO);
     expectedList.add(MESSAGE_THREE);

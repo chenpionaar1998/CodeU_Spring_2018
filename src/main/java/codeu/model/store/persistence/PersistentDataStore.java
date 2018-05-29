@@ -15,19 +15,26 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Image;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ImageStore;
 import codeu.model.store.basic.IndexStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import java.lang.StringBuilder;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
 
 /**
@@ -46,6 +53,26 @@ public class PersistentDataStore {
    */
   public PersistentDataStore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
+  }
+  
+  /**
+   * Load API key from the cloud platform
+   * @throws PersistentDataStoreException
+   */
+  public void loadAPIKey() throws PersistentDataStoreException {
+    Query query = new Query("api-key");
+    PreparedQuery results = datastore.prepare(query);
+    
+    for (Entity entity : results.asIterable()) {
+        try {
+          codeu.model.data.Image.API_KEY = (String) entity.getProperty("key");
+        } catch (Exception e) {
+          // In a production environment, errors should be very rare. Errors which may
+          // occur include network errors, Datastore service errors, authorization errors,
+          // database entity definition mismatches, or service mismatches.
+          throw new PersistentDataStoreException(e);
+        }
+    }
   }
 
   /**
@@ -124,6 +151,32 @@ public class PersistentDataStore {
     return conversations;
   }
 
+  /* Loads a single Image object with the given url. 
+   * Returns null if no object with this url exists in persistent storage
+   *
+   * @throws PersistentDataStoreException if an error was detected during the
+   *     load from Datastore service */
+  public Image loadImage(String url) throws PersistentDataStoreException {
+    Key imageKey = KeyFactory.createKey("chat-image", url);
+    Entity imageEntity; 
+    try {
+      imageEntity = datastore.get(imageKey);
+    } catch(EntityNotFoundException e) {
+      return null;
+    } catch(Exception e) {
+      throw new PersistentDataStoreException(e);
+    }
+
+    Image image = new Image(url);
+    String [] descriptionsLoaded = ((String)imageEntity.getProperty("descriptions")).split("\\|");
+
+    for(int i = 0; i < descriptionsLoaded.length; i++) 
+      image.addDescription(descriptionsLoaded[i]);
+    
+    return image;
+  }
+
+
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
@@ -190,6 +243,23 @@ public class PersistentDataStore {
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
+  }
+
+  /** Write a Image objectto the Datastore service, using the link for the image as the key.
+   *  Stores the description labels for the image so it can be created 
+   *  note: key for image entity will be in the form "image-<link>" to make
+   *  clear that the key is for an image */
+  public void writeThrough(Image image) {
+    Key imageKey = KeyFactory.createKey("chat-image", image.getUrl());
+    Entity imageEntity = new Entity("chat-image", image.getUrl());
+    StringBuilder descriptions = new StringBuilder();
+    for(String description : image.getDescription()) {
+      descriptions.append(description);
+      descriptions.append('|' );
+    }
+    imageEntity.setProperty("descriptions", descriptions.toString());
+    System.err.println("\n\nEntity kind is " + imageEntity.getKind() + " and key is " + imageEntity.getKey());
+    datastore.put(imageEntity);
   }
 
 }

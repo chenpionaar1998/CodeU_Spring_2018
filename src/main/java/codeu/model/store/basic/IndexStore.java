@@ -3,6 +3,7 @@ package codeu.model.store.basic;
 import codeu.model.data.Message;
 import codeu.model.data.Conversation;
 import codeu.model.data.User;
+import codeu.model.data.Image;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -37,13 +38,14 @@ public class IndexStore {
   /**
     * Sets the hashtable of indices stored by IndexStore
     */
-  public  void setHashTable (Hashtable<String, Set<Message>> wordsHash) {
+  public  void setHashTable (Hashtable<String, Set<Message>> wordsHash, Hashtable<String, Set<Image>> imageHash) {
     this.wordsHash = wordsHash;
+    this.imageHash = imageHash;
   }
 
   /** the in-memory hashtable of IndexStore */
   private Hashtable<String, Set<Message>> wordsHash = new Hashtable<>();
-
+  private Hashtable<String, Set<Image>> imageHash = new Hashtable<>();
   /**
     * Splits the given message into words and hash them into the hashtable for future use
     */
@@ -51,6 +53,24 @@ public class IndexStore {
     String[] words = message.getContent().split("-|,|!|\\?|\\.|\\s+|\\W");
     for (String word: words){
       addMapping(word, message);
+    }
+    List<Image> images = message.getImages();
+    if (images.size() > 0) {
+      for (Image image : images) {
+        Set<String> descriptions = image.getDescription();
+        if (!image.hasError()){
+          splitAndHashImage(image,descriptions);
+        }
+      }
+    }
+  }
+
+  /**
+    * Splits the given discriptions and hash them into the hashtable for future use
+    */
+  public void splitAndHashImage(Image image, Set<String> descriptions) {
+    for (String description : descriptions) {
+      addMapping(description, image);
     }
   }
 
@@ -67,6 +87,19 @@ public class IndexStore {
       wordsHash.put(word, messageList);
     }
   }
+  /**
+    * Hashes a single description to the hashtable, if the description exists in the hashtable, add the url to the list. Otherwise, add the description to the hashtable.
+    * This function should be called whenever a image is being added to ImageStore
+    */
+  public void addMapping (String description, Image image) {
+    if (imageHash.containsKey(description)) {
+      imageHash.get(description).add(image);
+    } else {
+      Set<Image> imageList = new HashSet<>();
+      imageList.add(image);
+      imageHash.put(description, imageList);
+    }
+  }
 
   /**
     * Search function for a single word, returns a Set of messages from the Hashtable if the word is in it, otherwise return null
@@ -75,7 +108,7 @@ public class IndexStore {
     if (searchTarget.contains("||")) {
       return searchUnion(searchTarget);
     }else if (searchTarget.contains("&&")) {
-      searchTarget = searchTarget.replaceAll(" ","&&");
+      searchTarget = searchTarget.replaceAll(" ","");
       return searchIntersection(searchTarget);
     } else if (searchTarget.contains(" ")) {
       searchTarget = searchTarget.replaceAll("\\s+", "&&");
@@ -131,7 +164,9 @@ public class IndexStore {
         intersectionResult.retainAll(intersectionTemp);
       }else {
         // if any of the search targets have null result, the intersection should also be null
-        return null;
+        if (word != ""){
+          return null;
+        }
       }
     }
     intersectionResult = sortMessageList(intersectionResult);
@@ -153,19 +188,4 @@ public class IndexStore {
     return messageSet;
   }
 
-  /**
-    * User search with username calls the function in UserStore and returns the User if found
-    */
-  public User searchUser (String username) {
-    User user = UserStore.getInstance().getUser(username);
-    return user;
-  }
-
-  /**
-    * Conversation search with conversation title calls the function in ConversationStore and returns the Conversation if found
-    */
-  public Conversation searchConversation (String title) {
-    Conversation conversation = ConversationStore.getInstance().getConversationWithTitle(title);
-    return conversation;
-  }
 }

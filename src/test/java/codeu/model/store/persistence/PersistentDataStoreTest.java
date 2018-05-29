@@ -1,11 +1,13 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Image;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
+import java.util.Set;
 import java.util.List;
 import java.util.UUID;
 import org.junit.After;
@@ -157,5 +159,32 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
 
+  }
+
+  @Test 
+  public void testSaveAndLoadImages() throws PersistentDataStoreException {
+    String [] descriptionsArr1 = {"one", "two", "three", "four"};
+    String url = "http://test.jpg";
+    Image image1 = new Image(url);
+    Image resultImage1 = new Image(url);
+
+    for(int i = 0; i < descriptionsArr1.length; i++)
+        image1.addDescription(descriptionsArr1[i]);
+    
+    persistentDataStore.writeThrough(image1);
+
+    try{
+      resultImage1 = persistentDataStore.loadImage(image1.getUrl());
+    } catch(Exception e) {
+      Assert.fail("Exception thrown when loading image from persistent store.");
+    }
+
+    Assert.assertNotNull(resultImage1);
+
+    Set<String> descriptions = resultImage1.getDescription();
+    Assert.assertTrue(descriptions.size() == descriptionsArr1.length);
+    for(int i = 0; i < descriptionsArr1.length; i++) {
+      Assert.assertTrue(descriptions.contains(descriptionsArr1[i]));
+    }
   }
 }
